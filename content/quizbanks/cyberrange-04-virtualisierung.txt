@@ -1,0 +1,138 @@
+# titel: Cyber Range 04 · L1 Virtualisierung
+# kategorie: Cyber Range
+# os: linux
+# schwierigkeit: medium
+# modul: Cyber Range 04 · L1 Virtualisierung
+# beschreibung: Proxmox, KVM, QEMU, VirtIO, Templates, Linked Clones, Snapshots, Speicherverwaltung, Windows- und Linux-VMs.
+
+? Was für ein Hypervisor-Typ ist Proxmox VE?
++ Typ-1 (läuft direkt auf der Hardware)
+- Typ-2 (läuft als Programm auf einem Desktop-OS)
+- Container-Runtime
+- Emulator ohne Hardwareunterstützung
+
+? Was ist eine laufende VM aus Sicht des Host-Kernels?
++ Ein QEMU-Prozess mit einem Thread pro vCPU
+- Ein eigener Kernel neben Linux
+- Eine Datei ohne Prozess
+- Ein Docker-Container
+
+? Welches Kernel-Modul verarbeitet Netzwerkpakete der VM direkt im Host-Kernel?
+= vhost-net
+= vhost
+
+? Welche Steuerschnittstelle nutzt Proxmox, um einen QEMU-Prozess zu steuern (Snapshots, Hotplug)?
+= QMP
+= QEMU Machine Protocol
+
+? Warum ist VirtIO schneller als eine emulierte e1000-Karte?
++ Paravirtualisierung vermeidet viele teure VM-Exits
+- VirtIO nutzt einen größeren Lüfter
+- VirtIO komprimiert alle Pakete
+- e1000 ist eine WLAN-Karte
+
+? Was speichert ein Linked Clone?
++ Nur die gegenüber dem Template geänderten Blöcke (Copy-on-Write)
+- Eine vollständige Kopie des Templates
+- Nur die Konfigurationsdatei
+- Nur den Arbeitsspeicher
+
+?tf Ein Template kann gelöscht werden, solange noch Linked Clones darauf verweisen.
+= falsch
+
+? Wie heißt der Referenz-Snapshot jeder Übungs-VM vor STARTEX?
+= clean
+
+? Was ist die ZFS-Eigenheit beim Rollback?
++ Man kann nur auf den jüngsten Snapshot zurück; neuere werden dabei gelöscht
+- Rollback ist unter ZFS unmöglich
+- Rollback dauert immer Stunden
+- ZFS kennt keine Snapshots
+
+? Mit welchem Befehl setzt man VM 130 auf den Snapshot »clean« zurück?
+= qm rollback 130 clean
+
+? Mit welchem Befehl erstellt man aus Template 9002 einen Linked Clone mit VMID 130 und Namen dc01?
+= qm clone 9002 130 --name dc01 --full 0
+= qm clone 9002 130 --name dc01
+= re:qm clone 9002 130 --name dc01( --full (0|false))?
+
+? Welcher Befehl führt über den Gast-Agenten einen Befehl in VM 130 aus, ohne Netzwerk?
++ qm guest exec 130 -- <befehl>
+- ssh 130
+- qm console 130 --run
+- pvesh exec 130
+
+? Was macht KSM?
++ Gleiche Speicherseiten mehrerer VMs werden nur einmal gespeichert
+- Komprimiert Festplatten
+- Verschlüsselt den Arbeitsspeicher
+- Startet VMs schneller
+! Proxmox (ksmtuned) beginnt standardmäßig ab etwa 80 % RAM-Auslastung zu deduplizieren.
+
+? Was ist Ballooning?
++ Ein Treiber im Gast gibt ungenutzten RAM an den Host zurück
+- Eine Form von DDoS
+- Ein ZFS-Cache
+- Ein Netzwerk-Overlay
+
+?tf Auf einem Range-Host sollte großzügig Swap verwendet werden, um mehr VMs zu betreiben.
+= falsch
+! Swap auf dem Host verlangsamt alle VMs extrem.
+
+? Welcher Maschinentyp wird für Windows-VMs empfohlen?
+= q35
+
+? Welche Firmware brauchen Windows-11-VMs?
++ OVMF (UEFI) mit EFI-Disk und Secure Boot
+- SeaBIOS
+- Coreboot
+- Keine Firmware
+
+? Welche virtuelle Hardware braucht Windows 11 zusätzlich?
+= vTPM
+= TPM
+= vTPM 2.0
+
+? Welche Datei steuert die unbeaufsichtigte Windows-Installation?
+= autounattend.xml
+
+? Mit welchem Windows-Werkzeug wird eine Installation vor dem Umwandeln in ein Template verallgemeinert?
+= Sysprep
+
+? Was fehlt meist, wenn Windows-Setup »keine Laufwerke gefunden« meldet?
++ Der VirtIO-SCSI-Treiber aus der virtio-win-ISO
+- Ein Netzwerkkabel
+- Die Lizenz
+- Der Gast-Agent
+
+?order Bringe die Phasen von cloud-init in die richtige Reihenfolge
+> init-local
+> init (network)
+> modules-config
+> modules-final
+
+? Welche cloud-init-Datenquelle nutzt Proxmox für Linux-VMs typischerweise?
+= NoCloud
+
+? Wie heißt das Windows-Gegenstück zu cloud-init?
+= cloudbase-init
+
+? Wofür sind LXC-Container in der Range erlaubt?
++ Nur für Kulissen, mit denen Teilnehmer nicht interaktiv arbeiten (z. B. SINET-Webseiten)
+- Für Angreifer- und Opfersysteme
+- Für Domänencontroller
+- Für alles, weil sie schneller sind
+! Container teilen den Host-Kernel – Teilnehmer mit Root-Rechten gehören in VMs.
+
+? Welche Neuerung brachte Proxmox VE 9.1 (Nov. 2025) u. a.?
++ OCI-Images als Basis für Container (Technologievorschau)
+- Abschaffung von KVM
+- Nur noch Windows als Basis
+- Kein ZFS mehr
+
+? Welcher Disk-Controller wird für schnelle Ein-/Ausgabe empfohlen?
++ VirtIO SCSI single mit iothread
+- IDE
+- SATA AHCI
+- Floppy

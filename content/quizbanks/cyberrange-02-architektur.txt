@@ -1,0 +1,128 @@
+# titel: Cyber Range 02 · Architektur: Ebenen & Schichten
+# kategorie: Cyber Range
+# os: general
+# schwierigkeit: easy
+# modul: Cyber Range 02 · Architektur: Ebenen & Schichten
+# beschreibung: Drei Ebenen, sieben Schichten L0–L6, Datenflüsse, Architekturentscheidungen und Namensschema.
+
+? Welche drei Ebenen (Planes) hat eine Cyber Range?
++ Control Plane
++ Data Plane
++ Observation Plane
+- Power Plane
+- User Plane
+
+? Auf welcher Ebene laufen die Übungssysteme und Angriffe?
+= Data Plane
+= Data
+
+? Welche Ebene enthält Hypervisor-API, Automatisierung, Snapshots und Backups?
+= Control Plane
+= Control
+
+? Welche Ebene ist für Mitschnitt, Telemetrie und Scoring zuständig?
+= Observation Plane
+= Observation
+
+?tf Teilnehmer dürfen die Control Plane erreichen, wenn sie dafür ein Passwort haben.
+= falsch
+! Die Control Plane ist für Teilnehmer und Übungs-VMs niemals erreichbar.
+
+?order Bringe die Schichten des Referenzmodells in die richtige Reihenfolge (unten nach oben)
+> L0 Physische Infrastruktur
+> L1 Virtualisierung
+> L2 Netzwerk und Firewall
+> L3 Orchestrierung
+> L4 Szenario
+> L5 Monitoring
+> L6 Zugang und Portal
+
+? Welche Schicht umfasst Packer, OpenTofu, Ansible und Git?
++ L3 Orchestrierung
+- L1 Virtualisierung
+- L5 Monitoring
+- L6 Zugang
+
+? Zu welcher Schicht gehören Keycloak, Guacamole und CTFd?
+= L6
+= L6 Zugang
+
+? Zu welcher Schicht gehören Security Onion, Wazuh und Sysmon?
+= L5
+= L5 Monitoring
+
+? In welcher Schicht liegen Active Directory, Schwachstellen und GHOSTS?
++ L4 Szenario
+- L2 Netzwerk
+- L0 Hardware
+- L6 Zugang
+
+? Welche drei Datenfluss-Richtungen sind grundsätzlich verboten? (mehrere)
++ Data → Control
++ Data → reales Netz
++ Observation → Data (schreibend)
+- Control → Data (Konfiguration über Ansible)
+- Data → Observation (Telemetrie)
+
+?tf Jeder Datenfluss, der nicht in der Flusstabelle dokumentiert ist, ist verboten.
+= wahr
+
+? Wie gelangen Teilnehmer in die Range?
++ Ausschließlich über die Zugangsschicht L6 (Keycloak + Guacamole)
+- Direkt per RDP aus dem Büronetz
+- Über die Proxmox-Weboberfläche
+- Per USB-Stick
+
+? Welcher Hypervisor wurde im ADR-01 für den Pilot gewählt?
+= Proxmox VE
+= Proxmox
+
+? Welche Software übernimmt im Pilot die Rolle des SINET-Backbone-Routers laut ADR-02?
++ VyOS
+- OPNsense
+- pfSense
+- Keycloak
+
+? Was ist ein Architecture Decision Record (ADR)?
++ Ein Dokument mit Kontext, Alternativen, Entscheidung und Konsequenzen einer Architekturentscheidung
+- Ein Backup der Proxmox-Konfiguration
+- Ein Protokoll der Firewall
+- Ein Angriffsbericht
+
+? Ab welcher Größe soll laut ADR-01 OpenStack erneut geprüft werden?
++ Ab etwa 20 Hosts oder mehreren hundert gleichzeitigen Teilnehmern
+- Ab 2 Hosts
+- Nie
+- Ab 5 VMs
+
+? Welche VMID hat die Firewall rtr-01 im Namensschema?
+= 100
+
+? In welchem VMID-Bereich liegen die Templates?
++ 9001–9099
+- 100–199
+- 200–299
+- 1–99
+
+? Welche VMID hat dc01 bei Team 2 nach dem Schema n·1000 + Rest?
+= 2130
+
+?tf Alle Teams sehen identische Hostnamen (z. B. dc01), damit Musterlösung und Regeln für alle gelten.
+= wahr
+
+? Wo werden Teams im Namensschema unterschieden? (mehrere)
++ VMID
++ VM-Name in Proxmox
++ Tags und Pool
+- Hostname im Szenario
+- AD-Domänenname
+
+? Welcher VMID-Bereich ist für Betriebs-VMs auf ops-01 vorgesehen?
+= 200–299
+= 200-299
+
+? Welche Komponente verbindet im Übungsnetz alle Zonen miteinander?
++ Die virtuelle Firewall OPNsense (rtr-01)
+- Der Proxmox-Host
+- Security Onion
+- Guacamole

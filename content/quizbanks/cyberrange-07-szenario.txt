@@ -1,0 +1,140 @@
+# titel: Cyber Range 07 · L4 Szenario & Inhalte
+# kategorie: Cyber Range
+# os: ad
+# schwierigkeit: medium
+# modul: Cyber Range 07 · L4 Szenario & Inhalte
+# beschreibung: Nordwind Logistik, Active Directory, Tier-Modell, Schwachstellenkatalog, GHOSTS, Personas, MSEL und Injects.
+
+? Wie heißt die fiktive Firma im Szenario?
+= Nordwind Logistik GmbH
+= Nordwind Logistik
+= Nordwind
+
+? Wie heißt die AD-Domäne der fiktiven Firma?
+= nordwind.lab
+
+? Wie heißt das Beispielszenario?
+= Operation Nordlicht
+= Nordlicht
+
+? Was gehört im Tier-Modell zu Tier 0?
++ Alles, was die Domäne kontrolliert (Domänencontroller, Domain Admins, PKI)
+- Alle Arbeitsplätze
+- Alle Drucker
+- Gastkonten
+
+? Was ist die wichtigste Regel des Tier-Modells?
++ Ein Tier-0-Konto meldet sich nie an Tier-1- oder Tier-2-Systemen an
+- Alle Konten dürfen sich überall anmelden
+- Tier 2 verwaltet Tier 0
+- Es gibt nur ein Tier
+
+? Welche ATT&CK-Technik-ID gehört zu Kerberoasting?
+= T1558.003
+
+? Welche ATT&CK-Technik-ID gehört zu Spearphishing Attachment?
+= T1566.001
+
+? Welche Spur hinterlässt Kerberoasting typischerweise?
++ Ereignis 4769 mit Verschlüsselungstyp RC4 (0x17)
+- Ereignis 1102
+- Sysmon 22
+- Ereignis 4720
+
+? Welche Spur zeigt ein DCSync?
++ Ereignis 4662 mit Replikations-GUIDs von einem Nicht-DC
+- Ereignis 4625
+- Ereignis 7045
+- Ereignis 5140
+
+? Welche Gegenmaßnahmen gehören zur Schwachstelle »LLMNR aktiv, SMB-Signing aus«? (mehrere)
++ LLMNR und NetBIOS per GPO deaktivieren
++ SMB-Signing erzwingen
+- Firewall komplett abschalten
+- Alle Passwörter leeren
+
+?tf Die Ansible-Rolle mit den Szenario-Schwachstellen darf auch außerhalb des Übungsnetzes laufen.
+= falsch
+! Ein Schutzmechanismus prüft das Range-Präfix 10.10.0.0/16 und bricht sonst ab.
+
+? Welches Werkzeug (CMU SEI) erzeugt simulierte Benutzer (NPCs)?
+= GHOSTS
+
+? Auf welchem Port läuft die GHOSTS-API?
+= 5000
+
+? Wie heißt in GHOSTS die Beschreibung, was ein NPC wann tut?
+= Timeline
+
+? Was ist eine Persona?
++ Eine erfundene, typische Person mit Rolle, Gewohnheiten und Tagesablauf
+- Ein Administratorkonto
+- Eine Firewall-Regel
+- Ein Angriffswerkzeug
+
+? Warum ist die legitime Admin-Aktivität der Helpdesk-Persona wichtig?
++ Ohne sie wäre jede Admin-Handlung des Red Teams sofort auffällig – das Blue Team soll unterscheiden lernen
+- Sie spart Arbeitsspeicher
+- Sie ersetzt das Monitoring
+- Sie ist unwichtig
+
+? Warum wird bei der Erzeugung der Mitarbeiterdaten ein fester Seed genutzt?
++ Damit jede Range-Kopie identische »Zufallsdaten« erhält
+- Damit die Daten echt sind
+- Damit es schneller geht
+- Damit Passwörter sicherer sind
+
+? Wofür steht MSEL?
+= Master Scenario Events List
+
+? Was ist ein Inject?
++ Ein von der Übungsleitung eingespieltes Ereignis, das eine Reaktion erzwingt
+- Eine SQL-Injection
+- Ein Software-Update
+- Ein Netzwerkkabel
+
+? Welche Inject-Typen gibt es? (mehrere)
++ technisch
++ kommunikativ
++ rechtlich/regulatorisch
++ Medien
+- zufällig ohne Ziel
+
+? Was bedeutet STARTEX?
++ Beginn der Übung
+- Ende der Übung
+- Pause
+- Notfall
+
+? Was bedeutet ENDEX?
+= Ende der Übung
+= Übungsende
+= Ende
+
+?order Bringe die Methodik des Szenario-Designs in die richtige Reihenfolge
+> Zielgruppe bestimmen
+> Lernziele formulieren
+> Bedrohungsakteur wählen
+> Angriffskette entwerfen
+> Umgebung ableiten
+> Injects planen
+> Bewertung festlegen
+> Testen
+
+? Wie wird die Schadwirkung »Verschlüsselung« in der Range umgesetzt?
++ Nur simuliert (Dateien umbenennen, Erpresserbrief), Reset per Snapshot
+- Mit echter Ransomware
+- Gar nicht
+- Durch Löschen der Backups
+
+? Wozu dienen Artefakte wie Dokumente, Mail-Verläufe und Intranet?
++ Sie machen die Firma glaubwürdig und geben Analysten Kontext
+- Sie ersetzen die Firewall
+- Sie sind Angriffswerkzeuge
+- Sie werden nur gedruckt
+
+? Wozu dienen Szenario-Varianten?
++ Damit Szenarien nicht »verbrauchen«, wenn Teilnehmer sie schon kennen
+- Um mehr RAM zu verbrauchen
+- Um die Bewertung zu verhindern
+- Um die Isolation zu umgehen

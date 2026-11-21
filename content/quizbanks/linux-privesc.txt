@@ -1,0 +1,103 @@
+# titel: Linux Privilege Escalation
+# kategorie: Linux
+# os: linux
+# schwierigkeit: medium
+# zert: CPTS, CJCA
+# modul: Linux Privilege Escalation
+# beschreibung: Von www-data zu root: sudo, SUID, Capabilities, Cronjobs, Gruppen und PATH-Tricks.
+
+? Welcher Befehl zeigt, welche Befehle der aktuelle Benutzer mit sudo ausführen darf?
+= sudo -l
+! Immer der erste Check nach einem Foothold. Danach jede erlaubte Binary auf GTFOBins nachschlagen.
+
+? Welcher Befehl findet alle SUID-Binaries im Dateisystem (Fehler ausgeblendet)?
+= find / -perm -4000 2>/dev/null
+= find / -perm -u=s -type f 2>/dev/null
+= find / -perm -4000 -type f 2>/dev/null
+= re:find / (-type f )?-perm (-4000|-u=s|/4000)( -type f)? 2>\s?/dev/null
+~ find / -perm ...
+! SUID = Datei läuft mit den Rechten des Besitzers (oft root).
+
+? Welche Website listet, wie man legitime Unix-Binaries (sudo/SUID/Capabilities) für PrivEsc missbraucht?
++ GTFOBins
+- LOLBAS
+- Exploit-DB
+- HackTricks Wiki ausschließlich
+! LOLBAS ist das Windows-Gegenstück.
+
+? Welcher Befehl listet rekursiv alle Dateien mit Linux-Capabilities auf?
+= getcap -r / 2>/dev/null
+= getcap -r /
+! Gefährlich ist z. B. `cap_setuid+ep` auf python oder perl → direkte root-Shell.
+
+?tf Ein Benutzer in der Gruppe `docker` kann in der Regel root-Rechte auf dem Host erlangen.
+= wahr
+! `docker run -v /:/mnt --rm -it alpine chroot /mnt sh` mountet das Host-Dateisystem als root. Gleiches Prinzip bei `lxd`.
+
+? Ein root-Cronjob ruft ein Skript auf, das für dich beschreibbar ist. Was ist der Angriff?
++ Eigenen Code (z. B. Reverse Shell) ins Skript schreiben und auf den nächsten Lauf warten
+- Den Cronjob mit crontab -r löschen
+- Das Skript mit chmod 000 sperren
+- Nichts, Cronjobs laufen immer als der Benutzer, dem die Datei gehört
+! Prozesse ohne root beobachten: `pspy`.
+
+? Mit welchem Tool beobachtest du als Low-Priv-User laufende Prozesse und versteckte Cronjobs in Echtzeit?
+= pspy
+= pspy64
+= pspy32
+
+? Welches bekannte Skript automatisiert die Linux-PrivEsc-Enumeration?
+= linpeas
+= linpeas.sh
+= LinPEAS
+! Teil der PEASS-ng Suite. Alternativen: LinEnum, linux-smart-enumeration (lse).
+
+? Ein SUID-Programm ruft `service` ohne absoluten Pfad auf. Welche Technik nutzt du?
++ PATH-Hijacking: eigene `service`-Datei in ein beschreibbares Verzeichnis und dieses vorne in $PATH setzen
+- LD_PRELOAD in /etc/ld.so.preload eintragen ohne Rechte
+- Den Kernel neu kompilieren
+- Das Programm mit strings löschen
+! `export PATH=/tmp:$PATH` und `/tmp/service` mit `/bin/bash -p` erstellen.
+
+? Die Datei /etc/passwd ist für dich beschreibbar. Was ist der schnellste Weg zu root?
++ Einen neuen Benutzer mit UID 0 und eigenem Passwort-Hash eintragen
+- /etc/passwd löschen
+- Den eigenen Shell-Eintrag auf /bin/zsh ändern
+- Nichts, Hashes stehen ohnehin in /etc/shadow
+! Hash erzeugen: `openssl passwd -1 'pass'`, dann `hacker:<hash>:0:0:root:/root:/bin/bash`.
+
+? Welche NFS-Export-Option erlaubt es, als lokaler root eine SUID-root-Binary auf der Freigabe zu erstellen?
+= no_root_squash
+! Standard ist `root_squash` (root wird zu nobody). Exports stehen in /etc/exports.
+
+? Welcher Befehl zeigt Kernelversion und Architektur (Basis für Kernel-Exploits)?
+= uname -a
+= uname -r
+
+? Bei `sudo -l` siehst du `env_keep+=LD_PRELOAD`. Was kannst du tun?
++ Eine eigene Shared Library laden, die beim Start des sudo-Befehls eine root-Shell öffnet
+- Nur das Passwort von root ändern
+- Nichts, LD_PRELOAD wird bei sudo immer ignoriert
+- Den sudo-Timeout verlängern
+
+? Welche Option von bash startet eine Shell, die die effektive UID einer SUID-Bash beibehält?
+= -p
+= bash -p
+! Ohne `-p` verwirft bash die erhöhten Rechte.
+
+? Mit welchem Befehl findest du für dich beschreibbare Dateien, die root gehören (ohne /proc)?
++ find / -writable -user root -type f 2>/dev/null | grep -v proc
+- ls -la /root
+- chmod -R 777 /
+- sudo find / -perm 000
+
+? Welche Datei kann man prüfen, um Credentials in Webapp-Konfigurationen (z. B. WordPress) zu finden?
+= wp-config.php
+! Datenbank-Passwörter werden häufig für SSH oder su wiederverwendet.
+
+?order Bringe die typische Linux-PrivEsc-Reihenfolge in eine sinnvolle Abfolge
+> sudo -l prüfen
+> SUID-Binaries und Capabilities suchen
+> Cronjobs und laufende Prozesse beobachten (pspy)
+> Konfigurationsdateien nach Credentials durchsuchen
+> Kernel-Exploits als letzter Ausweg

@@ -1,0 +1,117 @@
+# titel: Cyber Range 14 · OT/ICS & Container
+# kategorie: Cyber Range
+# os: network
+# schwierigkeit: hard
+# modul: Cyber Range 14 · OT/ICS & Container
+# beschreibung: Purdue-Modell, Modbus, Industrieprotokolle, Physikmodell, Kubernetes-Fehlkonfigurationen und Erkennung.
+
+?order Bringe die Ebenen des Purdue-Modells in die richtige Reihenfolge (unten nach oben)
+> Level 0 Prozess
+> Level 1 Steuerung (SPS)
+> Level 2 HMI/SCADA
+> Level 3 Leitebene
+> Level 3.5 Industrie-DMZ
+> Level 4 Büro-IT
+> Level 5 Unternehmen
+
+? Welche Purdue-Ebene trennt IT und OT als Industrie-DMZ?
+= 3.5
+= Level 3.5
+
+? Was ist eine SPS (PLC)?
++ Ein Industriecomputer, der Sensoren liest und Aktoren nach einem Programm schaltet
+- Ein Webserver
+- Ein Backup-System
+- Ein Firewall-Typ
+
+? Welche Software-SPS wird in der Range verwendet?
+= OpenPLC
+
+? Auf welchem Port läuft Modbus TCP?
+= 502
+
+? Wie groß ist der MBAP-Header von Modbus TCP?
+= 7 Byte
+= 7
+
+? Welcher Modbus-Funktionscode liest Holding-Register?
+= 03
+= 3
+= 0x03
+
+? Welche Modbus-Funktionscodes schreiben? (mehrere)
++ 05
++ 06
++ 0F (15)
++ 10 (16)
+- 03
+- 04
+
+?tf Modbus TCP hat eine eingebaute Authentifizierung.
+= falsch
+! Wer Port 502 erreicht, kann lesen und schreiben – Schutz nur durch Segmentierung und Überwachung.
+
+? Auf welchem Port läuft S7comm (ISO-on-TCP)?
+= 102
+
+? Auf welchem Port läuft DNP3?
+= 20000
+
+? Auf welchem Port läuft OPC UA standardmäßig?
+= 4840
+
+? Welches Projekt virtualisiert eine komplette Industrieanlage inklusive 3D-Prozess und dient als Vorbild?
+= GRFICS
+
+?tf In die OT-Range werden echte Steuerungen angeschlossen, damit es realistisch ist.
+= falsch
+
+? Was ist ein Regelkreis?
++ Eine Steuerung, die einen Messwert laufend erfasst und Stellglieder so verändert, dass ein Sollwert eingehalten wird
+- Ein Netzwerkring
+- Ein Backup-Zyklus
+- Eine Firewall-Kette
+
+? Wie wird ein Überlauf im Tankmodell behandelt?
++ Nur als simulierter Alarm – es gibt kein echtes Wasser
+- Mit einem echten Ventil
+- Gar nicht
+- Durch Abschalten der Range
+
+? Welche Kubernetes-Variante wird für die Range empfohlen?
+= k3s
+
+? Welche typischen Kubernetes-Fehlkonfigurationen nutzt das Szenario? (mehrere)
++ Privilegierte Container
++ Automatisch eingehängte ServiceAccount-Tokens
++ Zu weite RBAC-Rechte
++ Keine Netzwerk-Richtlinien
+- Zu viele Firewalls
+
+? Auf welchem Port läuft die Kubelet-API?
+= 10250
+
+? Welches Pod-Security-Profil ist das strengste?
+= restricted
+
+? Welche NetworkPolicy sollte jeder Namespace als Standard haben?
++ default-deny-all für Ingress und Egress
+- allow-all
+- gar keine
+- nur Egress erlauben
+
+? Welches Werkzeug erkennt verdächtiges Verhalten in Containern anhand von Systemaufrufen?
+= Falco
+
+? Welche Datenbank speichert den gesamten Kubernetes-Zustand inklusive Secrets?
+= etcd
+
+? Womit werden Cloud-Dienste lokal nachgebildet? (mehrere)
++ MinIO (S3-kompatibel)
++ LocalStack
+- Echte Cloud-Konten im Übungsnetz
+- Ein Produktionskonto
+
+? Welche ATT&CK-Version ergänzte Techniken zu Kubernetes, CI/CD und Cloud-Datenbanken?
+= v18
+= 18

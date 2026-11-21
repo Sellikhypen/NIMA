@@ -1,0 +1,102 @@
+[
+  {
+    "id": "grundlagen",
+    "title": "Fundament",
+    "subtitle": "IT-, Netzwerk- und Betriebssystem-Grundlagen",
+    "cert": "",
+    "kind": "foundation",
+    "color": "#2EE7B6",
+    "icon": "building.columns",
+    "description": "Bevor du irgendetwas angreifst oder verteidigst, musst du verstehen, wie es funktioniert. Dieser Pfad legt das Fundament: Zahlensysteme, Netzwerke von Kabel bis HTTP, Linux und Windows aus Admin-Sicht, Kryptografie, Web-Technik und Skripting. Alle anderen Pfade bauen darauf auf."
+  },
+  {
+    "id": "cjca",
+    "title": "HTB CJCA",
+    "subtitle": "Certified Junior Cybersecurity Associate",
+    "cert": "CJCA",
+    "kind": "cert",
+    "color": "#2EE7B6",
+    "icon": "graduationcap",
+    "description": "Der Einstieg von Hack The Box: breites Grundwissen in Offensive und Defensive. Du lernst die Arbeitsweise von Angreifern und Verteidigern kennen, die wichtigsten Werkzeuge, Web- und Netzwerk-Grundlagen sowie den Alltag in einem SOC. Ideal als erstes Zertifikat und als Sprungbrett zu CPTS oder CDSA."
+  },
+  {
+    "id": "cpts",
+    "title": "HTB CPTS",
+    "subtitle": "Certified Penetration Testing Specialist",
+    "cert": "CPTS",
+    "kind": "cert",
+    "color": "#9FEF00",
+    "icon": "scope",
+    "description": "Das Herzstück für Pentester: ein vollständiger Job-Role-Path vom Pentest-Prozess über Enumeration, Web-Angriffe, Passwort-Angriffe, Pivoting und Active Directory bis zur Rechteausweitung und zum professionellen Report. Die Prüfung ist ein mehrtägiger, realistischer Pentest mit kommerziellem Bericht."
+  },
+  {
+    "id": "cwes",
+    "title": "HTB CWES (ehem. CBBH)",
+    "subtitle": "Web Exploitation Specialist / Bug Bounty Hunter",
+    "cert": "CWES",
+    "kind": "cert",
+    "color": "#FFAF00",
+    "icon": "globe",
+    "description": "Web-Sicherheit in der Tiefe: HTTP verstehen, Proxies beherrschen, Recon, alle großen Injection-Klassen, Authentifizierung, Sessions, APIs und der Bug-Bounty-Prozess mit gutem Reporting. Hack The Box hat das CBBH unter dem Namen CWES weitergeführt – die Inhalte decken beide ab."
+  },
+  {
+    "id": "cdsa",
+    "title": "HTB CDSA",
+    "subtitle": "Certified Defensive Security Analyst",
+    "cert": "CDSA",
+    "kind": "cert",
+    "color": "#4CC2FF",
+    "icon": "shield.lefthalf.filled",
+    "description": "Der Blue-Team-Pfad: Incident Handling, SIEM mit Splunk und Elastic, Windows-Ereignisprotokolle, Threat Hunting, Netzwerkverkehrsanalyse, IDS/IPS, Malware-Analyse, YARA/Sigma und digitale Forensik. Die Prüfung ist eine praktische Untersuchung mit Bericht."
+  },
+  {
+    "id": "cwee",
+    "title": "HTB CWEE",
+    "subtitle": "Certified Web Exploitation Expert",
+    "cert": "CWEE",
+    "kind": "cert",
+    "color": "#FF7A3D",
+    "icon": "flame",
+    "description": "Fortgeschrittene Web-Exploitation mit Whitebox-Fokus: Code-Reviews, fortgeschrittene Injections, Deserialisierung, Prototype Pollution, Race Conditions, Request Smuggling, Authentifizierungsfehler in modernen Frameworks und das Verketten kleiner Fehler zu kritischen Angriffen."
+  },
+  {
+    "id": "cape",
+    "title": "HTB CAPE",
+    "subtitle": "Certified Active Directory Pentesting Expert",
+    "cert": "CAPE",
+    "kind": "cert",
+    "color": "#C77DFF",
+    "icon": "point.3.connected.trianglepath.dotted",
+    "description": "Active Directory auf Expertenniveau: Kerberos bis ins Detail, Delegation, ACL-Missbrauch, NTLM-Relaying, ADCS, Trusts zwischen Domänen und Forests, Persistenz sowie die Erkennung dieser Techniken. Für alle, die große Windows-Umgebungen wirklich verstehen wollen."
+  },
+  {
+    "id": "wifi",
+    "title": "WiFi Pentesting",
+    "subtitle": "802.11, WPA2/WPA3, Enterprise-WLAN",
+    "cert": "",
+    "kind": "special",
+    "color": "#34F5FF",
+    "icon": "wifi",
+    "description": "Drahtlose Netze verstehen und prüfen: Funkgrundlagen, 802.11-Frames, Verschlüsselungsgenerationen von WEP bis WPA3, Enterprise-Authentifizierung mit 802.1X/EAP, typische Schwachstellenklassen, Hardware, rechtlicher Rahmen und – genauso wichtig – wie man WLANs richtig absichert."
+  },
+  {
+    "id": "specialist",
+    "title": "Cyber Security Specialist",
+    "subtitle": "Security-Management, Recht, Architektur",
+    "cert": "",
+    "kind": "special",
+    "color": "#FF4FD8",
+    "icon": "person.badge.shield.checkmark",
+    "description": "Die Sicht des Security-Spezialisten im Unternehmen: Informationssicherheits-Management nach ISO 27001 und BSI IT-Grundschutz, Risikomanagement, Recht (DSGVO, NIS2, IT-Sicherheitsgesetz), Sicherheitsarchitektur, Kryptografie in der Praxis, Notfallmanagement, Awareness und Audits."
+  },
+  {
+    "id": "cyberrange",
+    "title": "Cyber Range",
+    "subtitle": "Deine Range-Dokumentation – Aufbau, Betrieb, Übungen",
+    "cert": "",
+    "kind": "range",
+    "color": "#9FEF00",
+    "icon": "server.rack",
+    "description": "Alle Kapitel deiner Cyber-Range-Dokumentation als Lernmodule: Schichtenmodell L0–L6, Virtualisierung, Netze und Zonen, Automatisierung, Szenarien, Monitoring, Zugänge, Teams und Spielregeln, Paketebene, Bauanleitung, Skalierung, Scoring, Detection Engineering, OT/ICS und mehr – mit allen Abbildungen."
+  }
+]

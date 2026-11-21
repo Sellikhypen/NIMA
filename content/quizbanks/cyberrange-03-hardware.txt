@@ -1,0 +1,130 @@
+# titel: Cyber Range 03 · L0 Hardware
+# kategorie: Cyber Range
+# os: general
+# schwierigkeit: medium
+# modul: Cyber Range 03 · L0 Hardware
+# beschreibung: Server, Speicher, NUMA, PCIe, Netzwerkkarten, UEFI, Strom und Verkabelung.
+
+? Welche Maschine betreibt im Pilot alle Übungs-VMs inklusive Firewall?
+= range-01
+
+? Welche Maschine betreibt Monitoring, Zugang, Scoring und Automatisierung?
+= ops-01
+
+? Wie viel RAM wird für range-01 empfohlen?
++ 128 GB (ECC bevorzugt)
+- 16 GB
+- 1 TB
+- 8 GB
+
+? Was bedeutet NUMA?
++ Bei mehreren CPU-Sockeln hat jeder Sockel eigenen Speicher; Zugriffe auf fremden Speicher sind langsamer
+- Ein Netzwerkprotokoll für VLANs
+- Eine Backup-Methode
+- Ein RAID-Level
+! In Proxmox hilft die Option numa: 1; große VMs sollten in einen NUMA-Knoten passen.
+
+? Welche Proxmox-VM-Option aktiviert NUMA-Bewusstsein?
+= numa: 1
+= numa 1
+= numa=1
+
+? Welche Kennzahl ist beim »Boot-Sturm« zu STARTEX entscheidend?
++ IOPS und Latenz
+- Gigabyte Speicherplatz
+- Bildschirmauflösung
+- Lüfterdrehzahl
+
+? Ungefähr wie viele zufällige 4K-IOPS schafft eine HDD mit 7.200 U/min?
++ etwa 80–150
+- etwa 50.000
+- etwa 500.000
+- etwa 5.000.000
+
+? Welches ZFS-Layout wird für VM-Speicher empfohlen?
++ Mirror (Spiegel)
+- RAID-Z3
+- Einzelne Platte ohne Redundanz
+- RAID 0
+! Mirror liefert mehr IOPS und schnelle Wiederherstellung; RAID-Z eher für PCAP und Backups.
+
+? Welche Abkürzung steht für den Stromausfallschutz von Enterprise-SSDs?
+= PLP
+= Power Loss Protection
+
+? Wie heißt der Lesecache von ZFS im Arbeitsspeicher?
+= ARC
+
+? Welche ZFS-Einstellungen werden empfohlen? (mehrere)
++ ashift=12
++ compression=lz4
++ atime=off
+- dedup=on für alle VMs
+- sync=disabled
+
+? Welche Obergrenze setzt der Proxmox-Installer ab Version 8.1 standardmäßig für den ARC bei neuen Systemen?
++ 10 % des RAM, maximal 16 GiB
+- 50 % des RAM
+- 1 GiB fest
+- keine Grenze
+
+? Welche Netzwerkkarten-Chipsätze sollte man eher meiden?
++ Realtek
+- Intel X710
+- Intel i350
+- Mellanox/NVIDIA ConnectX
+
+? Welche UEFI-Optionen müssen aktiviert sein? (mehrere)
++ VT-x bzw. AMD-V
++ VT-d bzw. AMD-Vi (IOMMU)
+- Legacy-Boot ohne UEFI
+- Ruhezustand S4
+
+? Wo gehört der BMC (iDRAC/iLO/IPMI) hin?
++ Ausschließlich ins Management-Netz
+- Ins Übungsnetz
+- Ins SINET
+- Ins Gästenetz
+
+? Wie viele BTU/h entsprechen ungefähr 1 Watt?
+= 3,41
+= 3.41
+= 3,4
+
+? Wie groß sollte die USV dimensioniert werden?
++ Dauerlast plus etwa 30 % Reserve
+- Genau die Dauerlast
+- Die Hälfte der Dauerlast
+- Eine USV ist nicht nötig
+
+? Welche Kabelfarbe ist laut Farbcode für die Mirror-Leitung vorgesehen?
+= gelb
+
+? Welche Kabelfarbe ist für das Management-Netz (MGMT) vorgesehen?
+= blau
+
+?tf Die Bridge vmbr1 des Übungsnetzes hat einen physischen Port zum Büro-Switch.
+= falsch
+! vmbr1 hat weder physischen Port noch IP – die Isolation ist schon im Kabel garantiert.
+
+? Was ist ECC-RAM?
++ Arbeitsspeicher, der Einzelbitfehler erkennt und korrigiert
+- Besonders schneller Grafikspeicher
+- Ein Cache der CPU
+- Ein Netzwerkstandard
+
+? Wie viel Durchsatz hat PCIe 4.0 ungefähr je Lane und Richtung?
++ etwa 2 GB/s
+- etwa 2 MB/s
+- etwa 200 GB/s
+- etwa 20 Gbit/s je Steckplatz insgesamt
+
+?tf Eine 25-GbE-Netzwerkkarte passt bandbreitenmäßig problemlos in einen PCIe-4.0-x8-Steckplatz.
+= wahr
+! 25 GbE ≈ 3 GB/s, PCIe 4.0 x8 ≈ 16 GB/s.
+
+? Wofür wird die Mirror-Leitung zwischen range-01 und ops-01 genutzt?
++ Kopie des Netzwerkverkehrs für Security Onion
+- Backup der VMs
+- Verwaltung der Proxmox-API
+- Internetzugang

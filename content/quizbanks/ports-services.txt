@@ -1,0 +1,98 @@
+# titel: Ports & Services
+# kategorie: Netzwerk
+# os: network
+# schwierigkeit: easy
+# zert: CJCA, CPTS, CAPE
+# modul: Footprinting
+# beschreibung: Nmap-Output auf einen Blick lesen: Welcher Port gehört zu welchem Dienst – und was greift man dort an?
+
+? Welcher TCP-Port gehört standardmäßig zu SMB (direkt über TCP)?
+= 445
+! Port 139 ist SMB über NetBIOS. Erste Checks: `smbclient -L //IP -N`, `netexec smb IP --shares`.
+
+? Auf welchem Port läuft SSH standardmäßig?
+= 22
+
+? Welcher Port gehört zu RDP?
+= 3389
+
+? Welcher Port gehört zu WinRM über HTTP?
+= 5985
+! HTTPS-Variante: 5986. Zugriff mit `evil-winrm -i IP -u user -p pass`.
+
+? Welcher Port gehört zu Kerberos? (Hinweis auf einen Domain Controller)
+= 88
+! Ports 88 + 389 + 445 + 53 zusammen = fast sicher ein Domain Controller.
+
+? Welcher Port gehört zu LDAP?
+= 389
+! LDAPS: 636. Global Catalog: 3268/3269.
+
+? Welcher Port gehört zu DNS?
+= 53
+! TCP 53 offen → Zonentransfer probieren: `dig axfr @IP domain.htb`.
+
+? SNMP läuft auf welchem Port – und welchem Protokoll?
++ 161/UDP
+- 161/TCP
+- 162/TCP
+- 1161/UDP
+! Nmap scannt standardmäßig nur TCP! UDP mit `-sU`. Danach `snmpwalk -v2c -c public IP`.
+
+? Welcher Port gehört zu MSSQL?
+= 1433
+
+? Welcher Port gehört zu MySQL/MariaDB?
+= 3306
+
+? Welcher Port gehört zu PostgreSQL?
+= 5432
+
+? Welcher Port gehört zu FTP (Steuerkanal)?
+= 21
+! Immer anonymen Login testen: Benutzer `anonymous`, beliebiges Passwort.
+
+? Welcher Port gehört zu NFS?
+= 2049
+! Freigaben anzeigen: `showmount -e IP`. Achtung auf `no_root_squash`.
+
+? Welcher Port gehört zu Redis?
+= 6379
+! Oft ohne Auth erreichbar. Mögliche RCE über SSH-Key-Schreiben oder Module.
+
+? Welcher Port gehört zu MongoDB?
+= 27017
+
+? Welcher Port gehört zu SMTP?
+= 25
+! Benutzer-Enumeration mit `VRFY`/`EXPN`/`RCPT TO` oder `smtp-user-enum`.
+
+? Welcher Port gehört zu POP3 – und welcher zu IMAP?
++ POP3 110, IMAP 143
+- POP3 143, IMAP 110
+- POP3 995, IMAP 993
+- POP3 25, IMAP 587
+! Verschlüsselt: POP3S 995, IMAPS 993.
+
+? Welcher Port gehört zu Microsoft RPC (Endpoint Mapper)?
+= 135
+
+? IPMI (z. B. Hash-Dumping bei BMCs) läuft auf welchem Port?
++ 623/UDP
+- 623/TCP
+- 6230/UDP
+- 443/TCP
+! Metasploit `ipmi_dumphashes` holt RAKP-Hashes, die man offline knacken kann.
+
+? Welcher Port gehört zu Oracle TNS Listener?
+= 1521
+
+? Welcher Port gehört zu rsync?
+= 873
+
+? Welcher Port gehört zu Telnet?
+= 23
+
+?tf Nmap scannt ohne `-p` standardmäßig alle 65535 TCP-Ports.
+= falsch
+! Ohne `-p` scannt Nmap die Top 1000 Ports. Alle Ports: `-p-`.

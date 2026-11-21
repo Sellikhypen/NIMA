@@ -1,0 +1,157 @@
+# titel: Cyber Range 10 · Protokolle & Pakete
+# kategorie: Cyber Range
+# os: network
+# schwierigkeit: hard
+# modul: Cyber Range 10 · Protokolle & Pakete
+# beschreibung: Kapselung, TCP/TLS, Zustände, DNS, DHCP, ARP, Kerberos, NTLM, Syslog, NTP, ICMP, VXLAN und Hex-Analyse.
+
+? Wie groß ist der Ethernet-Header (ohne VLAN-Tag)?
+= 14 Byte
+= 14
+
+? Wie groß ist ein IPv4-Header ohne Optionen?
+= 20 Byte
+= 20
+
+? Wie groß ist ein UDP-Header?
+= 8 Byte
+= 8
+
+?order Bringe den TCP-Drei-Wege-Handshake in die richtige Reihenfolge
+> SYN
+> SYN/ACK
+> ACK
+
+? Wie viele Roundtrips braucht der TLS-1.3-Handshake (ohne Wiederaufnahme)?
+= 1
+= einen
+= eins
+
+? In welchem TLS-Feld steht der angefragte Hostname?
+= SNI
+= Server Name Indication
+
+? Wie heißt das Verfahren, das das TLS-Profil eines Clients als Fingerabdruck zusammenfasst?
+= JA4
+
+? Wie lange bleibt eine Verbindung in TIME_WAIT?
++ 2 × MSL
+- 1 Sekunde
+- unendlich
+- bis zum Neustart
+
+? Welcher Zeek-conn_state steht für einen sauber auf- und abgebauten Austausch?
+= SF
+
+? Welcher Zeek-conn_state steht für SYN, das mit RST beantwortet wurde?
+= REJ
+
+? Wie groß ist der DNS-Header?
+= 12 Byte
+= 12
+
+? Wie lang darf ein einzelnes DNS-Label höchstens sein?
+= 63
+
+? Welcher DNS-RCODE bedeutet »Name existiert nicht«?
++ NXDOMAIN (3)
+- NOERROR (0)
+- SERVFAIL (2)
+- REFUSED (5)
+
+?order Bringe den DHCP-Austausch in die richtige Reihenfolge
+> Discover
+> Offer
+> Request
+> Acknowledge
+
+? Von welchem Port an welchen Port sendet ein DHCP-Client seinen Discover?
++ von UDP 68 an UDP 67
+- von TCP 80 an TCP 443
+- von UDP 53 an UDP 53
+- von UDP 67 an UDP 68
+
+? Was löst ARP auf?
++ IP-Adresse → MAC-Adresse im lokalen Netz
+- Name → IP-Adresse
+- Port → Dienst
+- MAC → Hostname
+
+? Auf welchem Port läuft Kerberos?
+= 88
+
+?order Bringe die Kerberos-Nachrichtenpaare in die richtige Reihenfolge
+> AS-REQ / AS-REP
+> TGS-REQ / TGS-REP
+> AP-REQ / AP-REP
+
+? Womit ist ein TGT verschlüsselt?
++ Mit dem Schlüssel des krbtgt-Kontos
+- Mit dem Benutzerpasswort im Klartext
+- Gar nicht
+- Mit dem Zertifikat des Webservers
+
+? Welcher Verschlüsselungstyp bei Diensttickets gilt als Warnsignal für Kerberoasting?
+= RC4
+= 0x17
+= RC4 (0x17)
+
+? Ab welcher Uhrabweichung verweigert Kerberos im AD standardmäßig Anmeldungen?
++ mehr als 5 Minuten
+- mehr als 5 Sekunden
+- mehr als 1 Stunde
+- nie
+
+? Welche Maßnahmen verhindern NTLM-Relay im Szenario? (mehrere)
++ SMB-Signing erzwingen
++ LLMNR und NetBIOS deaktivieren
+- Port 88 öffnen
+- Firewall-Logs löschen
+
+? Auf welchem UDP-Port fragt LLMNR per Multicast?
+= 5355
+
+? Welches Syslog-Format enthält Zeitstempel mit Zeitzone und strukturierte Daten?
+= RFC 5424
+= 5424
+
+? Welcher Port wird für Syslog über TLS genutzt?
+= 6514
+
+? Wie berechnet sich die Syslog-Priorität?
++ Facility × 8 + Severity
+- Severity × 8 + Facility
+- Port + 8
+- immer 134
+
+? Auf welchem Port läuft NTP?
+= 123
+= 123/udp
+
+? Welche ICMP-Meldung nutzt Traceroute?
++ Time Exceeded (Typ 11)
+- Echo Reply (Typ 0)
+- Redirect (Typ 5)
+- Router Advertisement
+
+? Wie groß ist der Overhead von VXLAN je Frame?
+= 50 Byte
+= 50
+
+? Auf welchem UDP-Port läuft VXLAN?
+= 4789
+
+? Was bedeuten die Bytes 08 00 nach den MAC-Adressen im Ethernet-Frame?
++ EtherType IPv4
+- TCP-Port 2048
+- VLAN 800
+- Prüfsumme
+
+? Welcher Dezimalwert entspricht dem Hex-Port 01 bb?
+= 443
+
+? Was bedeutet im TCP-Flags-Byte der Wert 0x02?
+= SYN
+
+? Welche MSS wird bei MTU 1500 typischerweise ausgehandelt?
+= 1460

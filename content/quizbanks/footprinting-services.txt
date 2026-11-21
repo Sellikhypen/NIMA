@@ -1,0 +1,147 @@
+# titel: Footprinting · Dienste enumerieren
+# kategorie: Netzwerk
+# os: network
+# schwierigkeit: medium
+# zert: CPTS, CJCA
+# modul: Footprinting
+# beschreibung: FTP, SMB, NFS, DNS, SMTP, IMAP/POP3, SNMP, MySQL, MSSQL, Oracle TNS, IPMI, SSH, Rsync und R-Services – wie man jeden Dienst gezielt befragt.
+
+?order Bringe die drei Ebenen der HTB-Enumeration-Methodik in die richtige Reihenfolge
+> Infrastructure-based Enumeration
+> Host-based Enumeration
+> OS-based Enumeration
+! Die Methodik hat 6 Schichten: Internet Presence, Gateway, Accessible Services, Processes, Privileges, OS Setup.
+
+? Welcher Benutzername wird bei FTP für den anonymen Login verwendet?
+= anonymous
+
+? Welche Konfigurationsdatei steuert den vsFTPd-Server?
+= /etc/vsftpd.conf
+
+? Welche Datei listet bei vsFTPd Benutzer, denen FTP verboten ist?
+= /etc/ftpusers
+
+? Mit welchem Befehl lädt man alle Dateien eines FTP-Servers rekursiv herunter (wget)?
+= wget -m --no-passive ftp://anonymous:anonymous@IP
+= re:wget -m (--no-passive )?ftp://anonymous:anonymous@\S+
+
+? Wie verbindet man sich verschlüsselt mit einem FTP-Server, der TLS nutzt (openssl)?
++ openssl s_client -connect IP:21 -starttls ftp
+- ssh -p 21 IP
+- nc --ssl IP 21
+- ftp -tls IP
+
+? Welche Datei konfiguriert Samba?
+= /etc/samba/smb.conf
+
+? Welches Tool liefert per RPC Infos wie Domänen, Benutzer und Shares (z. B. mit `srvinfo`, `enumdomusers`)?
+= rpcclient
+
+? Wie meldet man sich mit rpcclient mit einer Null-Session an?
+= rpcclient -U "" IP
+= rpcclient -U '' IP
+= re:rpcclient -U ["']{2} \S+( -N)?
+
+? Welches Tool zeigt Shares inkl. Lese-/Schreibrechten übersichtlich an?
++ smbmap
+- showmount
+- snmpwalk
+- dig
+
+? Welche Datei definiert die NFS-Freigaben auf dem Server?
+= /etc/exports
+
+? Wie mountet man eine NFS-Freigabe lokal?
+= sudo mount -t nfs IP:/ ./target-NFS/ -o nolock
+= re:(sudo )?mount -t nfs \S+:\S* \S+( -o nolock)?
+
+? Welche DNS-Datei definiert unter BIND9 lokale Zonen?
+= /etc/bind/named.conf.local
+
+? Welcher DNS-Record enthält Infos zur zuständigen Zone wie E-Mail des Admins?
+= SOA
+
+? Welcher DNS-Record zeigt den Mailserver?
+= MX
+
+? Welcher dig-Befehl versucht einen Zonentransfer?
+= dig axfr domain.htb @IP
+= re:dig axfr \S+ @\S+
+
+? Mit welchem Tool bruteforcet man Subdomains gegen einen DNS-Server (Kommandozeile, Wortliste)?
++ dnsenum
+- smtp-user-enum
+- onesixtyone
+- odat
+
+? Welche SMTP-Befehle eignen sich zur Benutzer-Enumeration?
++ VRFY
++ EXPN
++ RCPT TO
+- QUIT
+- DATA
+
+? Was ist ein „Open Relay“ bei SMTP?
++ Ein Mailserver, der Mails von beliebigen Absendern an beliebige Empfänger weiterleitet
+- Ein Server ohne Passwort-Login
+- Ein IMAP-Server mit TLS
+- Ein DNS-Server ohne Zonentransfer-Schutz
+
+? Wie verbindet man sich mit IMAPS (Port 993) per openssl?
+= openssl s_client -connect IP:imaps
+= openssl s_client -connect IP:993
+= re:openssl s_client -connect \S+:(imaps|993)
+
+? Welche SNMP-Datei konfiguriert den Daemon (Community-Strings)?
+= /etc/snmp/snmpd.conf
+
+? Welches Tool bruteforcet SNMP-Community-Strings?
+= onesixtyone
+
+? Welches Tool liest SNMP-OIDs schnell und gezielt per Bruteforce aus (Parallel)?
++ braa
+- hydra
+- crackmapexec
+- smbclient
+
+? Welche MySQL-Datenbank enthält Metadaten aller Datenbanken?
+= information_schema
+
+? Mit welchem Impacket-Skript verbindet man sich zu MSSQL?
+= mssqlclient.py
+= impacket-mssqlclient
+= mssqlclient
+
+? Welche MSSQL-Systemdatenbank speichert die Infos für eine Instanz (Logins, Konfiguration)?
+= master
+
+? Welches Tool enumeriert Oracle-TNS-Listener und SIDs?
++ odat
+- rpcclient
+- enum4linux
+- braa
+
+? Wie heißt die Kennung einer Oracle-Datenbankinstanz, die man für die Verbindung braucht?
+= SID
+
+? IPMI-Schwachstelle: Was liefert der RAKP-Prozess bei IPMI 2.0?
++ Einen gesalzenen Passwort-Hash, den man offline knacken kann
+- Eine Root-Shell ohne Passwort
+- Den SSH-Key des Admins
+- Eine Liste aller Firewall-Regeln
+
+? Welches Tool liest SSH-Server-Konfiguration und unterstützte Algorithmen aus?
+= ssh-audit
+
+? Welche Datei konfiguriert den OpenSSH-Server?
+= /etc/ssh/sshd_config
+
+? Auf welchem Port läuft rsync?
+= 873
+
+? Welche Datei steuert die vertrauenswürdigen Hosts der R-Services (rlogin, rsh)?
++ /etc/hosts.equiv
+- /etc/hosts.allow
+- /etc/passwd
+- /etc/rsyncd.conf
+! Auch `~/.rhosts` pro Benutzer. Ein `+` als Eintrag vertraut allen Hosts.

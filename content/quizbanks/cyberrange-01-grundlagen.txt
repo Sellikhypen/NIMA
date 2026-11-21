@@ -1,0 +1,139 @@
+# titel: Cyber Range 01 · Grundlagen & Zweck
+# kategorie: Cyber Range
+# os: general
+# schwierigkeit: easy
+# modul: Cyber Range 01 · Grundlagen & Zweck
+# beschreibung: Was eine Cyber Range ist, wozu sie dient, welche Arten und Formate es gibt.
+
+? Was ist eine Cyber Range?
++ Eine abgeschottete, nachgebaute IT-Umgebung zum gefahrlosen Üben, Testen und Messen von Angriff und Verteidigung
+- Ein öffentlich erreichbarer Server, der echte Angreifer anlockt
+- Ein Programm zum automatischen Scannen von Netzwerken
+- Eine Firewall-Regel für Rechenzentren
+! Kernidee: scharfe Angriffe, aber in einem geschlossenen Raum – wie ein militärischer Schießplatz (»Range«).
+
+? Aus welchem Bereich stammt der Begriff »Range«?
++ Militär (Schießplatz)
+- Mathematik (Wertebereich)
+- Funktechnik (Reichweite)
+- Börse (Kursspanne)
+
+? Welche vier Eigenschaften machen aus einem Labor eine Cyber Range?
++ Isolation
++ Reproduzierbarkeit
++ Beobachtbarkeit
++ Szenario-Steuerung
+- Internetanbindung
+- Hohe Rechenleistung
+! Erst alle vier zusammen ergeben eine Range.
+
+?tf Eine Cyber Range ist für realistische Übungen direkt mit dem echten Internet verbunden.
+= falsch
+! Isolation ist Pflicht. Das »Internet« wird als SINET simuliert.
+
+? Welche Eigenschaft sorgt dafür, dass jede Übung identisch wiederholt und in Minuten zurückgesetzt werden kann?
+= Reproduzierbarkeit
+! Technisch: Infrastructure as Code, Templates und Snapshots.
+
+? Welche Eigenschaft beschreibt, dass alles aufgezeichnet und bewertet werden kann?
+= Beobachtbarkeit
+= Beobachtung
+
+? Woran erkennt man technisch die Eigenschaft »Isolation«?
++ Übungsnetz ohne physischen Ausgang, Default Deny und simuliertes Internet
+- Viele CPU-Kerne
+- Ein großes Scoreboard
+- Viele Teilnehmer
+
+? Welche Realisierungsart nutzt echte Betriebssysteme und Dienste in virtuellen Maschinen?
++ Emulation
+- Simulation
+- Overlay
+- Honeynet
+! Emulation ist der Normalfall und wird auch in diesem Projekt verwendet.
+
+? Wie nennt man eine Range, die als Dienst gemietet wird?
+= CRaaS
+= Cyber Range as a Service
+
+? Was ist der Unterschied zwischen Testbed und Cyber Range (Kurzformel)?
++ Ein Testbed prüft Technik, eine Cyber Range trainiert Menschen und Organisationen
+- Ein Testbed ist immer größer
+- Eine Cyber Range hat keine Bewertung
+- Es gibt keinen Unterschied
+
+? Was unterscheidet ein Honeynet grundsätzlich von einer Cyber Range?
++ Ein Honeynet ist absichtlich mit dem Internet verbunden, um echte Angreifer zu beobachten
+- Ein Honeynet hat keine virtuellen Maschinen
+- Ein Honeynet wird nur von Blue Teams genutzt
+- Ein Honeynet ist immer kleiner
+
+?tf Ein digitaler Zwilling kann Teil einer Cyber Range sein.
+= wahr
+
+? Welches Übungsformat arbeitet mit einer Aufgabentafel nach Kategorien und Flaggen?
++ Jeopardy-CTF
+- Attack-Defense-CTF
+- Table-Top
+- Purple Teaming
+
+? Bei welchem Format verteidigt jedes Team eigene Dienste und greift gleichzeitig die der anderen an?
++ Attack-Defense-CTF
+- Jeopardy-CTF
+- Table-Top
+- Hot-Wash
+
+? Welches Format ist ein Planspiel am Tisch ohne technische Systeme?
+= Table-Top
+= Tabletop
+= Table Top
+
+?order Ordne die Übungsformate nach dem Ausbildungspfad (vom Einstieg zur Großübung)
+> Geführte Labs
+> CTF
+> Table-Top
+> Red vs. Blue
+> Großübung
+
+? Wofür steht Live-Fire in Übungen?
++ Echte Angriffe und Verteidigung in Echtzeit auf laufenden Systemen
+- Ein Brandschutztest im Rechenzentrum
+- Eine reine Theorieprüfung
+- Ein Stromausfalltest
+
+? Welche Einsatzzwecke hat eine Range? (mehrere)
++ Ausbildung
++ Übung von Teams
++ Test von Produkten und Regeln
++ Forschung
+- Produktivbetrieb von Kundensystemen
+- Öffentliches Webhosting
+
+?tf Ein paar virtuelle Maschinen auf einem Laptop sind bereits eine vollständige Cyber Range.
+= falsch
+! Es fehlen meist Isolation, Reproduzierbarkeit, Beobachtung und Szenario-Steuerung.
+
+? Wie lange dauert das Pilotprojekt laut Projektplan bis zur ersten echten Übung (ungefähr)?
++ rund 16 Wochen
+- 2 Tage
+- 2 Jahre
+- 1 Woche
+
+? Wie viele physische Maschinen braucht der Pilot mindestens?
+= 2
+= zwei
+
+? Was misst die Wirkungsebene »Ergebnis« (Ebene 4) einer Range?
++ Ob die Organisation sicherer wird, z. B. kürzere MTTD/MTTR bei echten Vorfällen
+- Ob die Teilnehmer die Übung mochten
+- Wie viele Fragen beantwortet wurden
+- Wie hoch der Strompreis ist
+
+? Welche Kategorie von Angeboten sind KYPO CRP und Crucible?
++ Akademische / Open-Source-Plattformen
+- Reine Lernplattformen im Browser
+- Kommerzielles CRaaS
+- Hardware-Firewalls
+
+?tf Ein hybrides Modell (Lernplattform für Grundlagen + eigene Range für firmenspezifische Szenarien) ist oft sinnvoll.
+= wahr

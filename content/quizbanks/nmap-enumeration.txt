@@ -1,0 +1,110 @@
+# titel: Nmap & Enumeration
+# kategorie: Netzwerk
+# os: network
+# schwierigkeit: medium
+# zert: CJCA, CPTS
+# modul: Network Enumeration with Nmap
+# beschreibung: Scans, Flags und Enumeration-Tools – der Grundstein jeder Box. Enumeration ist alles.
+
+? Welche Nmap-Option erkennt die Versionen der Dienste?
+= -sV
+! Kombiniert mit `-sC` (Default-Skripte) ist das der Klassiker: `nmap -sC -sV IP`.
+
+? Welche Nmap-Option führt die Default-NSE-Skripte aus?
+= -sC
+= --script=default
+= --script default
+
+? Mit welcher Option scannt Nmap alle 65535 TCP-Ports?
+= -p-
+! Schnell: `nmap -p- --min-rate 5000 IP`, danach gezielt `-sC -sV -p <ports>`.
+
+? Mit welcher Option speichert Nmap das Ergebnis in allen drei Formaten (normal, XML, grepable)?
+= -oA
+! z. B. `-oA scans/initial` erzeugt .nmap, .xml und .gnmap.
+
+? Welche Option behandelt alle Hosts als online (überspringt Host Discovery) – nötig, wenn ICMP geblockt wird?
+= -Pn
+
+? Welche Option macht einen UDP-Scan?
+= -sU
+! UDP ist langsam – meist nur Top-Ports: `sudo nmap -sU --top-ports 50 IP`.
+
+? Welcher Scan-Typ ist der Standard, wenn Nmap mit root-Rechten läuft?
++ SYN-Scan (-sS)
+- Connect-Scan (-sT)
+- ACK-Scan (-sA)
+- FIN-Scan (-sF)
+! Ohne root nutzt Nmap den vollständigen TCP-Connect-Scan (-sT).
+
+? Welche Option macht nur Host Discovery (Ping-Sweep, kein Portscan)?
+= -sn
+! z. B. `nmap -sn 10.129.2.0/24`.
+
+? Was aktiviert die Option `-A`?
++ OS-Erkennung, Versionserkennung, Skripte und Traceroute
+- Nur aggressive Timing-Optionen
+- Alle Ports und UDP
+- Einen Schwachstellen-Scan mit Exploits
+
+? Wo liegen die NSE-Skripte von Nmap auf Kali/Parrot?
+= /usr/share/nmap/scripts
+! Suchen: `ls /usr/share/nmap/scripts | grep smb`.
+
+? Welcher Befehl listet SMB-Freigaben mit einer Null-Session auf?
+= smbclient -L //IP -N
+= smbclient -N -L //IP
+= re:smbclient (-N -L|-L) ?//\S+( -N)?
+~ smbclient -L ... -N
+! `-N` = kein Passwort. Danach verbinden: `smbclient //IP/share -N`.
+
+? Welcher Befehl zeigt die NFS-Freigaben eines Hosts an?
+= showmount -e IP
+= re:showmount -e \S+
+
+? Welcher Befehl liest per SNMP v2c mit der Community „public“ alles aus?
+= snmpwalk -v2c -c public IP
+= snmpwalk -v 2c -c public IP
+= re:snmpwalk -v ?2c -c public \S+
+! Community-Strings bruteforcen: `onesixtyone -c wordlist IP`.
+
+? Welches Tool-Keyword markiert bei ffuf die Stelle, die ersetzt wird?
+= FUZZ
+@ case: ja
+! z. B. `ffuf -w wordlist.txt -u http://IP/FUZZ`.
+
+? Wie fuzzt man mit ffuf Subdomains/vHosts, die nicht im DNS stehen?
++ Über den Host-Header: -H "Host: FUZZ.box.htb"
+- Über -u http://FUZZ.box.htb ohne weitere Optionen
+- Mit -sV
+- Mit --vhost-only
+! Danach Antwortgröße filtern, z. B. `-fs 1234`, um die Standardseite auszublenden.
+
+? Mit welchem gobuster-Modus sucht man Verzeichnisse und Dateien?
+= dir
+= gobuster dir
+! `gobuster dir -u http://IP -w /usr/share/seclists/Discovery/Web-Content/common.txt -x php,txt`.
+
+? Wo liegt die beliebte Wortlisten-Sammlung SecLists auf Kali typischerweise?
+= /usr/share/seclists
+= /usr/share/wordlists/seclists
+
+? Welcher Nmap-Timing-Wert ist der häufig genutzte „aggressive“ Standard für CTFs?
++ -T4
+- -T1
+- -T0
+- -T6
+! Gültig sind -T0 bis -T5.
+
+?order Bringe einen typischen Nmap-Workflow in die richtige Reihenfolge
+> Schneller Scan aller TCP-Ports (-p- --min-rate)
+> Gezielter Scan der offenen Ports mit -sC -sV
+> UDP-Top-Ports scannen (-sU)
+> Dienste einzeln manuell enumerieren
+
+? Welches Tool enumeriert Benutzer, Gruppen und Shares auf Windows/Samba über SMB/RPC in einem Rutsch (Klassiker)?
++ enum4linux
+- dirb
+- hydra
+- wpscan
+! Moderner Nachfolger: `enum4linux-ng`.

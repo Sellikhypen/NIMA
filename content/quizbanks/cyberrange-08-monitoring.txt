@@ -1,0 +1,159 @@
+# titel: Cyber Range 08 · L5 Monitoring & Erkennung
+# kategorie: Cyber Range
+# os: blue
+# schwierigkeit: hard
+# modul: Cyber Range 08 · L5 Monitoring & Erkennung
+# beschreibung: Security Onion, Zeek, Suricata, Wazuh, Sysmon, Windows-Ereignisse, Audit-Richtlinien, Sigma, Triage und Datenvolumen.
+
+? Welche zwei Telemetrie-Ströme gibt es in der Range?
++ Netz-Telemetrie (Mirror → Security Onion) und Host-Telemetrie (Agenten → Wazuh)
+- Nur Firewall-Logs
+- Nur Screenshots
+- E-Mail und Telefon
+
+?tf Der Sensor von Security Onion hat eine IP-Adresse im Übungsnetz.
+= falsch
+! Die Sniff-NIC ist passiv, ohne IP – sie sendet nichts zurück.
+
+? Welche Werkzeuge sind Teil von Security Onion? (mehrere)
++ Zeek
++ Suricata
++ Strelka
+- Keycloak
+- Packer
+
+? Welches Werkzeug schreibt Protokoll-Logs wie conn.log, dns.log und http.log?
+= Zeek
+
+? Welches Werkzeug prüft Signaturen und erzeugt EVE-JSON-Alarme?
+= Suricata
+
+? In welchem einheitlichen Feldschema landen Ereignisse in Elasticsearch?
+= ECS
+= Elastic Common Schema
+
+? Über welchen Port senden Wazuh-Agenten ihre Daten?
+= 1514
+= 1514/tcp
+
+? Über welchen Port registrieren sich Wazuh-Agenten (Enrollment)?
+= 1515
+= 1515/tcp
+
+? Auf welchem Port läuft die Wazuh-API?
+= 55000
+
+? Ab welcher ID sind eigene Wazuh-Regeln vorgesehen?
+= 100000
+
+? Mit welchem Werkzeug testet man Wazuh-Decoder und -Regeln an einer Beispielzeile?
+= wazuh-logtest
+
+? Welches Wazuh-Modul überwacht Dateien auf Änderungen?
+= FIM
+= Syscheck
+= File Integrity Monitoring
+
+? Welches Wazuh-Modul prüft Systeme gegen Härtungsrichtlinien (CIS)?
+= SCA
+= Security Configuration Assessment
+
+? Welche Sysmon-ID steht für »Prozess erstellt«?
+= 1
+
+? Welche Sysmon-ID meldet einen Zugriff auf einen anderen Prozess (z. B. LSASS)?
+= 10
+
+? Welche Sysmon-ID steht für eine DNS-Anfrage?
+= 22
+
+? Welche Windows-Ereignis-ID bedeutet »Anmeldung erfolgreich«?
+= 4624
+
+? Welche Windows-Ereignis-ID protokolliert ein angefordertes Kerberos-Dienstticket?
+= 4769
+
+? Welche Ereignis-ID protokolliert PowerShell-Skriptblöcke?
+= 4104
+
+? Was bedeutet Ereignis 1102?
++ Das Sicherheitsprotokoll wurde gelöscht
+- Ein Benutzer wurde angelegt
+- Ein Dienst wurde installiert
+- Eine Freigabe wurde geöffnet
+
+? Welcher Anmeldetyp in Ereignis 4624 steht für RDP?
+= 10
+
+? Welcher Anmeldetyp in Ereignis 4624 steht für Netzwerk-Anmeldung?
+= 3
+
+?tf Ohne passende Audit-Richtlinie schreibt Windows viele sicherheitsrelevante Ereignisse gar nicht.
+= wahr
+
+? Was braucht Ereignis 4662 (DCSync-Erkennung) zusätzlich zur Audit-Richtlinie?
+= SACL
+= eine SACL auf dem Domänenobjekt
+
+? Was ist Sigma?
++ Ein herstellerneutrales Format für Detektionsregeln, das in SIEM-Abfragen übersetzt wird
+- Ein Netzwerk-Sensor
+- Eine Firewall
+- Ein Backup-Format
+
+?order Bringe den Lebenszyklus einer Detektionsregel in die richtige Reihenfolge
+> Hypothese aus ATT&CK
+> Datenquelle prüfen
+> Regel schreiben
+> Angriff nachstellen
+> Testen und messen
+> Ausrollen
+> Tuning
+> Review
+
+? Was ist ein False Positive?
++ Ein Fehlalarm: Regel schlägt an, obwohl kein Angriff vorliegt
+- Ein verpasster Angriff
+- Ein erfolgreicher Test
+- Eine richtige Erkennung
+
+? Was ist ein False Negative?
++ Ein verpasster Angriff ohne Alarm
+- Ein Fehlalarm
+- Ein Backup-Fehler
+- Ein Netzwerkfehler
+
+? Wofür steht MTTD?
+= Mean Time to Detect
+
+?order Bringe den Triage-Prozess in die richtige Reihenfolge
+> Alarm
+> Anreichern
+> Bewerten
+> Priorisieren
+> Eskalieren
+> Vorfall
+
+? Was hat ATT&CK v18 (Oktober 2025) bei der Erkennung geändert?
++ Detection Strategies und Analytics ersetzen die Erkennungstexte; Data Sources wurden abgekündigt
+- ATT&CK wurde eingestellt
+- Es gibt keine Techniken mehr
+- Nur noch Mobile-Techniken
+
+? Wie viel PCAP entsteht ungefähr an einem 8-Stunden-Übungstag bei durchschnittlich 20 Mbit/s?
++ etwa 72 GB
+- etwa 72 MB
+- etwa 7,2 TB
+- etwa 720 KB
+
+? Welches Zeek-Log zeigt Kerberos-Anfragen inklusive Verschlüsselungstyp?
+= kerberos.log
+
+? Woran erkennt man DNS-Tunneling in dns.log typischerweise?
++ Sehr lange, zufällig wirkende Labels und viele Anfragen an dieselbe Zone
+- Kurze Namen bekannter Seiten
+- Nur NXDOMAIN-freie Antworten
+- Gar nicht
+
+? Welcher Zeek-conn_state steht für »nur SYN, keine Antwort«?
+= S0

@@ -1,0 +1,114 @@
+# titel: Web Attacks
+# kategorie: Web
+# os: web
+# schwierigkeit: medium
+# zert: CBBH, CPTS, CWEE
+# modul: Web Attacks
+# beschreibung: SQLi, XSS, LFI, Command Injection, SSTI, Upload-Bypässe und Burp – der Web-Teil für CBBH & CPTS.
+
+? Welcher klassische Payload umgeht einen Login per SQL-Injection (MySQL-Kommentar mit Leerzeichen)?
++ ' OR 1=1-- -
+- " AND 1=2 #
+- <script>alert(1)</script>
+- ../../etc/passwd
+! `-- -` sorgt dafür, dass nach dem Kommentar-Zeichen ein Leerzeichen steht (MySQL verlangt das).
+
+? Welche SQL-Klausel nutzt man, um die Spaltenanzahl für eine UNION-Injection herauszufinden (hochzählen bis Fehler)?
+= ORDER BY
+= order by
+! Alternativ `UNION SELECT NULL,NULL,...` erhöhen, bis kein Fehler mehr kommt.
+
+? Welche sqlmap-Option liest einen gespeicherten Burp-Request aus einer Datei?
+= -r
+! z. B. `sqlmap -r req.txt --batch --dbs`.
+
+? Welche sqlmap-Option beantwortet alle Rückfragen automatisch mit dem Standard?
+= --batch
+
+? Welche sqlmap-Option listet die Datenbanken auf?
+= --dbs
+! Danach `-D db --tables`, dann `-D db -T table --dump`.
+
+? Welcher Payload ist der einfachste Test auf reflektiertes XSS?
+= <script>alert(1)</script>
+= <script>alert(window.origin)</script>
+= re:<script>alert\(.+\)</script>
+
+? Bei welchem XSS-Typ wird der Payload in der Datenbank gespeichert und jedem Besucher ausgeliefert?
++ Stored XSS
+- Reflected XSS
+- DOM-based XSS
+- Self-XSS
+
+? Welches Cookie-Flag verhindert, dass JavaScript das Cookie per document.cookie auslesen kann?
+= HttpOnly
+! Schützt vor Session-Diebstahl per XSS (nicht vor XSS selbst).
+
+? Welcher Payload liest bei einer typischen Linux-LFI die passwd-Datei (Path Traversal)?
+= ../../../../etc/passwd
+= ../../../../../etc/passwd
+= re:(\.\./){2,}etc/passwd
+! Mehr `../` als nötig schadet nicht – man bleibt im Wurzelverzeichnis stehen.
+
+? Mit welchem PHP-Wrapper liest man bei einer LFI den PHP-Quellcode Base64-kodiert aus (statt ihn auszuführen)?
+= php://filter/convert.base64-encode/resource=index.php
+= php://filter/convert.base64-encode/resource=
+= re:php://filter/(read=)?convert\.base64-encode/resource=\S*
+~ php://filter/...
+! Danach lokal `base64 -d`. So findet man Credentials in config.php.
+
+? Welche Zeichen/Operatoren eignen sich für OS Command Injection unter Linux?
++ ;
++ &&
++ |
++ $(...)
+- <!-- -->
+- %%
+! Auch Zeilenumbruch `%0a` und Backticks funktionieren. Filter umgehen z. B. mit `${IFS}` statt Leerzeichen.
+
+? Mit welchem Payload testet man klassisch auf Server-Side Template Injection (Jinja2/Twig)?
+= {{7*7}}
+! Kommt `49` zurück → SSTI. Bei Twig/Jinja hilft `{{7*'7'}}` beim Unterscheiden (49 vs. 7777777).
+
+? Wie heißt die Schwachstelle, wenn man durch Ändern einer ID in der URL fremde Datensätze sieht?
+= IDOR
+= Insecure Direct Object Reference
+! Gehört zur Kategorie Broken Access Control (OWASP Top 10 #1).
+
+? Welche Magic Bytes stellt man einer PHP-Webshell voran, um einen GIF-Check zu umgehen?
+= GIF89a
+= GIF8
+@ case: ja
+! Zusätzlich Content-Type auf `image/gif` setzen und Endungen wie `.php.gif`, `.phtml`, `.phar` probieren.
+
+? Mit welchem Burp-Werkzeug schickt man einen Request manuell und wiederholt mit Änderungen?
++ Repeater
+- Intruder
+- Decoder
+- Comparer
+! Intruder = automatisiertes Fuzzing/Bruteforcing.
+
+? Wie heißt die Schwachstelle, bei der der Server Requests an eine vom Angreifer gewählte URL schickt (z. B. interne Dienste)?
+= SSRF
+= Server-Side Request Forgery
+! Typische Ziele: `http://127.0.0.1:PORT`, Cloud-Metadaten `http://169.254.169.254/`.
+
+? Welche XML-Konstruktion liest bei XXE eine lokale Datei?
++ <!DOCTYPE x [ <!ENTITY xxe SYSTEM "file:///etc/passwd"> ]>
+- <xml include="/etc/passwd"/>
+- <!-- file:///etc/passwd -->
+- <![CDATA[/etc/passwd]]>
+! Danach `&xxe;` im Body referenzieren.
+
+?tf HTTP Verb Tampering bedeutet, eine Zugriffskontrolle zu umgehen, indem man z. B. statt GET/POST eine andere Methode wie HEAD oder PUT nutzt.
+= wahr
+
+? Wie heißt die Kurzform des Angriffs, bei dem ein eingeloggtes Opfer unbemerkt eine Aktion auf einer anderen Seite auslöst?
+= CSRF
+= Cross-Site Request Forgery
+= XSRF
+! Schutz: Anti-CSRF-Token, SameSite-Cookies.
+
+? Welche Datei solltest du auf jedem Webserver als Erstes nach versteckten Pfaden durchsuchen?
+= robots.txt
+! Auch `sitemap.xml`, `.git/`, `.env` und Seitenquelltext-Kommentare prüfen.

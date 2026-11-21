@@ -1,0 +1,102 @@
+# titel: Information Gathering · Web Edition
+# kategorie: Web
+# os: web
+# schwierigkeit: easy
+# zert: CPTS, CBBH
+# modul: Information Gathering - Web Edition
+# beschreibung: WHOIS, DNS, Subdomains, Certificate Transparency, Fingerprinting, Crawling, robots.txt, well-known URIs und Wayback Machine.
+
+? Welche Art von Recon interagiert nicht direkt mit dem Ziel?
++ Passive Reconnaissance
+- Active Reconnaissance
+- Vulnerability Scanning
+- Exploitation
+
+? Mit welchem Befehl fragt man Registrierungsdaten einer Domain ab?
+= whois
+= whois domain.com
+
+? Welcher DNS-Record verweist auf eine IPv4-Adresse?
+= A
+
+? Welcher DNS-Record verweist auf eine IPv6-Adresse?
+= AAAA
+
+? Welcher DNS-Record ist ein Alias auf einen anderen Hostnamen?
+= CNAME
+
+? Welcher DNS-Record enthält oft SPF- oder Verifizierungs-Einträge?
+= TXT
+
+? Welcher DNS-Record wird für Reverse Lookups (IP → Name) genutzt?
+= PTR
+
+? Mit welcher dig-Option bekommt man eine kurze, nur die Antwort enthaltende Ausgabe?
+= +short
+
+? Was ist der Unterschied zwischen Subdomain und Virtual Host (vHost)?
++ Subdomains stehen im DNS, vHosts werden über den Host-Header auf demselben Server unterschieden
+- Es gibt keinen Unterschied
+- vHosts brauchen immer eine eigene IP
+- Subdomains funktionieren nur mit HTTPS
+
+? Welche Website durchsucht Certificate-Transparency-Logs nach Subdomains?
+= crt.sh
+
+? Warum sind Certificate-Transparency-Logs für Recon interessant?
++ Jedes ausgestellte TLS-Zertifikat wird öffentlich protokolliert – inkl. Subdomains
+- Sie enthalten private Schlüssel
+- Sie verraten Passwörter
+- Sie listen offene Ports
+
+? Welches Tool erkennt Web-Technologien (CMS, Server, Frameworks) per Kommandozeile?
+= whatweb
+
+? Welches Tool erkennt, ob eine Web Application Firewall vorgeschaltet ist?
+= wafw00f
+
+? Welche Browser-Erweiterung zeigt die Technologien einer Website an?
+= Wappalyzer
+
+? Mit welchem curl-Befehl holt man nur die HTTP-Header?
+= curl -I http://IP
+= curl -I
+= re:curl (-I|--head) \S*
+
+? Welche Datei gibt Crawlern Hinweise, welche Pfade sie nicht besuchen sollen – oft mit interessanten Pfaden?
+= robots.txt
+
+? Unter welchem Präfix liegen standardisierte „Well-Known URIs“ (z. B. security.txt)?
+= /.well-known/
+= .well-known
+
+? Welcher Well-Known-Pfad verrät bei OpenID Connect Endpunkte und Konfiguration?
+= /.well-known/openid-configuration
+
+? Was macht ein Crawler/Spider?
++ Folgt Links einer Website automatisch und sammelt Seiten, Dateien und Parameter
+- Knackt Passwörter
+- Scannt UDP-Ports
+- Erstellt Zertifikate
+
+? Welches Web-Archiv zeigt historische Versionen einer Website?
+= Wayback Machine
+= web.archive.org
+
+? Wie heißt Google-Suche mit Operatoren wie `site:` oder `filetype:`?
+= Google Dorking
+= Google Dorks
+= Dorking
+
+? Welcher Google-Operator beschränkt die Suche auf eine Domain?
+= site:
+
+? Welches Framework automatisiert Recon mit Modulen (Python), Subdomains, Hosts, Kontakte?
++ FinalRecon / Recon-ng
+- Responder
+- Hashcat
+- Mimikatz
+
+?tf Ein Zonentransfer (AXFR) sollte nur zwischen autorisierten DNS-Servern erlaubt sein.
+= wahr
+! Ist er für alle erlaubt, bekommt ein Angreifer die komplette Zone mit allen Hostnamen.

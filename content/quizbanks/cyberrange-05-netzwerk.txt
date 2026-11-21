@@ -1,0 +1,147 @@
+# titel: Cyber Range 05 · L2 Netzwerk & Firewall
+# kategorie: Cyber Range
+# os: network
+# schwierigkeit: medium
+# modul: Cyber Range 05 · L2 Netzwerk & Firewall
+# beschreibung: VLANs, Zonen, IP-Plan, OPNsense, Stateful Firewall, NAT, SINET, DNS-Hierarchie, PKI und NTP.
+
+? Wie groß ist ein 802.1Q-VLAN-Tag?
+= 4 Byte
+= 4
+= vier Byte
+
+? Welchen Wert hat die TPID eines 802.1Q-Tags?
+= 0x8100
+= 8100
+
+? Wie viele Bit hat die VLAN-ID?
+= 12
+
+? Wo sitzt das VLAN-Tag im Ethernet-Frame?
++ Zwischen Quell-MAC und EtherType
+- Vor der Ziel-MAC
+- Am Ende nach der Prüfsumme
+- Im IP-Header
+
+? Wie nennt man einen Port, der genau einem VLAN zugeordnet ist und Frames ohne Tag liefert?
+= Access-Port
+= Access Port
+= Access
+
+? Wie nennt man einen Port, der Frames mehrerer VLANs mit Tag überträgt?
+= Trunk
+
+?tf Weil VMs nur an Access-Ports hängen, können sie keine eigenen VLAN-Tags einschleusen.
+= wahr
+
+? Welche VLAN-ID hat die CORP-Zone?
+= 30
+
+? Welches Subnetz hat die DMZ?
+= 10.10.20.0/24
+
+? Welches Netz ist das SVC/Transfer-Netz?
+= 10.99.0.0/24
+
+? Welche VLAN-ID gehört zur RED-Zone?
+= 10
+
+? Welche Zone hat VLAN 90?
+= NPC
+
+? Auf welchem Betriebssystem basiert OPNsense und welcher Paketfilter wird genutzt?
++ FreeBSD mit pf
+- Linux mit iptables
+- Windows mit WFP
+- OpenBSD mit npf
+
+? Was bedeutet »Stateful Firewall«?
++ Sie merkt sich erlaubte Verbindungen in einer Zustandstabelle und lässt Antworten automatisch durch
+- Sie speichert alle Pakete auf Festplatte
+- Sie hat keinen Zustand und prüft jedes Paket neu ohne Kontext
+- Sie arbeitet nur mit UDP
+
+? Was ist die Grundregel des Firewall-Regelwerks?
+= Default Deny
+
+? Wo ist die OPNsense-Admin-Oberfläche erreichbar?
++ Nur aus dem SVC-Netz
+- Aus allen Übungs-VLANs
+- Aus dem SINET
+- Aus dem Internet
+
+? Was macht DNAT bei der Portweiterleitung in die DMZ?
++ Schreibt die Zieladresse um (öffentliche Adresse → web01)
+- Schreibt die Quelladresse um
+- Verschlüsselt den Verkehr
+- Blockiert alle Pakete
+
+? Wie heißt das Umschreiben der Quelladresse ausgehender CORP-Clients?
+= SNAT
+= Source NAT
+= Outbound NAT
+
+? Was ist das SINET?
++ Ein vollständig simuliertes Internet innerhalb der Range
+- Ein echter Internetzugang mit Filter
+- Ein VPN zum Büro
+- Ein Backup-Netz
+
+? Welche Adressbereiche nutzt das SINET als »öffentliche« Adressen? (mehrere)
++ 198.51.100.0/24
++ 203.0.113.0/24
+- 8.8.8.0/24
+- 1.1.1.0/24
+! RFC 5737 reserviert diese Bereiche für Dokumentation – sie werden im echten Internet nie geroutet.
+
+? Welche Datei sagt einem rekursiven Resolver, wo die Root-Server liegen?
+= Root-Hints
+= root.hints
+= root hints
+
+?order Bringe die rekursive DNS-Auflösung im SINET in die richtige Reihenfolge
+> Client fragt Unbound
+> Unbound fragt den simulierten Root-Server
+> Root verweist an den TLD-Server
+> TLD verweist an den autoritativen Server
+> Autoritativer Server liefert die Antwort
+
+? Welches Werkzeug beantwortet im SINET alle sonst unbekannten Anfragen harmlos?
+= INetSim
+
+? Was ist die Aufgabe der Root-CA der Range-PKI?
++ Sie signiert nur die Zwischen-CAs und wird danach offline aufbewahrt
+- Sie stellt täglich Serverzertifikate aus
+- Sie ersetzt die Firewall
+- Sie verschlüsselt alle Festplatten
+
+?tf Das Root-Zertifikat der Range darf auch auf Büro-PCs außerhalb der Range installiert werden.
+= falsch
+
+? Was muss ein modernes Serverzertifikat für Browser enthalten?
++ Subject Alternative Name (SAN)
+- Nur den Common Name
+- Eine IP-Adresse des Clients
+- Keine Namen
+
+? Wie verteilt man das Root-Zertifikat auf Windows-Clients der Domäne?
++ Per Gruppenrichtlinie in »Vertrauenswürdige Stammzertifizierungsstellen«
+- Per E-Mail an alle Benutzer
+- Über das SINET
+- Gar nicht
+
+?order Bringe die Zeithierarchie der Range in die richtige Reihenfolge
+> MGMT-Zeitquelle
+> iac-01 (chrony)
+> OPNsense
+> dc01 (PDC-Emulator)
+> Domänen-Clients
+
+? In welcher Zeitzone werden alle Protokolle gespeichert?
+= UTC
+
+? Was zeigt ein Traceroute von ws01 zu web01?
++ Genau einen Zwischenschritt: die OPNsense
+- Zehn Provider-Router
+- Gar nichts
+- Den Proxmox-Host

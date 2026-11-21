@@ -1,0 +1,111 @@
+# titel: Nmap 1 · Grundlagen & Host Discovery
+# kategorie: Netzwerk
+# os: network
+# schwierigkeit: easy
+# zert: CJCA, CPTS
+# modul: Network Enumeration with Nmap
+# beschreibung: Aus deinen Notizen: Enumeration-Mindset, Nmap-Architektur, SYN-Scan und Host Discovery mit ARP/ICMP.
+
+? Was ist laut HTB das eigentliche Ziel von Enumeration?
++ Alle Möglichkeiten finden, wie man das Ziel angreifen könnte
+- Möglichst schnell eine Shell bekommen
+- Möglichst viele Tools gleichzeitig laufen lassen
+- Den Kunden über offene Ports informieren
+! Nicht der Zugang selbst ist das Ziel, sondern alle Angriffsvektoren zu kennen. Je mehr Infos, desto leichter findet man den Weg.
+
+? Woher stammen laut den Notizen die meisten verwertbaren Informationen?
++ Aus Fehlkonfigurationen oder vernachlässigter Sicherheit der Dienste
+- Aus Zero-Day-Exploits
+- Aus dem Quellcode des Betriebssystems
+- Aus verschlüsseltem Traffic
+! Ursache ist oft Unwissen oder eine falsche Sicherheitsmentalität („Firewall, GPOs und Updates reichen“).
+
+?tf Wenn man feststeckt, fehlt laut HTB meistens ein weiteres Tool.
+= falsch
+! Meist fehlt das Wissen, wie man mit dem Dienst interagiert. Lieber ein paar Stunden investieren, den Dienst wirklich zu verstehen.
+
+? Wie lautet die allgemeine Nmap-Syntax?
++ nmap <scan types> <options> <target>
+- nmap <target> --scan <type>
+- nmap -t <target> <options>
+- nmap scan <options> on <target>
+
+?order Bringe die Nmap-Scantechniken (Architektur) in die logische Reihenfolge
+> Host Discovery
+> Port Scanning
+> Service Enumeration & Detection
+> OS Detection
+> Nmap Scripting Engine (NSE)
+
+? Welcher Scan ist der Nmap-Standard (mit root) und schließt den Drei-Wege-Handshake nie ab?
+= -sS
+= SYN-Scan
+= TCP SYN-Scan
+! Sendet SYN, wartet auf die Antwort und baut nie eine vollständige TCP-Verbindung auf. Mehrere tausend Ports pro Sekunde.
+
+? SYN-Scan: Das Ziel antwortet mit SYN-ACK. Welcher Port-Status?
+= open
+@ diff: easy
+
+? SYN-Scan: Das Ziel antwortet mit RST. Welcher Port-Status?
+= closed
+
+? SYN-Scan: Keine Antwort vom Ziel. Welcher Port-Status?
+= filtered
+! Das Paket wurde z. B. von einer Firewall verworfen oder ignoriert.
+
+? Welche Option deaktiviert den Port-Scan, sodass Nmap nur Host Discovery macht?
+= -sn
+
+? Mit welcher Option liest Nmap die Ziele aus einer Datei wie hosts.lst?
+= -iL
+= -iL hosts.lst
+
+? Wie gibt man in Nmap die IPs 10.129.2.18 bis 10.129.2.20 als Bereich im letzten Oktett an?
+= 10.129.2.18-20
+! Liegen die IPs nebeneinander, reicht der Bereich im Oktett.
+
+? Was macht der Teil `| grep for | cut -d" " -f5` hinter einem Ping-Sweep?
++ Filtert aus der Ausgabe nur die IP-Adressen der aktiven Hosts
+- Speichert die Ausgabe in einer Datei
+- Zählt die offenen Ports
+- Sortiert die Hosts nach TTL
+```
+sudo nmap 10.129.2.0/24 -sn -oA tnet | grep for | cut -d" " -f5
+```
+
+? Was schickt Nmap mit -sn im lokalen Netz VOR dem ICMP Echo Request – und markiert den Host schon dadurch als „up“?
++ Einen ARP-Ping
+- Einen TCP-SYN auf Port 80
+- Eine DNS-Anfrage
+- Ein UDP-Paket auf Port 53
+! Die ARP-Antwort reicht für „up“. Sichtbar mit `--packet-trace` oder `--reason`.
+
+? Mit welcher Option erzwingt man echte ICMP Echo Requests statt ARP?
+= --disable-arp-ping
+
+? Welche Option sendet einen Ping-Scan mit ICMP Echo Requests?
+= -PE
+
+? Welche Option zeigt alle gesendeten und empfangenen Pakete an?
+= --packet-trace
+
+? Welche Option zeigt den Grund für ein Ergebnis an (z. B. „received arp-response“)?
+= --reason
+
+? Eine ICMP-Antwort kommt mit TTL 128. Auf welches Betriebssystem deutet das hin?
++ Windows
+- Linux
+- Cisco/Netzwerkgerät
+- macOS
+! Faustregel: ~64 Linux, ~128 Windows, ~255 Netzwerkgerät.
+
+?tf Antwortet ein Host nicht auf ICMP, ist er sicher offline.
+= falsch
+! Firewalls können ICMP ignorieren – ohne Antwort markiert Nmap den Host als inaktiv, obwohl er laufen kann. Dann `-Pn` und andere Techniken.
+
+? Warum soll man laut den Notizen jeden Scan speichern?
++ Für spätere Vergleiche, Dokumentation und Reporting – verschiedene Tools liefern unterschiedliche Ergebnisse
+- Weil Nmap sonst nicht startet
+- Damit der Scan schneller läuft
+- Weil der Kunde die Rohdaten zwingend braucht

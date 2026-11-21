@@ -1,0 +1,89 @@
+# titel: Documentation & Reporting
+# kategorie: Methodik
+# os: general
+# schwierigkeit: medium
+# zert: CPTS
+# modul: Documentation & Reporting
+# beschreibung: Notizen, Logging, Beweise, Aufbau eines Pentest-Reports und Findings schreiben – entscheidend für das CPTS-Exam.
+
+?tf Für das CPTS-Exam reicht es, die Flags einzureichen – ein Report ist nicht nötig.
+= falsch
+! Ein professioneller, kommerzieller Pentest-Report ist Pflichtbestandteil zum Bestehen.
+
+? Welche Bestandteile sollte eine strukturierte Notiz-Sammlung laut HTB enthalten?
++ Administrative Infos und Scope
++ Credentials und Findings
++ Aktivitäts-Log (Payload Log)
+- Private Chatnachrichten
+- Passwörter anderer Kunden
+
+? Warum sollte man Terminal-Ausgaben und Aktionen mit Zeitstempel loggen?
++ Um Aktivitäten nachweisen und Vorfälle mit dem Kunden abgleichen zu können
+- Weil Tools sonst nicht laufen
+- Damit der Report länger wird
+- Es ist unnötig
+
+? Mit welchem Linux-Befehl zeichnet man eine komplette Terminal-Sitzung in eine Datei auf?
+= script
+= script session.log
+= re:script( -\S+)* \S*
+
+? Welches Notiztool wird in HTB-Modulen häufig empfohlen (hierarchisch, offline)?
++ Obsidian / CherryTree
+- Paint
+- Excel
+- Discord
+
+? Was sollte man vor dem Einfügen von Screenshots in einen Report tun?
++ Sensible Daten (z. B. Passwörter, Hashes) schwärzen bzw. unkenntlich machen – sauber, nicht nur verwischen
+- Möglichst viele unbearbeitete Screenshots einfügen
+- Screenshots komplett weglassen
+- Nur Handyfotos vom Bildschirm nutzen
+
+?order Bringe die typischen Abschnitte eines Pentest-Reports in eine sinnvolle Reihenfolge
+> Executive Summary
+> Attack Chain / Walkthrough
+> Summary of Findings
+> Technical Findings Details
+> Appendices
+
+? Wer ist die Hauptzielgruppe der Executive Summary?
++ Management und nicht-technische Entscheider
+- Nur die Systemadministratoren
+- Andere Pentester
+- Die Angreifer
+
+? Was gehört in ein einzelnes Finding?
++ Beschreibung, Auswirkung, betroffene Systeme
++ Reproduktionsschritte und Beweise
++ Empfehlung zur Behebung und Referenzen
+- Persönliche Meinungen zum Admin
+- Werbung für das eigene Tool
+
+? Was ist bei Behebungsempfehlungen wichtig?
++ Konkret und umsetzbar: welcher Patch, welche Konfigurationsänderung, mit Referenzen
+- Möglichst allgemein: „Sicherheit verbessern“
+- Nur ein Link zu Google
+- Gar keine Empfehlung
+
+? Was sollte am Ende eines Engagements mit Testartefakten (hochgeladene Tools, angelegte Accounts) passieren?
++ Entfernen bzw. dem Kunden dokumentiert übergeben (Cleanup)
+- Auf den Systemen lassen
+- Verschlüsseln und behalten
+- Nichts, das ist Sache des Kunden
+
+? Was ist eine „Attack Chain“ im Report?
++ Die Schritt-für-Schritt-Darstellung, wie mehrere Findings kombiniert zum Ziel führten
+- Eine Liste aller Tools
+- Die Rechnung
+- Ein Netzwerkdiagramm des Kunden
+
+?tf Auch Dinge, die gut funktioniert haben (positive Findings, wirksame Kontrollen), können im Report erwähnt werden.
+= wahr
+
+? Wie heißt die Kennzahl, mit der Schwachstellen standardisiert von 0.0 bis 10.0 bewertet werden?
+= CVSS
+
+? Welche CVSS-Stufe gilt für 9.0–10.0?
+= Critical
+= Kritisch

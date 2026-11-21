@@ -1,0 +1,86 @@
+# titel: Windows Pfade & Artefakte
+# kategorie: Windows
+# os: windows
+# schwierigkeit: medium
+# zert: CPTS, CJCA, CAPE
+# modul: Windows Fundamentals
+# beschreibung: SAM, SYSTEM, NTDS.dit, PowerShell-History, Unattend-Dateien – wo Windows seine Geheimnisse ablegt.
+
+? Wo liegt die SAM-Datei (lokale Passwort-Hashes) auf einem Windows-System?
+= C:\Windows\System32\config\SAM
+= %SystemRoot%\System32\config\SAM
+! Im laufenden Betrieb gesperrt. Kopie per `reg save HKLM\SAM sam.save` (Admin nötig) oder über Volume Shadow Copies.
+
+? Welcher Registry-Hive wird zusätzlich zur SAM benötigt, um die Hashes zu entschlüsseln (Boot Key)?
++ SYSTEM
+- SECURITY
+- SOFTWARE
+- NTUSER.DAT
+! `reg save HKLM\SYSTEM system.save` – dann offline mit `secretsdump.py -sam sam.save -system system.save LOCAL`.
+
+? Wo liegt auf einem Domain Controller die AD-Datenbank mit allen Domain-Hashes?
+= C:\Windows\NTDS\ntds.dit
+= %SystemRoot%\NTDS\ntds.dit
+! Zum Auslesen braucht man zusätzlich den SYSTEM-Hive. Oft per `vssadmin`/`ntdsutil` kopiert oder direkt per DCSync.
+
+? Wo liegt die hosts-Datei unter Windows?
+= C:\Windows\System32\drivers\etc\hosts
+= %SystemRoot%\System32\drivers\etc\hosts
+
+? Wo speichert PSReadLine die PowerShell-Befehlshistorie eines Benutzers?
+= %APPDATA%\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+= C:\Users\<user>\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+~ Liegt unter %APPDATA%\Microsoft\Windows\PowerShell\…
+! Schnell prüfen: `type (Get-PSReadLineOption).HistorySavePath`. Enthält oft Klartext-Passwörter.
+
+? Wo liegt auf HTB-Windows-Maschinen typischerweise die root-Flag?
+= C:\Users\Administrator\Desktop\root.txt
+! Die User-Flag liegt meist auf dem Desktop des Low-Priv-Users: C:\Users\<user>\Desktop\user.txt.
+
+? Welche Datei aus der automatisierten Windows-Installation enthält manchmal Admin-Passwörter (Base64)?
++ C:\Windows\Panther\Unattend.xml
+- C:\Windows\System32\setup.ini
+- C:\Windows\Temp\install.log
+- C:\ProgramData\autologon.cfg
+! Auch prüfen: C:\Windows\Panther\Unattend\Unattend.xml, C:\Windows\System32\sysprep\sysprep.xml.
+
+? Wie heißt das Attribut in Group Policy Preferences (SYSVOL), das ein mit bekanntem AES-Key verschlüsseltes Passwort enthält?
+= cpassword
+! Microsoft hat den Schlüssel veröffentlicht – `gpp-decrypt <cpassword>` entschlüsselt es. Suche in \\domain\SYSVOL nach Groups.xml.
+
+? Welches ist das Standard-Webroot von IIS?
+= C:\inetpub\wwwroot
+! web.config-Dateien dort können Connection Strings mit Credentials enthalten.
+
+? In welchem Ordner liegen pro Benutzer Autostart-Programme (Startup-Ordner)?
+= %APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup
+= C:\Users\<user>\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
+! Systemweit: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp – beschreibbar = Persistenz/PrivEsc.
+
+? Welcher Befehl sichert den SAM-Hive in eine Datei?
+= reg save HKLM\SAM sam.save
+= reg save hklm\sam C:\temp\sam.save
+= re:reg save hklm\\sam \S+
+! Benötigt Admin-Rechte bzw. SeBackupPrivilege.
+
+?tf Die Datei NTUSER.DAT enthält den benutzerspezifischen Registry-Hive (HKCU).
+= wahr
+! Liegt unter C:\Users\<user>\NTUSER.DAT.
+
+? Wo werden unter Windows gespeicherte WLAN-Profile angezeigt?
++ netsh wlan show profiles
+- ipconfig /wlan
+- netstat -wifi
+- Get-WifiPassword
+! Mit `netsh wlan show profile name="X" key=clear` sieht man den Klartext-Key.
+
+? Welcher Ordner ist auf Windows wie /tmp meist für normale Benutzer beschreibbar?
++ C:\Windows\Temp
+- C:\Windows\System32
+- C:\Program Files
+- C:\Windows\SysWOW64
+! Auch C:\Users\Public und C:\ProgramData sind gute Ablageorte für Tools.
+
+? Wo liegen die Ereignisprotokolle (.evtx) von Windows?
+= C:\Windows\System32\winevt\Logs
+! Security.evtx enthält z. B. Event 4624 (Logon) und 4625 (fehlgeschlagener Logon).

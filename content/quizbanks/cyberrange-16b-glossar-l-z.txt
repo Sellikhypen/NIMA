@@ -1,0 +1,1710 @@
+# titel: Cyber Range 16b · Glossar L–Z
+# kategorie: Cyber Range
+# os: general
+# schwierigkeit: medium
+# modul: Cyber Range 16 · Fachbegriffe (Glossar)
+# beschreibung: Welcher Fachbegriff passt zur Erklärung? Alle Begriffe aus der Cyber-Range-Dokumentation.
+
+? Welcher Fachbegriff passt? »Verdichtete, aktuelle Übersicht über die Sicherheitslage (Vorfälle, betroffene Systeme, Maßnahmen) für Entscheider.«
++ Lagebild
+- JWT
+- FIM
+- LSASS
+! Lagebild: Verdichtete, aktuelle Übersicht über die Sicherheitslage (Vorfälle, betroffene Systeme, Maßnahmen) für Entscheider.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Seitwärtsbewegung eines Angreifers von einem kompromittierten System zu weiteren Systemen im Netz.«
++ Lateral Movement
+- Lease
+- API-Token
+- Logstash
+! Lateral Movement: Seitwärtsbewegung eines Angreifers von einem kompromittierten System zu weiteren Systemen im Netz.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Lightweight Directory Access Protocol (TCP/UDP 389, ▢▢▢S 636) – Protokoll zum Abfragen und Ändern von Verzeichnisdiensten wie Active Directory.«
++ LDAP
+- LSASS
+- OOB
+- VNI
+! LDAP: Lightweight Directory Access Protocol (TCP/UDP 389, LDAPS 636) – Protokoll zum Abfragen und Ändern von Verzeichnisdiensten wie Active Directory.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Befristete Zuteilung einer IP-Adresse durch DHCP; der Client muss sie vor Ablauf verlängern.«
++ Lease
+- Sollwert
+- Jitter
+- AAR
+! Lease: Befristete Zuteilung einer IP-Adresse durch DHCP; der Client muss sie vor Ablauf verlängern.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Angriff über einen Zulieferer oder eine Software-Abhängigkeit, z. B. ein manipuliertes Update oder Paket.«
++ Lieferkettenangriff
+- Beacon
+- VXLAN
+- Table-Top
+! Lieferkettenangriff: Angriff über einen Zulieferer oder eine Software-Abhängigkeit, z. B. ein manipuliertes Update oder Paket.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »VM-Kopie, die nur auf ein Template verweist und ausschließlich ihre Änderungen speichert – in Sekunden erstellt, sehr platzsparend.«
++ Linked Clone
+- 802.1Q
+- PCAP
+- RTO
+! Linked Clone: VM-Kopie, die nur auf ein Template verweist und ausschließlich ihre Änderungen speichert – in Sekunden erstellt, sehr platzsparend.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Automatische statische Prüfung von Code oder Konfiguration auf Fehler und Stilverstöße (z. B. ansible-▢▢▢, tf▢▢▢).«
++ Lint
+- Exfiltration
+- MSS
+- VLAN
+! Lint: Automatische statische Prüfung von Code oder Konfiguration auf Fehler und Stilverstöße (z. B. ansible-lint, tflint).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Übungsform, in der echte Angriffe mit echten Werkzeugen auf echte (virtuelle) Systeme ausgeführt werden.«
++ Live-Fire
+- Mimikatz
+- OpenTofu
+- CVSS
+! Live-Fire: Übungsform, in der echte Angriffe mit echten Werkzeugen auf echte (virtuelle) Systeme ausgeführt werden.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Verschieben einer laufenden VM auf einen anderen Host ohne Unterbrechung; der Arbeitsspeicher wird im Hintergrund kopiert.«
++ Live-Migration
+- iperf3
+- Firewall
+- ZFS
+! Live-Migration: Verschieben einer laufenden VM auf einen anderen Host ohne Unterbrechung; der Arbeitsspeicher wird im Hintergrund kopiert.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Link-Local Multicast Name Resolution: Windows-Rückfallmechanismus zur Namensauflösung per Multicast (UDP 5355), wenn DNS keine Antwort hat – leicht zu fälschen.«
++ LLMNR
+- NIC
+- Job-Queue
+- LSASS
+! LLMNR: Link-Local Multicast Name Resolution: Windows-Rückfallmechanismus zur Namensauflösung per Multicast (UDP 5355), wenn DNS keine Antwort hat – leicht zu fälschen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Datenverarbeitungs-Pipeline von Elastic, die Logs entgegennimmt, zerlegt (parst), anreichert und in Elasticsearch schreibt.«
++ Logstash
+- VXLAN
+- EPT
+- Sollwert
+! Logstash: Datenverarbeitungs-Pipeline von Elastic, die Logs entgegennimmt, zerlegt (parst), anreichert und in Elasticsearch schreibt.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Local Security Authority Subsystem Service (▢▢▢.exe) – Windows-Prozess, der Anmeldungen verarbeitet und Anmeldedaten im Speicher hält; beliebtes Ziel von Credential Dumping.«
++ LSASS
+- False Negative
+- Default Deny
+- Kerberos
+! LSASS: Local Security Authority Subsystem Service (lsass.exe) – Windows-Prozess, der Anmeldungen verarbeitet und Anmeldedaten im Speicher hält; beliebtes Ziel von Credential Dumping.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Linux Containers – Container-Technik, die in Proxmox VE neben VMs angeboten wird.«
++ LXC
+- Syslog
+- SQL-Injection
+- Kea
+! LXC: Linux Containers – Container-Technik, die in Proxmox VE neben VMs angeboten wird.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Hardware-Adresse einer Netzwerkschnittstelle (48 Bit, z. B. bc:24:11:aa:bb:01), mit der Frames auf Layer 2 zugestellt werden.«
++ MAC-Adresse
+- Golden Ticket
+- TCP
+- DHCP
+! MAC-Adresse: Hardware-Adresse einer Netzwerkschnittstelle (48 Bit, z. B. bc:24:11:aa:bb:01), mit der Frames auf Layer 2 zugestellt werden.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Schadsoftware – Programme mit schädlicher Absicht (Trojaner, Ransomware, Würmer, Backdoors).«
++ Malware
+- Honeynet
+- CI/CD
+- Ingress
+! Malware: Schadsoftware – Programme mit schädlicher Absicht (Trojaner, Ransomware, Würmer, Backdoors).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Fähigkeit einer Plattform, mehrere voneinander getrennte Nutzergruppen (Mandanten, z. B. Teams) gleichzeitig zu bedienen, ohne dass sie sich sehen.«
++ Mandantenfähigkeit
+- Packer
+- Provider
+- MTTD
+! Mandantenfähigkeit: Fähigkeit einer Plattform, mehrere voneinander getrennte Nutzergruppen (Mandanten, z. B. Teams) gleichzeitig zu bedienen, ohne dass sie sich sehen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Keycloak-Funktion, die festlegt, welche Informationen (z. B. Gruppen) als Claim in ein Token geschrieben werden.«
++ Mapper
+- MFA
+- Underlay
+- Vertrauensgrenze
+! Mapper: Keycloak-Funktion, die festlegt, welche Informationen (z. B. Gruppen) als Claim in ein Token geschrieben werden.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Multi-Faktor-Authentifizierung: Anmeldung mit mindestens zwei unabhängigen Faktoren (Wissen, Besitz, Biometrie), z. B. Passwort + TOTP-Code.«
++ MFA
+- DHCP
+- fio
+- MAC-Adresse
+! MFA: Multi-Faktor-Authentifizierung: Anmeldung mit mindestens zwei unabhängigen Faktoren (Wissen, Besitz, Biometrie), z. B. Passwort + TOTP-Code.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Bekanntes Werkzeug, das Passwort-Hashes, Klartext-Passwörter und Kerberos-Tickets aus dem Speicher des LSASS-Prozesses ausliest.«
++ Mimikatz
+- Modbus
+- VNet
+- Grey Space
+! Mimikatz: Bekanntes Werkzeug, das Passwort-Hashes, Klartext-Passwörter und Kerberos-Tickets aus dem Speicher des LSASS-Prozesses ausliest.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Einfaches Industrieprotokoll (1979) für das Lesen/Schreiben von Registern und Spulen; als ▢▢▢ TCP auf Port 502, ohne Authentifizierung.«
++ Modbus
+- Packer
+- Port
+- NIC
+! Modbus: Einfaches Industrieprotokoll (1979) für das Lesen/Schreiben von Registern und Spulen; als Modbus TCP auf Port 502, ohne Authentifizierung.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Wiederverwendbarer Baustein aus OpenTofu-Code mit Eingaben (Variablen) und Ausgaben (Outputs), z. B. »eine VM« oder »ein Netz«.«
++ Modul (OpenTofu)
+- Pod
+- Flow
+- KVM
+! Modul (OpenTofu): Wiederverwendbarer Baustein aus OpenTofu-Code mit Eingaben (Variablen) und Ausgaben (Outputs), z. B. »eine VM« oder »ein Netz«.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Ceph-▢▢▢itor: hält die Cluster-Karte (welche OSDs gibt es, wo liegen Daten) und bildet per Mehrheitsentscheid das Quorum.«
++ MON
+- Zone
+- Security Onion
+- cloudbase-init
+! MON: Ceph-Monitor: hält die Cluster-Karte (welche OSDs gibt es, wo liegen Daten) und bildet per Mehrheitsentscheid das Quorum.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Master Scenario Events List – zeitlich geordnete Liste aller geplanten Ereignisse (Injects) einer Übung mit erwarteter Reaktion.«
++ MSEL
+- Pool
+- Bloom-Taxonomie
+- ATT&CK
+! MSEL: Master Scenario Events List – zeitlich geordnete Liste aller geplanten Ereignisse (Injects) einer Übung mit erwarteter Reaktion.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Maximum Segment Lifetime: angenommene Höchstlebensdauer eines TCP-Segments im Netz; TIME_WAIT dauert 2 × ▢▢▢.«
++ MSL
+- Malware
+- IPMI
+- Grey Space
+! MSL: Maximum Segment Lifetime: angenommene Höchstlebensdauer eines TCP-Segments im Netz; TIME_WAIT dauert 2 × MSL.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Maximum Segment Size: größte Nutzlast eines TCP-Segments, die beim Verbindungsaufbau ausgehandelt wird (bei MTU 1500 meist 1460 Byte).«
++ MSS
+- VNI
+- Container
+- LXC
+! MSS: Maximum Segment Size: größte Nutzlast eines TCP-Segments, die beim Verbindungsaufbau ausgehandelt wird (bei MTU 1500 meist 1460 Byte).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Mean Time to Detect – durchschnittliche Zeit vom Beginn eines Angriffs bis zu seiner Erkennung.«
++ MTTD
+- cgroups
+- Digitaler Zwilling
+- Triage
+! MTTD: Mean Time to Detect – durchschnittliche Zeit vom Beginn eines Angriffs bis zu seiner Erkennung.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Mean Time to Respond/Recover – durchschnittliche Zeit von der Erkennung bis zur Eindämmung bzw. Wiederherstellung.«
++ MTTR
+- Pipeline
+- NTP
+- PCIe
+! MTTR: Mean Time to Respond/Recover – durchschnittliche Zeit von der Erkennung bis zur Eindämmung bzw. Wiederherstellung.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Maximum Transmission Unit – größte Paketgröße, die ohne Fragmentierung übertragen wird (Ethernet-Standard: 1500 Byte).«
++ MTU
+- VNet
+- PCIe
+- DMZ
+! MTU: Maximum Transmission Unit – größte Paketgröße, die ohne Fragmentierung übertragen wird (Ethernet-Standard: 1500 Byte).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Network Address Translation – Umschreiben von IP-Adressen/Ports beim Durchlaufen eines Routers (S▢▢▢ für ausgehenden, D▢▢▢/Port-Forward für eingehenden Verkehr).«
++ NAT
+- Live-Migration
+- Goss
+- MON
+! NAT: Network Address Translation – Umschreiben von IP-Adressen/Ports beim Durchlaufen eines Routers (SNAT für ausgehenden, DNAT/Port-Forward für eingehenden Verkehr).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Verschachtelte Virtualisierung – ein Hypervisor läuft selbst in einer VM (z. B. Proxmox in Proxmox); funktioniert, kostet aber Leistung.«
++ Nested Virtualization
+- MSS
+- RPO
+- TOTP
+! Nested Virtualization: Verschachtelte Virtualisierung – ein Hypervisor läuft selbst in einer VM (z. B. Proxmox in Proxmox); funktioniert, kostet aber Leistung.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Altes Namens- und Sitzungsprotokoll von Windows (NBT-NS, UDP 137); wie LLMNR anfällig für gefälschte Antworten.«
++ NetBIOS
+- Persistence
+- Tier-Modell
+- Atomic Red Team
+! NetBIOS: Altes Namens- und Sitzungsprotokoll von Windows (NBT-NS, UDP 137); wie LLMNR anfällig für gefälschte Antworten.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Paketfilter-Framework im Linux-Kernel mit festen Eingriffspunkten (Hooks), an denen iptables/nftables Regeln anwenden.«
++ Netfilter
+- PVID
+- MTTD
+- UEFI
+! Netfilter: Paketfilter-Framework im Linux-Kernel mit festen Eingriffspunkten (Hooks), an denen iptables/nftables Regeln anwenden.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Moderner Nachfolger von iptables zur Konfiguration von Netfilter-Regeln im Linux-Kernel.«
++ nftables
+- Ballooning
+- VNet
+- vTPM
+! nftables: Moderner Nachfolger von iptables zur Konfiguration von Netfilter-Regeln im Linux-Kernel.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Network Interface Card – Netzwerkkarte (physisch oder virtuell).«
++ NIC
+- Vertrauensgrenze
+- Hostname
+- Kill Chain
+! NIC: Network Interface Card – Netzwerkkarte (physisch oder virtuell).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »NIST-Rahmenwerk (SP 800-181) für Cybersecurity-Rollen mit Aufgaben-, Wissens- und Fähigkeitsbeschreibungen (TKS); Version 2.0.0 erschien im März 2025.«
++ NICE Framework
+- Stratum
+- NPC
+- KVM
+! NICE Framework: NIST-Rahmenwerk (SP 800-181) für Cybersecurity-Rollen mit Aufgaben-, Wissens- und Fähigkeitsbeschreibungen (TKS); Version 2.0.0 erschien im März 2025.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Datenquelle von cloud-init, bei der die Konfiguration von einem lokalen Datenträger statt von einem Cloud-Metadatendienst gelesen wird.«
++ NoCloud
+- OCI
+- DMZ
+- TPID
+! NoCloud: Datenquelle von cloud-init, bei der die Konfiguration von einem lokalen Datenträger statt von einem Cloud-Metadatendienst gelesen wird.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Non-Player Character – simulierter Benutzer, der automatisch »normale« Tätigkeiten ausführt und so realistischen Hintergrundverkehr erzeugt.«
++ NPC
+- NUMA
+- Wazuh
+- Gitea
+! NPC: Non-Player Character – simulierter Benutzer, der automatisch »normale« Tätigkeiten ausführt und so realistischen Hintergrundverkehr erzeugt.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Network Security Monitoring – systematisches Erfassen und Auswerten von Netzwerkverkehr zur Angriffserkennung.«
++ NSM
+- HA
+- Logstash
+- Grafana
+! NSM: Network Security Monitoring – systematisches Erfassen und Auswerten von Netzwerkverkehr zur Angriffserkennung.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Älteres Microsoft-Authentifizierungsprotokoll (Challenge-Response), anfällig für Pass-the-Hash und Relay-Angriffe.«
++ NTLM
+- Sollwert
+- Timeline
+- Webshell
+! NTLM: Älteres Microsoft-Authentifizierungsprotokoll (Challenge-Response), anfällig für Pass-the-Hash und Relay-Angriffe.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Angriff, bei dem eine abgefangene NTLM-Anmeldung in Echtzeit an einen anderen Server weitergereicht wird, um sich dort als Opfer anzumelden.«
++ NTLM-Relay
+- Zwischen-CA
+- TPID
+- Testbed
+! NTLM-Relay: Angriff, bei dem eine abgefangene NTLM-Anmeldung in Echtzeit an einen anderen Server weitergereicht wird, um sich dort als Opfer anzumelden.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Network Time Protocol (UDP 123) – synchronisiert die Uhrzeit von Systemen; Grundvoraussetzung für Log-Korrelation und Kerberos.«
++ NTP
+- RDP
+- AAR
+- Webhook
+! NTP: Network Time Protocol (UDP 123) – synchronisiert die Uhrzeit von Systemen; Grundvoraussetzung für Log-Korrelation und Kerberos.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Non-Uniform Memory Access: Bei Servern mit mehreren CPU-Sockeln hat jeder Sockel »eigenen« Arbeitsspeicher. Zugriffe auf den Speicher des anderen Sockels sind langsamer.«
++ NUMA
+- REST
+- fio
+- QEMU Guest Agent
+! NUMA: Non-Uniform Memory Access: Bei Servern mit mehreren CPU-Sockeln hat jeder Sockel »eigenen« Arbeitsspeicher. Zugriffe auf den Speicher des anderen Sockels sind langsamer.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Non-Volatile Memory Express: Protokoll für SSDs, die direkt am PCIe-Bus hängen. Deutlich mehr IOPS und geringere Latenz als SATA-SSDs.«
++ NVMe
+- VT-x
+- Wartungsfenster
+- Template
+! NVMe: Non-Volatile Memory Express: Protokoll für SSDs, die direkt am PCIe-Bus hängen. Deutlich mehr IOPS und geringere Latenz als SATA-SSDs.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Open Container Initiative: Standard für Container-Images und -Laufzeiten; Proxmox VE 9.1 kann ▢▢▢-Images als Basis für Container nutzen.«
++ OCI
+- IOPS
+- VirtIO
+- Honeytoken
+! OCI: Open Container Initiative: Standard für Container-Images und -Laufzeiten; Proxmox VE 9.1 kann OCI-Images als Basis für Container nutzen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »OpenID Connect – auf OAuth 2.0 aufbauendes Protokoll für Single Sign-on: der Identitätsanbieter bestätigt per signiertem Token, wer der Benutzer ist.«
++ OIDC
+- Zwischen-CA
+- Quote
+- PKCE
+! OIDC: OpenID Connect – auf OAuth 2.0 aufbauendes Protokoll für Single Sign-on: der Identitätsanbieter bestätigt per signiertem Token, wer der Benutzer ist.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Out-of-Band-Management – Verwaltungszugang über einen getrennten Kanal (IPMI, KVM-over-IP), der auch funktioniert, wenn das Hauptsystem nicht läuft.«
++ OOB
+- Detection Strategy
+- OU
+- Audit-Richtlinie
+! OOB: Out-of-Band-Management – Verwaltungszugang über einen getrennten Kanal (IPMI, KVM-over-IP), der auch funktioniert, wenn das Hauptsystem nicht läuft.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Open Platform Communications Unified Architecture: moderner, sicherheitsfähiger Industriestandard für Datenaustausch (Standardport 4840).«
++ OPC UA
+- NoCloud
+- Template
+- AAR
+! OPC UA: Open Platform Communications Unified Architecture: moderner, sicherheitsfähiger Industriestandard für Datenaustausch (Standardport 4840).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Open-Source-Cloud-Plattform für große Rechenzentren (Compute, Netz, Storage als Dienste); Basis von KYPO/CyberRangeCZ.«
++ OpenStack
+- IPMI
+- Threat Hunting
+- Strelka
+! OpenStack: Open-Source-Cloud-Plattform für große Rechenzentren (Compute, Netz, Storage als Dienste); Basis von KYPO/CyberRangeCZ.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Quelloffene Abspaltung von Terraform (Linux Foundation), kompatibel zu Terraform-Konfigurationen und -Providern.«
++ OpenTofu
+- OIDC
+- Threat Hunting
+- Privilege Escalation
+! OpenTofu: Quelloffene Abspaltung von Terraform (Linux Foundation), kompatibel zu Terraform-Konfigurationen und -Providern.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Open-Source-Firewall- und Router-Distribution auf FreeBSD-Basis mit Weboberfläche, Paketfilter pf, VPN, DNS und DHCP.«
++ OPNsense
+- QMP
+- vCPU
+- API-Token
+! OPNsense: Open-Source-Firewall- und Router-Distribution auf FreeBSD-Basis mit Weboberfläche, Paketfilter pf, VPN, DNS und DHCP.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Object Storage Daemon: Ceph-Dienst, der genau einen Datenträger verwaltet und Daten repliziert.«
++ OSD
+- EVPN
+- RFC 5424
+- OCI
+! OSD: Object Storage Daemon: Ceph-Dienst, der genau einen Datenträger verwaltet und Daten repliziert.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Organizational Unit (Organisationseinheit): Container im Active Directory zum Strukturieren von Benutzern und Computern; an ▢▢▢s werden Gruppenrichtlinien gebunden.«
++ OU
+- VXLAN
+- Zeek
+- OIDC
+! OU: Organizational Unit (Organisationseinheit): Container im Active Directory zum Strukturieren von Benutzern und Computern; an OUs werden Gruppenrichtlinien gebunden.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Überbuchung – den VMs zusammen mehr virtuelle Ressourcen zuweisen, als physisch vorhanden sind (bei CPU unkritisch, bei RAM riskant).«
++ Overcommit
+- Traceroute
+- IDS
+- cloudbase-init
+! Overcommit: Überbuchung – den VMs zusammen mehr virtuelle Ressourcen zuweisen, als physisch vorhanden sind (bei CPU unkritisch, bei RAM riskant).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Logisches Netz, das über ein bestehendes physisches Netz (Underlay) gelegt wird, z. B. per VXLAN-Tunnel.«
++ Overlay
+- CVSS
+- Proxmox VE
+- MSS
+! Overlay: Logisches Netz, das über ein bestehendes physisches Netz (Underlay) gelegt wird, z. B. per VXLAN-Tunnel.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Open Virtual Machine Firmware: UEFI-Firmware für virtuelle Maschinen; nötig für Secure Boot und Windows 11.«
++ OVMF
+- DNAT
+- OPC UA
+- Bloom-Taxonomie
+! OVMF: Open Virtual Machine Firmware: UEFI-Firmware für virtuelle Maschinen; nötig für Secure Boot und Windows 11.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »HashiCorp-Werkzeug, das aus einer Konfigurationsdatei automatisch VM-Templates (Golden Images) baut.«
++ Packer
+- Underlay
+- ECS
+- WinRM
+! Packer: HashiCorp-Werkzeug, das aus einer Konfigurationsdatei automatisch VM-Templates (Golden Images) baut.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Der Gast weiß, dass er virtualisiert ist, und nutzt optimierte Treiber (VirtIO) statt emulierter Hardware – deutlich schneller.«
++ Paravirtualisierung
+- White Team
+- SDN
+- Testbed
+! Paravirtualisierung: Der Gast weiß, dass er virtualisiert ist, und nutzt optimierte Treiber (VirtIO) statt emulierter Hardware – deutlich schneller.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Anmeldung an Windows-Systemen mit einem gestohlenen NTLM-Hash statt des Klartext-Passworts.«
++ Pass-the-Hash
+- Mapper
+- NPC
+- Keycloak
+! Pass-the-Hash: Anmeldung an Windows-Systemen mit einem gestohlenen NTLM-Hash statt des Klartext-Passworts.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Packet Capture – Dateiformat bzw. Vorgang des vollständigen Mitschneidens von Netzwerkpaketen (z. B. mit tcpdump oder Wireshark).«
++ PCAP
+- Vertrauensgrenze
+- Pipeline
+- Quorum
+! PCAP: Packet Capture – Dateiformat bzw. Vorgang des vollständigen Mitschneidens von Netzwerkpaketen (z. B. mit tcpdump oder Wireshark).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »PCI Express: serieller Hochgeschwindigkeitsbus, über den Netzwerkkarten, NVMe-SSDs und GPUs an die CPU angebunden sind. Die Bandbreite hängt von Generation und Anzahl der Lanes ab.«
++ PCIe
+- LLMNR
+- VTEP
+- ICMP
+! PCIe: PCI Express: serieller Hochgeschwindigkeitsbus, über den Netzwerkkarten, NVMe-SSDs und GPUs an die CPU angebunden sind. Die Bandbreite hängt von Generation und Anzahl der Lanes ab.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Maßnahmen eines Angreifers, um nach Neustart oder Passwortwechsel Zugriff zu behalten (z. B. geplante Aufgaben, Dienste, Run-Keys).«
++ Persistence
+- VNet
+- Stateful Firewall
+- Secure Boot
+! Persistence: Maßnahmen eines Angreifers, um nach Neustart oder Passwortwechsel Zugriff zu behalten (z. B. geplante Aufgaben, Dienste, Run-Keys).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Ausgedachte, typische Person mit Rolle, Gewohnheiten und Tagesablauf, nach der das Verhalten simulierter Benutzer gestaltet wird.«
++ Persona
+- Security Onion
+- DNP3
+- ENDEX
+! Persona: Ausgedachte, typische Person mit Rolle, Gewohnheiten und Tagesablauf, nach der das Verhalten simulierter Benutzer gestaltet wird.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Packet Filter – der Paketfilter von OpenBSD/FreeBSD, auf dem die Firewall von OPNsense und ▢▢▢Sense basiert.«
++ pf
+- Modul (OpenTofu)
+- Mandantenfähigkeit
+- Kubelet
+! pf: Packet Filter – der Paketfilter von OpenBSD/FreeBSD, auf dem die Firewall von OPNsense und pfSense basiert.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Täuschungsangriff per E-Mail oder Nachricht, um Empfänger zum Öffnen schädlicher Anhänge/Links oder zur Preisgabe von Zugangsdaten zu bringen.«
++ Phishing
+- Prometheus
+- Exfiltration
+- Live-Fire
+! Phishing: Täuschungsangriff per E-Mail oder Nachricht, um Empfänger zum Öffnen schädlicher Anhänge/Links oder zur Preisgabe von Zugangsdaten zu bringen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Automatisch ablaufende Folge von Prüf- und Bauschritten (z. B. Lint, Plan, Apply, Test), ausgelöst durch einen Commit.«
++ Pipeline
+- GoPhish
+- RoE
+- WireGuard
+! Pipeline: Automatisch ablaufende Folge von Prüf- und Bauschritten (z. B. Lint, Plan, Apply, Test), ausgelöst durch einen Commit.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Nutzen eines bereits übernommenen Systems als Sprungbrett in weitere, sonst unerreichbare Netzsegmente.«
++ Pivoting
+- QEMU
+- SBOM
+- WAF
+! Pivoting: Nutzen eines bereits übernommenen Systems als Sprungbrett in weitere, sonst unerreichbare Netzsegmente.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Proof Key for Code Exchange: Erweiterung des OAuth-Code-Flows, bei der der Client einen Zufallswert nachweist; verhindert das Abfangen des Autorisierungscodes.«
++ PKCE
+- Container
+- DMARC
+- Table-Top
+! PKCE: Proof Key for Code Exchange: Erweiterung des OAuth-Code-Flows, bei der der Client einen Zufallswert nachweist; verhindert das Abfangen des Autorisierungscodes.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Public Key Infrastructure: System aus Zertifizierungsstellen, Zertifikaten und Regeln, mit dem die Echtheit von Servern, Personen oder Software digital bestätigt wird.«
++ PKI
+- IPAM
+- MTTR
+- PKCE
+! PKI: Public Key Infrastructure: System aus Zertifizierungsstellen, Zertifikaten und Regeln, mit dem die Echtheit von Servern, Personen oder Software digital bestätigt wird.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Ansible-Datei (YAML), die beschreibt, welche Aufgaben auf welchen Systemen in welcher Reihenfolge ausgeführt werden.«
++ Playbook
+- Job-Queue
+- Change-Management
+- GPO
+! Playbook: Ansible-Datei (YAML), die beschreibt, welche Aufgaben auf welchen Systemen in welcher Reihenfolge ausgeführt werden.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Festgelegte Schrittfolge für die Reaktion auf einen bestimmten Vorfalltyp (z. B. Phishing, Ransomware).«
++ Playbook (IR)
+- tap-Interface
+- Wazuh
+- vCPU
+! Playbook (IR): Festgelegte Schrittfolge für die Reaktion auf einen bestimmten Vorfalltyp (z. B. Phishing, Ransomware).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Kleinste Einheit in Kubernetes: ein oder mehrere Container mit gemeinsamer IP-Adresse und gemeinsamen Volumes.«
++ Pod
+- RPO
+- NUMA
+- DNP3
+! Pod: Kleinste Einheit in Kubernetes: ein oder mehrere Container mit gemeinsamer IP-Adresse und gemeinsamen Volumes.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Gruppe gleichartiger, vorab erzeugter Sandboxes, aus der Teilnehmern bei Übungsbeginn sofort eine zugewiesen wird.«
++ Pool
+- VT-x
+- OPC UA
+- FRRouting
+! Pool: Gruppe gleichartiger, vorab erzeugter Sandboxes, aus der Teilnehmern bei Übungsbeginn sofort eine zugewiesen wird.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »16-Bit-Nummer (0–65535) bei TCP/UDP, die einen Dienst auf einem Rechner adressiert (z. B. 443 = HTTPS).«
++ Port
+- VNI
+- Pod
+- EPT
+! Port: 16-Bit-Nummer (0–65535) bei TCP/UDP, die einen Dienst auf einem Rechner adressiert (z. B. 443 = HTTPS).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Leistungsfähige quelloffene relationale Datenbank; genutzt von GHOSTS, Keycloak, Gitea und eigenen Portalen.«
++ PostgreSQL
+- autounattend.xml
+- AES
+- VT-x
+! PostgreSQL: Leistungsfähige quelloffene relationale Datenbank; genutzt von GHOSTS, Keycloak, Gitea und eigenen Portalen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Rechteausweitung: vom normalen Benutzer zu Administrator/root, z. B. über falsch gesetzte SUID-Bits oder sudo-Regeln.«
++ Privilege Escalation
+- OSD
+- CVE
+- XDR
+! Privilege Escalation: Rechteausweitung: vom normalen Benutzer zu Administrator/root, z. B. über falsch gesetzte SUID-Bits oder sudo-Regeln.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Quelloffenes Monitoring-System, das Metriken per HTTP abfragt (»scrapt«) und als Zeitreihen speichert; Anzeige meist mit Grafana.«
++ Prometheus
+- Lateral Movement
+- Responder
+- Provider
+! Prometheus: Quelloffenes Monitoring-System, das Metriken per HTTP abfragt (»scrapt«) und als Zeitreihen speichert; Anzeige meist mit Grafana.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Plugin für Terraform/OpenTofu, das eine bestimmte Plattform-API anspricht (z. B. bpg/proxmox für Proxmox VE).«
++ Provider
+- GHOSTS
+- IPMI
+- Suricata
+! Provider: Plugin für Terraform/OpenTofu, das eine bestimmte Plattform-API anspricht (z. B. bpg/proxmox für Proxmox VE).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Backup-Lösung von Proxmox mit inkrementellen, deduplizierten und verschlüsselten Sicherungen; Version 4 basiert auf Debian 13.«
++ Proxmox Backup Server
+- Ceph
+- Corosync
+- Proxmox VE
+! Proxmox Backup Server: Backup-Lösung von Proxmox mit inkrementellen, deduplizierten und verschlüsselten Sicherungen; Version 4 basiert auf Debian 13.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Open-Source-Virtualisierungsplattform auf Debian-Basis mit KVM-VMs, LXC-Containern, Weboberfläche, REST-API, Cluster und SDN.«
++ Proxmox VE
+- SACL
+- YARA
+- Container
+! Proxmox VE: Open-Source-Virtualisierungsplattform auf Debian-Basis mit KVM-VMs, LXC-Containern, Weboberfläche, REST-API, Cluster und SDN.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Pressure Stall Information: Linux-Kennzahlen (/proc/pressure/cpu, memory, io), wie viel Zeit Prozesse auf eine Ressource warten.«
++ PSI
+- Zone
+- Job-Queue
+- SPS
+! PSI: Pressure Stall Information: Linux-Kennzahlen (/proc/pressure/cpu, memory, io), wie viel Zeit Prozesse auf eine Ressource warten.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Änderungsvorschlag in einem Git-Server (bei Gitea auch Merge Request genannt), der vor dem Zusammenführen geprüft und freigegeben wird.«
++ Pull Request
+- SPN
+- Drift
+- IAM
+! Pull Request: Änderungsvorschlag in einem Git-Server (bei Gitea auch Merge Request genannt), der vor dem Zusammenführen geprüft und freigegeben wird.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Referenzmodell für industrielle Netze mit Ebenen von Level 0 (Prozess) bis Level 5 (Unternehmen) und einer Industrie-DMZ (Level 3.5).«
++ Purdue-Modell
+- IO-Delay
+- Worker
+- JWKS
+! Purdue-Modell: Referenzmodell für industrielle Netze mit Ebenen von Level 0 (Prozess) bis Level 5 (Unternehmen) und einer Industrie-DMZ (Level 3.5).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Gemeinsames Team oder Format aus Angreifern und Verteidigern, die offen zusammenarbeiten, um die Erkennung zu verbessern.«
++ Purple Team
+- q35
+- EVPN
+- Inventar
+! Purple Team: Gemeinsames Team oder Format aus Angreifern und Verteidigern, die offen zusammenarbeiten, um die Erkennung zu verbessern.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Zusammenarbeit von Red und Blue Team in einer offenen Schleife: Angriffstechnik ausführen, Erkennung prüfen, sofort verbessern.«
++ Purple Teaming
+- VT-x
+- DHCP
+- PSI
+! Purple Teaming: Zusammenarbeit von Red und Blue Team in einer offenen Schleife: Angriffstechnik ausführen, Erkennung prüfen, sofort verbessern.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Port VLAN ID – die VLAN-Nummer, der ungetaggte Frames an einem Bridge-/Switch-Port zugeordnet werden (Access-Port).«
++ PVID
+- PKI
+- Falco
+- AS-REP-Roasting
+! PVID: Port VLAN ID – die VLAN-Nummer, der ungetaggte Frames an einem Bridge-/Switch-Port zugeordnet werden (Access-Port).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Moderner virtueller Chipsatz in QEMU mit PCIe-Unterstützung; empfohlen für Windows-VMs und Geräte-Durchreichung.«
++ q35
+- cloud-init
+- Sensor
+- Client (OIDC)
+! q35: Moderner virtueller Chipsatz in QEMU mit PCIe-Unterstützung; empfohlen für Windows-VMs und Geräte-Durchreichung.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Open-Source-Emulator/Virtualisierer; stellt mit KVM die virtuelle Hardware (Platten, Netzwerkkarten, Konsole) einer VM bereit.«
++ QEMU
+- Golden Image
+- MTTR
+- Vertrauensspeicher
+! QEMU: Open-Source-Emulator/Virtualisierer; stellt mit KVM die virtuelle Hardware (Platten, Netzwerkkarten, Konsole) einer VM bereit.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Dienst in der VM, über den der Host z. B. IP-Adressen abfragen, Dateisysteme für Snapshots einfrieren und sauber herunterfahren kann.«
++ QEMU Guest Agent
+- Overlay
+- Dienstkonto
+- Idempotenz
+! QEMU Guest Agent: Dienst in der VM, über den der Host z. B. IP-Adressen abfragen, Dateisysteme für Snapshots einfrieren und sauber herunterfahren kann.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »QEMU Machine Protocol: JSON-basierte Steuerschnittstelle eines QEMU-Prozesses, über die Proxmox Snapshots, Hotplug oder Migration auslöst.«
++ QMP
+- Alias
+- cgroups
+- VXLAN
+! QMP: QEMU Machine Protocol: JSON-basierte Steuerschnittstelle eines QEMU-Prozesses, über die Proxmox Snapshots, Hotplug oder Migration auslöst.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Mehrheit der Stimmen in einem Cluster; nur die Seite mit ▢▢▢ darf Änderungen vornehmen – verhindert »Split Brain«.«
++ Quorum
+- Flow
+- ICMP
+- CTF
+! Quorum: Mehrheit der Stimmen in einem Cluster; nur die Seite mit Quorum darf Änderungen vornehmen – verhindert »Split Brain«.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Obergrenze für Ressourcen (CPU, RAM, Speicher, Anzahl VMs), die ein Team, Pool oder Kurs belegen darf.«
++ Quote
+- IOMMU
+- Active Response
+- Stateful Firewall
+! Quote: Obergrenze für Ressourcen (CPU, RAM, Speicher, Anzahl VMs), die ein Team, Pool oder Kurs belegen darf.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Matrix zur Zuordnung von Verantwortlichkeiten: Responsible (führt aus), Accountable (verantwortet), Consulted (wird gefragt), Informed (wird informiert).«
++ RACI
+- EVPN
+- Caldera
+- IOPS
+! RACI: Matrix zur Zuordnung von Verantwortlichkeiten: Responsible (führt aus), Accountable (verantwortet), Consulted (wird gefragt), Informed (wird informiert).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Software-RAID von ZFS mit einfacher (Z1), doppelter (Z2) oder dreifacher (Z3) Parität. Für VM-Speicher sind Mirror-Verbünde wegen höherer IOPS meist besser.«
++ RAID-Z
+- Inject
+- VMID
+- UEFI
+! RAID-Z: Software-RAID von ZFS mit einfacher (Z1), doppelter (Z2) oder dreifacher (Z3) Parität. Für VM-Speicher sind Mirror-Verbünde wegen höherer IOPS meist besser.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Schadsoftware, die Daten verschlüsselt und Lösegeld für die Entschlüsselung fordert.«
++ Ransomware
+- VRF
+- Lateral Movement
+- iperf3
+! Ransomware: Schadsoftware, die Daten verschlüsselt und Lösegeld für die Entschlüsselung fordert.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Role-Based Access Control – Rechte werden Rollen zugeordnet, Benutzer erhalten Rollen (z. B. »blue-1« darf nur die eigenen VMs sehen).«
++ RBAC
+- Client (OIDC)
+- Grafana
+- Port
+! RBAC: Role-Based Access Control – Rechte werden Rollen zugeordnet, Benutzer erhalten Rollen (z. B. »blue-1« darf nur die eigenen VMs sehen).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »RADOS Block Device: virtuelle Festplatte, die in Ceph verteilt gespeichert wird; Proxmox nutzt ▢▢▢ als VM-Disk.«
++ RBD
+- Bridge
+- Facts
+- NUMA
+! RBD: RADOS Block Device: virtuelle Festplatte, die in Ceph verteilt gespeichert wird; Proxmox nutzt RBD als VM-Disk.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Remote Code Execution: Ausführen beliebigen Codes auf einem fremden System über das Netz – die schwerste Schwachstellenklasse.«
++ RCE
+- Red Team
+- Copy-on-Write
+- NTP
+! RCE: Remote Code Execution: Ausführen beliebigen Codes auf einem fremden System über das Netz – die schwerste Schwachstellenklasse.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Remote Desktop Protocol (TCP 3389) – Microsoft-Protokoll für grafische Fernzugriffe auf Windows-Systeme.«
++ RDP
+- Benchmark
+- DMARC
+- FDB
+! RDP: Remote Desktop Protocol (TCP 3389) – Microsoft-Protokoll für grafische Fernzugriffe auf Windows-Systeme.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »In Keycloak ein abgeschlossener Bereich mit eigenen Benutzern, Gruppen, Anwendungen (Clients) und Einstellungen.«
++ Realm
+- HCL
+- Mandantenfähigkeit
+- JWKS
+! Realm: In Keycloak ein abgeschlossener Bereich mit eigenen Benutzern, Gruppen, Anwendungen (Clients) und Einstellungen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Gruppe, die in einer Übung die Rolle der Angreifer übernimmt.«
++ Red Team
+- RACI
+- SINET
+- NoCloud
+! Red Team: Gruppe, die in einer Übung die Rolle der Angreifer übernimmt.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Steuerung, die einen Messwert (z. B. Füllstand) laufend erfasst und Stellglieder (z. B. Ventil) so verändert, dass ein Sollwert eingehalten wird.«
++ Regelkreis
+- SUID
+- Template
+- Sandbox-Definition
+! Regelkreis: Steuerung, die einen Messwert (z. B. Füllstand) laufend erfasst und Stellglieder (z. B. Ventil) so verändert, dass ein Sollwert eingehalten wird.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Stufenmodell, das beschreibt, wie weit eine Fähigkeit entwickelt ist (z. B. von »nicht vorhanden« bis »optimiert«).«
++ Reifegradmodell
+- VNet
+- Mimikatz
+- Purple Teaming
+! Reifegradmodell: Stufenmodell, das beschreibt, wie weit eine Fähigkeit entwickelt ist (z. B. von »nicht vorhanden« bis »optimiert«).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »DNS-Server, der eine Anfrage stellvertretend für den Client bis zur endgültigen Antwort auflöst (Root → TLD → autoritativer Server) und das Ergebnis zwischenspeichert.«
++ Rekursiver Resolver
+- Kea
+- Quorum
+- Caldera
+! Rekursiver Resolver: DNS-Server, der eine Anfrage stellvertretend für den Client bis zur endgültigen Antwort auflöst (Root → TLD → autoritativer Server) und das Ergebnis zwischenspeichert.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Weiterleitung von Protokollen an einen zentralen Server (z. B. per Syslog), damit sie auch bei Kompromittierung des Quellsystems erhalten bleiben.«
++ Remote-Logging
+- SPN
+- IAM
+- Worker
+! Remote-Logging: Weiterleitung von Protokollen an einen zentralen Server (z. B. per Syslog), damit sie auch bei Kompromittierung des Quellsystems erhalten bleiben.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Werkzeug, das LLMNR-/NBT-NS-Anfragen beantwortet, um Anmeldedaten abzufangen; Standardwerkzeug in AD-Übungen.«
++ Responder
+- Proxmox Backup Server
+- GHOSTS
+- Chaos Engineering
+! Responder: Werkzeug, das LLMNR-/NBT-NS-Anfragen beantwortet, um Anmeldedaten abzufangen; Standardwerkzeug in AD-Übungen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Architekturstil für Web-APIs: Ressourcen werden über URLs adressiert und mit HTTP-Methoden (GET, POST, PUT, DELETE) bearbeitet.«
++ REST
+- Kubernetes
+- VM
+- Detection Engineering
+! REST: Architekturstil für Web-APIs: Ressourcen werden über URLs adressiert und mit HTTP-Methoden (GET, POST, PUT, DELETE) bearbeitet.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Aktueller Standard für das Syslog-Nachrichtenformat mit Priorität, Version, Zeitstempel (inkl. Zeitzone), Host, Anwendung und strukturierten Daten.«
++ RFC 5424
+- tap-Interface
+- OIDC
+- Access-Port
+! RFC 5424: Aktueller Standard für das Syslog-Nachrichtenformat mit Priorität, Version, Zeitstempel (inkl. Zeitzone), Host, Anwendung und strukturierten Daten.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Rules of Engagement – verbindliche Regeln einer Übung: Was ist Ziel, was ist verboten, wann darf angegriffen werden?«
++ RoE
+- iperf3
+- Kerberoasting
+- Claim
+! RoE: Rules of Engagement – verbindliche Regeln einer Übung: Was ist Ziel, was ist verboten, wann darf angegriffen werden?
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Oberste Zertifizierungsstelle einer PKI. Ihr selbstsigniertes Zertifikat ist der »Vertrauensanker«; sie sollte offline aufbewahrt werden.«
++ Root-CA
+- LSASS
+- PKCE
+- Live-Fire
+! Root-CA: Oberste Zertifizierungsstelle einer PKI. Ihr selbstsigniertes Zertifikat ist der »Vertrauensanker«; sie sollte offline aufbewahrt werden.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Liste der IP-Adressen der DNS-Root-Server, mit der ein Resolver seine Rekursion beginnt. Im SINET zeigt sie auf eigene, simulierte Root-Server.«
++ Root-Hints
+- Root-CA
+- TOTP
+- Template
+! Root-Hints: Liste der IP-Adressen der DNS-Root-Server, mit der ein Resolver seine Rekursion beginnt. Im SINET zeigt sie auf eigene, simulierte Root-Server.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Recovery Point Objective: maximal tolerierter Datenverlust in Zeit (z. B. »höchstens die Änderungen der letzten 24 Stunden«).«
++ RPO
+- PCIe
+- Pull Request
+- ATT&CK
+! RPO: Recovery Point Objective: maximal tolerierter Datenverlust in Zeit (z. B. »höchstens die Änderungen der letzten 24 Stunden«).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Reset-Flag im TCP-Header: bricht eine Verbindung sofort ab, z. B. wenn auf einem Port kein Dienst lauscht.«
++ RST
+- WinRM
+- Inventar
+- Rekursiver Resolver
+! RST: Reset-Flag im TCP-Header: bricht eine Verbindung sofort ab, z. B. wenn auf einem Port kein Dienst lauscht.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Recovery Time Objective: maximal tolerierte Zeit bis zur Wiederherstellung eines Dienstes.«
++ RTO
+- Snapshot
+- tap-Interface
+- VT-x
+! RTO: Recovery Time Objective: maximal tolerierte Zeit bis zur Wiederherstellung eines Dienstes.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Schritt-für-Schritt-Anleitung für einen wiederkehrenden Betriebsvorgang, z. B. »Range zurücksetzen« oder »Agent neu registrieren«.«
++ Runbook
+- SPAN
+- Worker
+- etcd
+! Runbook: Schritt-für-Schritt-Anleitung für einen wiederkehrenden Betriebsvorgang, z. B. »Range zurücksetzen« oder »Agent neu registrieren«.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Proprietäres Protokoll von Siemens-S7-Steuerungen, transportiert über ISO-on-TCP (RFC 1006) auf Port 102.«
++ S7comm
+- NVMe
+- Mapper
+- Lateral Movement
+! S7comm: Proprietäres Protokoll von Siemens-S7-Steuerungen, transportiert über ISO-on-TCP (RFC 1006) auf Port 102.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »System Access Control List: Teil der Berechtigungen eines Objekts, der festlegt, welche Zugriffe protokolliert werden.«
++ SACL
+- Timeline
+- ECC
+- JA4
+! SACL: System Access Control List: Teil der Berechtigungen eines Objekts, der festlegt, welche Zugriffe protokolliert werden.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Isolierte, eigenständige Umgebung; in einer Cyber Range die vollständige Übungsumgebung eines Teilnehmers oder Teams.«
++ Sandbox
+- Honeynet
+- LXC
+- HCL
+! Sandbox: Isolierte, eigenständige Umgebung; in einer Cyber Range die vollständige Übungsumgebung eines Teilnehmers oder Teams.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »In KYPO ein Git-Repository mit Topologie-Datei (topology.yml), Variablen und Provisionierungs-Playbook, aus dem identische Sandboxes erzeugt werden.«
++ Sandbox-Definition
+- Paravirtualisierung
+- MSS
+- Seed
+! Sandbox-Definition: In KYPO ein Git-Repository mit Topologie-Datei (topology.yml), Variablen und Provisionierungs-Playbook, aus dem identische Sandboxes erzeugt werden.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Software Bill of Materials: maschinenlesbare Liste aller Komponenten und Abhängigkeiten einer Software.«
++ SBOM
+- KSM
+- Lagebild
+- Claim
+! SBOM: Software Bill of Materials: maschinenlesbare Liste aller Komponenten und Abhängigkeiten einer Software.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Security Configuration Assessment: Wazuh-Modul, das Systeme gegen Härtungsrichtlinien (z. B. CIS Benchmarks) prüft.«
++ SCA
+- GoPhish
+- 802.1Q
+- TCP
+! SCA: Security Configuration Assessment: Wazuh-Modul, das Systeme gegen Härtungsrichtlinien (z. B. CIS Benchmarks) prüft.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Supervisory Control and Data Acquisition: System zur Überwachung und Steuerung verteilter Anlagen.«
++ SCADA
+- JWT
+- Prometheus
+- Chaos Engineering
+! SCADA: Supervisory Control and Data Acquisition: System zur Überwachung und Steuerung verteilter Anlagen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Dienst, der in festen Takten Service-Checks ausführt und daraus Punkte für die Teams berechnet.«
++ ScoringEngine
+- Packer
+- q35
+- Window Scaling
+! ScoringEngine: Dienst, der in festen Takten Service-Checks ausführt und daraus Punkte für die Teams berechnet.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Software-Defined Networking – Netze werden per Software zentral definiert (Zonen, VNets, Subnetze) statt an jedem Gerät einzeln konfiguriert.«
++ SDN
+- WinRM
+- Hypervisor
+- Nested Virtualization
+! SDN: Software-Defined Networking – Netze werden per Software zentral definiert (Zonen, VNets, Subnetze) statt an jedem Gerät einzeln konfiguriert.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »UEFI-Funktion, die nur digital signierte Bootloader und Kernel startet. Schützt vor Bootkits; in VMs mit OVMF-Firmware ebenfalls nutzbar.«
++ Secure Boot
+- Linked Clone
+- SPF
+- Malware
+! Secure Boot: UEFI-Funktion, die nur digital signierte Bootloader und Kernel startet. Schützt vor Bootkits; in VMs mit OVMF-Firmware ebenfalls nutzbar.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Freie Linux-Distribution für Network Security Monitoring und Threat Hunting mit Zeek, Suricata, PCAP-Speicherung, Elastic und eigener Analyseoberfläche.«
++ Security Onion
+- MFA
+- iperf3
+- RBAC
+! Security Onion: Freie Linux-Distribution für Network Security Monitoring und Threat Hunting mit Zeek, Suricata, PCAP-Speicherung, Elastic und eigener Analyseoberfläche.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Startwert eines Zufallszahlengenerators. Gleicher ▢▢▢ bedeutet gleiche »Zufallsdaten« – wichtig für identische Range-Kopien.«
++ Seed
+- PCIe
+- SPS
+- 3-2-1-Regel
+! Seed: Startwert eines Zufallszahlengenerators. Gleicher Seed bedeutet gleiche »Zufallsdaten« – wichtig für identische Range-Kopien.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »System, das Netzwerkverkehr (meist über einen Spiegelport) empfängt und auswertet, ohne selbst in den Verkehr einzugreifen.«
++ Sensor
+- Sysprep
+- Ingress
+- CVSS
+! Sensor: System, das Netzwerkverkehr (meist über einen Spiegelport) empfängt und auswertet, ohne selbst in den Verkehr einzugreifen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Identität eines Pods gegenüber dem Kubernetes-API-Server; ihr Token liegt standardmäßig im Pod und ist ein beliebtes Angriffsziel.«
++ ServiceAccount
+- OPC UA
+- Dry-Run
+- Live-Fire
+! ServiceAccount: Identität eines Pods gegenüber dem Kubernetes-API-Server; ihr Token liegt standardmäßig im Pod und ist ein beliebtes Angriffsziel.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Security Information and Event Management – zentrale Sammlung, Speicherung, Korrelation und Alarmierung von Sicherheitsereignissen vieler Quellen.«
++ SIEM
+- Green Team
+- Realm
+- Persona
+! SIEM: Security Information and Event Management – zentrale Sammlung, Speicherung, Korrelation und Alarmierung von Sicherheitsereignissen vieler Quellen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Herstellerneutrales Regelformat (YAML) für Detektionen in Logdaten, das in Abfragen verschiedener SIEM-Systeme übersetzt werden kann.«
++ Sigma
+- Sysprep
+- Timeline
+- q35
+! Sigma: Herstellerneutrales Regelformat (YAML) für Detektionen in Logdaten, das in Abfragen verschiedener SIEM-Systeme übersetzt werden kann.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Simulated Internet – nachgebautes Internet innerhalb der Range (DNS, Webseiten, Mail, PKI), ohne Verbindung zum echten Internet.«
++ SINET
+- NUMA
+- LLMNR
+- DMZ
+! SINET: Simulated Internet – nachgebautes Internet innerhalb der Range (DNS, Webseiten, Mail, PKI), ohne Verbindung zum echten Internet.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Digitale Signatur jedes SMB-Pakets. Wenn erzwungen, scheitern NTLM-Relay-Angriffe auf SMB.«
++ SMB-Signing
+- UEFI
+- Ingress
+- TPID
+! SMB-Signing: Digitale Signatur jedes SMB-Pakets. Wenn erzwungen, scheitern NTLM-Relay-Angriffe auf SMB.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Gespeicherter Zustand einer VM (Platten, optional RAM) zu einem Zeitpunkt, auf den jederzeit zurückgerollt werden kann.«
++ Snapshot
+- Stratum
+- Netfilter
+- MTTD
+! Snapshot: Gespeicherter Zustand einer VM (Platten, optional RAM) zu einem Zeitpunkt, auf den jederzeit zurückgerollt werden kann.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Source NAT: Umschreiben der Quelladresse eines Pakets, z. B. wenn interne Clients mit der Adresse der Firewall ins (simulierte) Internet gehen.«
++ SNAT
+- cloudbase-init
+- Honeytoken
+- Lieferkettenangriff
+! SNAT: Source NAT: Umschreiben der Quelladresse eines Pakets, z. B. wenn interne Clients mit der Adresse der Firewall ins (simulierte) Internet gehen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Server Name Indication – Feld im TLS-ClientHello, das den gewünschten Servernamen im Klartext enthält; für Sensoren eine wichtige Information.«
++ SNI
+- EPS
+- Mapper
+- IOPS
+! SNI: Server Name Indication – Feld im TLS-ClientHello, das den gewünschten Servernamen im Klartext enthält; für Sensoren eine wichtige Information.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Security Orchestration, Automation and Response: Plattform, die Reaktionsschritte (Playbooks) über mehrere Werkzeuge hinweg automatisiert.«
++ SOAR
+- Lease
+- HIDS
+- IPAM
+! SOAR: Security Orchestration, Automation and Response: Plattform, die Reaktionsschritte (Playbooks) über mehrere Werkzeuge hinweg automatisiert.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Security Operations Center – Team bzw. Leitstelle, die Sicherheitsereignisse rund um die Uhr überwacht und darauf reagiert.«
++ SOC
+- GoPhish
+- DMZ
+- OCI
+! SOC: Security Operations Center – Team bzw. Leitstelle, die Sicherheitsereignisse rund um die Uhr überwacht und darauf reagiert.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Gewünschter Zielwert einer Regelung, etwa »Tankfüllstand 60 %«.«
++ Sollwert
+- Blue Team
+- Playbook (IR)
+- Lease
+! Sollwert: Gewünschter Zielwert einer Regelung, etwa »Tankfüllstand 60 %«.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Secrets OPerationS: Werkzeug, das nur die Werte in YAML/JSON-Dateien verschlüsselt (z. B. mit age oder GPG) und Schlüssel lesbar lässt.«
++ SOPS
+- NTLM-Relay
+- PostgreSQL
+- PKI
+! SOPS: Secrets OPerationS: Werkzeug, das nur die Werte in YAML/JSON-Dateien verschlüsselt (z. B. mit age oder GPG) und Schlüssel lesbar lässt.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Switched Port Analyzer – Funktion, die den Verkehr eines oder mehrerer Ports auf einen Analyseport kopiert (»Port Mirroring«).«
++ SPAN
+- ATT&CK
+- ServiceAccount
+- autounattend.xml
+! SPAN: Switched Port Analyzer – Funktion, die den Verkehr eines oder mehrerer Ports auf einen Analyseport kopiert (»Port Mirroring«).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Sender Policy Framework: DNS-Eintrag, der festlegt, welche Server Mails für eine Domain versenden dürfen.«
++ SPF
+- DNAT
+- Idempotenz
+- BGP
+! SPF: Sender Policy Framework: DNS-Eintrag, der festlegt, welche Server Mails für eine Domain versenden dürfen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Service Principal Name – eindeutiger Name eines Dienstes in Active Directory (z. B. MSSQLSvc/fs01), über den Kerberos-Tickets angefordert werden.«
++ SPN
+- Client (OIDC)
+- Underlay
+- Persona
+! SPN: Service Principal Name – eindeutiger Name eines Dienstes in Active Directory (z. B. MSSQLSvc/fs01), über den Kerberos-Tickets angefordert werden.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Speicherprogrammierbare Steuerung (engl. PLC): Industriecomputer, der Sensoren liest und Aktoren nach einem Programm schaltet.«
++ SPS
+- ServiceAccount
+- KVM
+- MSL
+! SPS: Speicherprogrammierbare Steuerung (engl. PLC): Industriecomputer, der Sensoren liest und Aktoren nach einem Programm schaltet.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Einschleusen von SQL-Befehlen über ungeprüfte Eingaben in eine Datenbankabfrage; Gegenmittel sind Prepared Statements.«
++ SQL-Injection
+- Nested Virtualization
+- Tier-Modell
+- WebSocket
+! SQL-Injection: Einschleusen von SQL-Befehlen über ungeprüfte Eingaben in eine Datenbankabfrage; Gegenmittel sind Prepared Statements.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Secure Shell (TCP 22) – verschlüsseltes Protokoll für Kommandozeilen-Fernzugriff und Dateiübertragung.«
++ SSH
+- MTTR
+- DKIM
+- EVPN
+! SSH: Secure Shell (TCP 22) – verschlüsseltes Protokoll für Kommandozeilen-Fernzugriff und Dateiübertragung.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Eintrag in der Zustandstabelle einer Firewall für eine erlaubte Verbindung; Antwortpakete passen zum ▢▢▢ und werden ohne erneute Regelprüfung durchgelassen.«
++ State
+- nftables
+- IOPS
+- SPN
+! State: Eintrag in der Zustandstabelle einer Firewall für eine erlaubte Verbindung; Antwortpakete passen zum State und werden ohne erneute Regelprüfung durchgelassen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Datei (terraform.tfstate), in der OpenTofu/Terraform festhält, welche realen Ressourcen zu welcher Code-Zeile gehören. Enthält oft Geheimnisse und muss geschützt werden.«
++ State-Datei
+- autounattend.xml
+- Paravirtualisierung
+- EPT
+! State-Datei: Datei (terraform.tfstate), in der OpenTofu/Terraform festhält, welche realen Ressourcen zu welcher Code-Zeile gehören. Enthält oft Geheimnisse und muss geschützt werden.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Firewall, die Verbindungen verfolgt und Antwortpakete automatisch zulässt, statt jedes Paket isoliert zu bewerten.«
++ Stateful Firewall
+- SPAN
+- Mapper
+- VirtIO
+! Stateful Firewall: Firewall, die Verbindungen verfolgt und Antwortpakete automatisch zulässt, statt jedes Paket isoliert zu bewerten.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Ebene in der NTP-Hierarchie: ▢▢▢ 0 sind Referenzuhren, ▢▢▢ 1 direkt daran angeschlossene Server, jede weitere Stufe zählt eins hoch.«
++ Stratum
+- CI/CD
+- SQL-Injection
+- INetSim
+! Stratum: Ebene in der NTP-Hierarchie: Stratum 0 sind Referenzuhren, Stratum 1 direkt daran angeschlossene Server, jede weitere Stufe zählt eins hoch.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Datei-Analysesystem in Security Onion, das aus dem Netzverkehr extrahierte Dateien mit YARA-Regeln und weiteren Scannern untersucht.«
++ Strelka
+- HA
+- Facts
+- Honeytoken
+! Strelka: Datei-Analysesystem in Security Onion, das aus dem Netzverkehr extrahierte Dateien mit YARA-Regeln und weiteren Scannern untersucht.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Microsoft-Methode zur Bedrohungsmodellierung: Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege.«
++ STRIDE
+- Provider
+- DMARC
+- TCP
+! STRIDE: Microsoft-Methode zur Bedrohungsmodellierung: Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Set-User-ID-Bit unter Linux: Ein Programm läuft mit den Rechten seines Besitzers (oft root) statt des Aufrufers.«
++ SUID
+- RoE
+- Chaos Engineering
+- State
+! SUID: Set-User-ID-Bit unter Linux: Ein Programm läuft mit den Rechten seines Besitzers (oft root) statt des Aufrufers.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Open-Source-IDS/IPS, das Netzwerkverkehr mit Signaturen vergleicht und Alarme sowie Protokolldaten (EVE-JSON) erzeugt.«
++ Suricata
+- SPF
+- Pipeline
+- Dry-Run
+! Suricata: Open-Source-IDS/IPS, das Netzwerkverkehr mit Signaturen vergleicht und Alarme sowie Protokolldaten (EVE-JSON) erzeugt.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Standardprotokoll (RFC 5424, Port 514/6514) zum Versenden von Log-Meldungen an einen zentralen Server.«
++ Syslog
+- Hookscript
+- Kerberoasting
+- Packer
+! Syslog: Standardprotokoll (RFC 5424, Port 514/6514) zum Versenden von Log-Meldungen an einen zentralen Server.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »System Monitor aus den Microsoft Sysinternals – Windows-Dienst, der detaillierte Ereignisse (Prozessstarts, Netzverbindungen, Registry …) protokolliert.«
++ Sysmon
+- SMB-Signing
+- Chaos Engineering
+- Jitter
+! Sysmon: System Monitor aus den Microsoft Sysinternals – Windows-Dienst, der detaillierte Ereignisse (Prozessstarts, Netzverbindungen, Registry …) protokolliert.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Windows-Werkzeug, das eine Installation »verallgemeinert« (eindeutige Kennungen entfernen), damit sie als Vorlage für viele Kopien dienen kann.«
++ Sysprep
+- SOAR
+- chrony
+- RAID-Z
+! Sysprep: Windows-Werkzeug, das eine Installation »verallgemeinert« (eindeutige Kennungen entfernen), damit sie als Vorlage für viele Kopien dienen kann.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Planspiel am Tisch: Teilnehmer besprechen anhand eines Szenarios Entscheidungen und Abläufe, ohne technische Systeme zu bedienen.«
++ Table-Top
+- Beacon
+- HCL
+- Playbook
+! Table-Top: Planspiel am Tisch: Teilnehmer besprechen anhand eines Szenarios Entscheidungen und Abläufe, ohne technische Systeme zu bedienen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Virtuelle Netzwerkschnittstelle auf dem Host (z. B. tap120i0 = VM 120, Netzwerkkarte 0), über die Frames einer VM an die Bridge gelangen.«
++ tap-Interface
+- State
+- Zone
+- IOMMU
+! tap-Interface: Virtuelle Netzwerkschnittstelle auf dem Host (z. B. tap120i0 = VM 120, Netzwerkkarte 0), über die Frames einer VM an die Bridge gelangen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Transmission Control Protocol – verbindungsorientiertes, zuverlässiges Transportprotokoll mit Handshake, Reihenfolge und Bestätigungen.«
++ TCP
+- Responder
+- VNI
+- Triage
+! TCP: Transmission Control Protocol – verbindungsorientiertes, zuverlässiges Transportprotokoll mit Handshake, Reihenfolge und Bestätigungen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Schreibgeschützte VM-Vorlage, aus der neue VMs geklont werden.«
++ Template
+- Caldera
+- Live-Migration
+- cloud-init
+! Template: Schreibgeschützte VM-Vorlage, aus der neue VMs geklont werden.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »HashiCorp-Werkzeug für Infrastructure as Code: beschreibt gewünschte Infrastruktur deklarativ und setzt sie über Provider-APIs um.«
++ Terraform
+- MAC-Adresse
+- AAR
+- vhost-net
+! Terraform: HashiCorp-Werkzeug für Infrastructure as Code: beschreibt gewünschte Infrastruktur deklarativ und setzt sie über Provider-APIs um.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Versuchsumgebung, in der Technologien unter kontrollierten Bedingungen getestet werden; oft mit Forschungsschwerpunkt.«
++ Testbed
+- VM-Escape
+- Wazuh
+- fio
+! Testbed: Versuchsumgebung, in der Technologien unter kontrollierten Bedingungen getestet werden; oft mit Forschungsschwerpunkt.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Ticket Granting Ticket – Kerberos-»Eintrittskarte«, die nach der Anmeldung ausgestellt wird und zum Anfordern weiterer Service-Tickets dient.«
++ TGT
+- Stateful Firewall
+- VRF
+- ADCS
+! TGT: Ticket Granting Ticket – Kerberos-»Eintrittskarte«, die nach der Anmeldung ausgestellt wird und zum Anfordern weiterer Service-Tickets dient.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Proaktive, hypothesengetriebene Suche nach Angreifern, die von automatischen Regeln noch nicht erkannt wurden.«
++ Threat Hunting
+- SOAR
+- Jeopardy
+- RBD
+! Threat Hunting: Proaktive, hypothesengetriebene Suche nach Angreifern, die von automatischen Regeln noch nicht erkannt wurden.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Microsoft-Sicherheitskonzept, das Administratorkonten in Ebenen trennt (Tier 0 = Domänencontroller, Tier 1 = Server, Tier 2 = Arbeitsplätze), damit hochprivilegierte Zugangsdaten nicht auf schwächeren Systemen liegen.«
++ Tier-Modell
+- iperf3
+- EVE-JSON
+- Caldera
+! Tier-Modell: Microsoft-Sicherheitskonzept, das Administratorkonten in Ebenen trennt (Tier 0 = Domänencontroller, Tier 1 = Server, Tier 2 = Arbeitsplätze), damit hochprivilegierte Zugangsdaten nicht auf schwächeren Systemen liegen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »In GHOSTS die Beschreibung, was ein simulierter Benutzer wann tut (Handler, Befehle, Zeitfenster, Verzögerungen).«
++ Timeline
+- Underlay
+- White Team
+- pf
+! Timeline: In GHOSTS die Beschreibung, was ein simulierter Benutzer wann tut (Handler, Befehle, Zeitfenster, Verzögerungen).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Transport Layer Security – Verschlüsselungsprotokoll für Verbindungen (HTTPS, LDAPS, SMTPS); aktuelle Version 1.3.«
++ TLS
+- VT-x
+- TCP
+- ARP
+! TLS: Transport Layer Security – Verschlüsselungsprotokoll für Verbindungen (HTTPS, LDAPS, SMTPS); aktuelle Version 1.3.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Time-based One-Time Password – zeitbasierter Einmalcode (z. B. aus einer Authenticator-App) als zweiter Faktor.«
++ TOTP
+- Window Scaling
+- ServiceAccount
+- Exfiltration
+! TOTP: Time-based One-Time Password – zeitbasierter Einmalcode (z. B. aus einer Authenticator-App) als zweiter Faktor.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Tag Protocol Identifier: die ersten zwei Byte eines 802.1Q-Tags (Wert 0x8100). Sie zeigen an, dass der Frame ein VLAN-Tag trägt.«
++ TPID
+- Modul (OpenTofu)
+- VTEP
+- Testbed
+! TPID: Tag Protocol Identifier: die ersten zwei Byte eines 802.1Q-Tags (Wert 0x8100). Sie zeigen an, dass der Frame ein VLAN-Tag trägt.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Diagnosewerkzeug, das durch schrittweise steigende TTL-Werte die Router auf dem Weg zu einem Ziel sichtbar macht.«
++ Traceroute
+- IOMMU
+- OU
+- vTPM
+! Traceroute: Diagnosewerkzeug, das durch schrittweise steigende TTL-Werte die Router auf dem Weg zu einem Ziel sichtbar macht.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Erste Sichtung und Priorisierung eingehender Alarme: echt oder Fehlalarm, wie dringend, wer kümmert sich?«
++ Triage
+- VTEP
+- Honeytoken
+- Prometheus
+! Triage: Erste Sichtung und Priorisierung eingehender Alarme: echt oder Fehlalarm, wie dringend, wer kümmert sich?
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Switch- oder Bridge-Port, der Frames mehrerer VLANs mit Tag überträgt – z. B. die Verbindung zwischen Bridge und Firewall.«
++ Trunk
+- Blue Team
+- Wazuh
+- False Positive
+! Trunk: Switch- oder Bridge-Port, der Frames mehrerer VLANs mit Tag überträgt – z. B. die Verbindung zwischen Bridge und Firewall.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Time to Live – Zähler im IP-Header, den jeder Router um 1 verringert; bei 0 wird das Paket verworfen (verhindert Endlosschleifen).«
++ TTL
+- Active Response
+- Privilege Escalation
+- Exploit
+! TTL: Time to Live – Zähler im IP-Header, den jeder Router um 1 verringert; bei 0 wird das Paket verworfen (verhindert Endlosschleifen).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »User Datagram Protocol – verbindungsloses, schnelles Transportprotokoll ohne Zustellgarantie (DNS, Syslog, VXLAN, WireGuard).«
++ UDP
+- STRIDE
+- Privilege Escalation
+- MTTD
+! UDP: User Datagram Protocol – verbindungsloses, schnelles Transportprotokoll ohne Zustellgarantie (DNS, Syslog, VXLAN, WireGuard).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Unified Extensible Firmware Interface: moderne Firmware eines Rechners (Nachfolger des BIOS); startet das Betriebssystem und verwaltet u. a. Secure Boot und Virtualisierungsoptionen.«
++ UEFI
+- AES
+- SOPS
+- Hostname
+! UEFI: Unified Extensible Firmware Interface: moderne Firmware eines Rechners (Nachfolger des BIOS); startet das Betriebssystem und verwaltet u. a. Secure Boot und Virtualisierungsoptionen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Das physische bzw. darunterliegende Netz, über das ein Overlay (z. B. VXLAN) transportiert wird.«
++ Underlay
+- NICE Framework
+- vhost-net
+- Copy-on-Write
+! Underlay: Das physische bzw. darunterliegende Netz, über das ein Overlay (z. B. VXLAN) transportiert wird.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Unique Process ID – eindeutige Kennung eines Proxmox-Tasks, über die sich dessen Status und Log abfragen lassen.«
++ UPID
+- Wartungsfenster
+- Hostname
+- Golden Image
+! UPID: Unique Process ID – eindeutige Kennung eines Proxmox-Tasks, über die sich dessen Status und Log abfragen lassen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Konfigurationsdatei für cloud-init (meist YAML mit »#cloud-config« am Anfang): Benutzer, Pakete, Dateien, Befehle.«
++ user-data
+- Template
+- Kubelet
+- BloodHound
+! user-data: Konfigurationsdatei für cloud-init (meist YAML mit »#cloud-config« am Anfang): Benutzer, Pakete, Dateien, Befehle.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Unterbrechungsfreie Stromversorgung – Batteriepuffer, der bei Stromausfall weiterversorgt und ein geordnetes Herunterfahren ermöglicht.«
++ USV
+- Regelkreis
+- INetSim
+- Zwischen-CA
+! USV: Unterbrechungsfreie Stromversorgung – Batteriepuffer, der bei Stromausfall weiterversorgt und ein geordnetes Herunterfahren ermöglicht.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Virtuelle CPU einer VM; auf dem Host ein Thread, der vom Scheduler auf physische Kerne verteilt wird.«
++ vCPU
+- for_each
+- Overlay
+- OPNsense
+! vCPU: Virtuelle CPU einer VM; auf dem Host ein Thread, der vom Scheduler auf physische Kerne verteilt wird.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Stelle in einer Architektur, an der Daten oder Befehle von einem weniger vertrauenswürdigen in einen vertrauenswürdigeren Bereich wechseln – dort müssen Kontrollen sitzen.«
++ Vertrauensgrenze
+- Nested Virtualization
+- SOPS
+- VTEP
+! Vertrauensgrenze: Stelle in einer Architektur, an der Daten oder Befehle von einem weniger vertrauenswürdigen in einen vertrauenswürdigeren Bereich wechseln – dort müssen Kontrollen sitzen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Liste der Root-Zertifikate, denen ein Betriebssystem oder Browser vertraut (Trust Store).«
++ Vertrauensspeicher
+- HMI
+- WireGuard
+- IAM
+! Vertrauensspeicher: Liste der Root-Zertifikate, denen ein Betriebssystem oder Browser vertraut (Trust Store).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Kernel-Modul, das Netzwerkpakete einer VM direkt im Host-Kernel verarbeitet statt im QEMU-Prozess. Senkt Latenz und CPU-Last erheblich.«
++ vhost-net
+- VRF
+- TTL
+- Active Response
+! vhost-net: Kernel-Modul, das Netzwerkpakete einer VM direkt im Host-Kernel verarbeitet statt im QEMU-Prozess. Senkt Latenz und CPU-Last erheblich.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Standard für paravirtualisierte Geräte (Netz, Platte, Ballooning, Konsole) in KVM/QEMU-VMs – deutlich schneller als emulierte Hardware.«
++ VirtIO
+- NoCloud
+- Honeynet
+- NTLM-Relay
+! VirtIO: Standard für paravirtualisierte Geräte (Netz, Platte, Ballooning, Konsole) in KVM/QEMU-VMs – deutlich schneller als emulierte Hardware.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Virtual LAN (IEEE 802.1Q) – logische Aufteilung eines physischen Netzes in getrennte Segmente mittels 12-Bit-Kennung im Frame.«
++ VLAN
+- Exploit
+- UPID
+- BloodHound
+! VLAN: Virtual LAN (IEEE 802.1Q) – logische Aufteilung eines physischen Netzes in getrennte Segmente mittels 12-Bit-Kennung im Frame.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Virtuelle Maschine – vollständig nachgebildeter Rechner mit eigenem Betriebssystem, der auf einem Hypervisor läuft.«
++ VM
+- Purdue-Modell
+- MTTD
+- Exploit
+! VM: Virtuelle Maschine – vollständig nachgebildeter Rechner mit eigenem Betriebssystem, der auf einem Hypervisor läuft.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Ausbruch aus einer virtuellen Maschine auf den Hypervisor über eine Schwachstelle in der Virtualisierung (selten, aber kritisch).«
++ VM-Escape
+- Worker
+- KSM
+- NetBIOS
+! VM-Escape: Ausbruch aus einer virtuellen Maschine auf den Hypervisor über eine Schwachstelle in der Virtualisierung (selten, aber kritisch).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Eindeutige Nummer einer VM oder eines Containers in Proxmox (100 bis 999.999.999).«
++ VMID
+- SIEM
+- Access-Port
+- Gitea
+! VMID: Eindeutige Nummer einer VM oder eines Containers in Proxmox (100 bis 999.999.999).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Virtuelles Netz in Proxmox SDN, das einem VLAN bzw. einer VXLAN-VNI entspricht und an das VMs angeschlossen werden.«
++ VNet
+- BGP
+- Honeynet
+- Kubernetes
+! VNet: Virtuelles Netz in Proxmox SDN, das einem VLAN bzw. einer VXLAN-VNI entspricht und an das VMs angeschlossen werden.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »VXLAN Network Identifier – 24-Bit-Kennung eines VXLAN-Segments (ca. 16,7 Mio. mögliche Netze).«
++ VNI
+- SPS
+- DKIM
+- Purdue-Modell
+! VNI: VXLAN Network Identifier – 24-Bit-Kennung eines VXLAN-Segments (ca. 16,7 Mio. mögliche Netze).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Virtual Private Network – verschlüsselter Tunnel, über den entfernte Nutzer sicher in ein Netz gelangen (z. B. WireGuard, Open▢▢▢).«
++ VPN
+- OCI
+- Active Response
+- Strelka
+! VPN: Virtual Private Network – verschlüsselter Tunnel, über den entfernte Nutzer sicher in ein Netz gelangen (z. B. WireGuard, OpenVPN).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Virtual Routing and Forwarding – mehrere voneinander getrennte Routing-Tabellen auf einem Router; erlaubt identische IP-Bereiche pro Mandant.«
++ VRF
+- Red Team
+- Ballooning
+- LXC
+! VRF: Virtual Routing and Forwarding – mehrere voneinander getrennte Routing-Tabellen auf einem Router; erlaubt identische IP-Bereiche pro Mandant.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Intel Virtualization Technology (bei AMD: AMD-V): CPU-Erweiterung, die Hardware-Virtualisierung ermöglicht. Muss im UEFI aktiviert sein.«
++ VT-x
+- MSL
+- Kubernetes
+- Root-Hints
+! VT-x: Intel Virtualization Technology (bei AMD: AMD-V): CPU-Erweiterung, die Hardware-Virtualisierung ermöglicht. Muss im UEFI aktiviert sein.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »VXLAN Tunnel Endpoint – Stelle, an der Frames in VXLAN verpackt bzw. ausgepackt werden (bei Proxmox: der Host).«
++ VTEP
+- IPMI
+- SIEM
+- MON
+! VTEP: VXLAN Tunnel Endpoint – Stelle, an der Frames in VXLAN verpackt bzw. ausgepackt werden (bei Proxmox: der Host).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Virtuelles Trusted Platform Module für VMs; nötig z. B. für Windows 11 und BitLocker.«
++ vTPM
+- MTTD
+- cgroups
+- DNP3
+! vTPM: Virtuelles Trusted Platform Module für VMs; nötig z. B. für Windows 11 und BitLocker.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Virtual Extensible LAN (RFC 7348) – verpackt Ethernet-Frames in UDP-Pakete (Port 4789), um Layer-2-Netze über Layer-3-Netze zu spannen.«
++ VXLAN
+- Zwischen-CA
+- Overlay
+- Template
+! VXLAN: Virtual Extensible LAN (RFC 7348) – verpackt Ethernet-Frames in UDP-Pakete (Port 4789), um Layer-2-Netze über Layer-3-Netze zu spannen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Web Application Firewall: filtert HTTP-Anfragen auf Angriffsmuster (z. B. ModSecurity mit OWASP Core Rule Set).«
++ WAF
+- IOMMU
+- Timeline
+- Pull Request
+! WAF: Web Application Firewall: filtert HTTP-Anfragen auf Angriffsmuster (z. B. ModSecurity mit OWASP Core Rule Set).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Vereinbarter Zeitraum, in dem Änderungen und Updates durchgeführt werden dürfen, ohne den Betrieb (hier: Übungen) zu stören.«
++ Wartungsfenster
+- HCL
+- Kea
+- REST
+! Wartungsfenster: Vereinbarter Zeitraum, in dem Änderungen und Updates durchgeführt werden dürfen, ohne den Betrieb (hier: Übungen) zu stören.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Open-Source-Sicherheitsplattform (HIDS/XDR/SIEM) mit Agenten für Log-Analyse, Dateiintegrität, Schwachstellen- und Konfigurationsprüfung.«
++ Wazuh
+- Persona
+- Logstash
+- IDS
+! Wazuh: Open-Source-Sicherheitsplattform (HIDS/XDR/SIEM) mit Agenten für Log-Analyse, Dateiintegrität, Schwachstellen- und Konfigurationsprüfung.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »HTTP-Aufruf, den ein System bei einem Ereignis automatisch an eine hinterlegte Adresse sendet (z. B. Gitea → Pipeline bei Push).«
++ Webhook
+- NVMe
+- Persistence
+- Kubernetes
+! Webhook: HTTP-Aufruf, den ein System bei einem Ereignis automatisch an eine hinterlegte Adresse sendet (z. B. Gitea → Pipeline bei Push).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Skript (z. B. PHP), das ein Angreifer auf einen Webserver lädt, um darüber Befehle auszuführen.«
++ Webshell
+- Red Team
+- DNS
+- Privilege Escalation
+! Webshell: Skript (z. B. PHP), das ein Angreifer auf einen Webserver lädt, um darüber Befehle auszuführen.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Protokoll für dauerhafte, bidirektionale Verbindungen zwischen Browser und Server über eine HTTP(S)-Verbindung.«
++ WebSocket
+- STRIDE
+- PKI
+- Lieferkettenangriff
+! WebSocket: Protokoll für dauerhafte, bidirektionale Verbindungen zwischen Browser und Server über eine HTTP(S)-Verbindung.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Übungsleitung: plant das Szenario, steuert Injects, überwacht Regeln und bewertet.«
++ White Team
+- for_each
+- Chaos Engineering
+- Active Directory
+! White Team: Übungsleitung: plant das Szenario, steuert Injects, überwacht Regeln und bewertet.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »TCP-Option, mit der das Empfangsfenster über 64 KiB hinaus vergrößert wird – wichtig für hohe Bandbreiten.«
++ Window Scaling
+- API
+- False Positive
+- Sollwert
+! Window Scaling: TCP-Option, mit der das Empfangsfenster über 64 KiB hinaus vergrößert wird – wichtig für hohe Bandbreiten.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Windows Remote Management (TCP 5985 HTTP / 5986 HTTPS) – Fernverwaltungsschnittstelle von Windows, u. a. für PowerShell Remoting und Ansible.«
++ WinRM
+- Wartungsfenster
+- SQL-Injection
+- Sandbox-Definition
+! WinRM: Windows Remote Management (TCP 5985 HTTP / 5986 HTTPS) – Fernverwaltungsschnittstelle von Windows, u. a. für PowerShell Remoting und Ansible.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Modernes, schlankes VPN-Protokoll (Standard UDP 51820) mit starker Kryptografie.«
++ WireGuard
+- Kill Chain
+- Proxmox Backup Server
+- SPS
+! WireGuard: Modernes, schlankes VPN-Protokoll (Standard UDP 51820) mit starker Kryptografie.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Hintergrundprozess, der Aufträge aus einer Job-Queue holt und ausführt, z. B. »Sandbox 17 aufbauen«.«
++ Worker
+- Pivoting
+- S7comm
+- Provider
+! Worker: Hintergrundprozess, der Aufträge aus einer Job-Queue holt und ausführt, z. B. »Sandbox 17 aufbauen«.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Extended Detection and Response – Erweiterung von EDR, die Daten von Endgeräten, Netz und Cloud gemeinsam auswertet.«
++ XDR
+- Tier-Modell
+- OVMF
+- Webshell
+! XDR: Extended Detection and Response – Erweiterung von EDR, die Daten von Endgeräten, Netz und Cloud gemeinsam auswertet.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Regelsprache zum Erkennen von Dateien anhand von Textmustern, Byte-Folgen und Bedingungen; Standard in der Malware-Analyse.«
++ YARA
+- USV
+- CRUSH
+- VXLAN
+! YARA: Regelsprache zum Erkennen von Dateien anhand von Textmustern, Byte-Folgen und Bedingungen; Standard in der Malware-Analyse.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Open-Source-Netzwerkanalyse-Framework, das Verkehr in strukturierte Protokoll-Logs (conn, dns, http, ssl, smb …) übersetzt.«
++ Zeek
+- Sandbox-Definition
+- Logstash
+- BMC
+! Zeek: Open-Source-Netzwerkanalyse-Framework, das Verkehr in strukturierte Protokoll-Logs (conn, dns, http, ssl, smb …) übersetzt.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Dateisystem mit integriertem Volume-Management, Prüfsummen, Snapshots, Klonen und Software-RAID; in Proxmox VE als Installationsoption.«
++ ZFS
+- Snapshot
+- Deduplizierung
+- MAC-Adresse
+! ZFS: Dateisystem mit integriertem Volume-Management, Prüfsummen, Snapshots, Klonen und Software-RAID; in Proxmox VE als Installationsoption.
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Netzsegment mit einheitlichem Schutzbedarf und eigenen Regeln (z. B. DMZ, CORP); in Proxmox SDN auch der Typ eines Overlays (VLAN, VXLAN, EVPN).«
++ Zone
+- Detection Engineering
+- HA
+- OCI
+! Zone: Netzsegment mit einheitlichem Schutzbedarf und eigenen Regeln (z. B. DMZ, CORP); in Proxmox SDN auch der Typ eines Overlays (VLAN, VXLAN, EVPN).
+@ tags: glossar
+
+? Welcher Fachbegriff passt? »Zertifizierungsstelle unterhalb der Root-CA, die im Alltag Zertifikate ausstellt. Wird sie kompromittiert, kann man sie sperren, ohne die Root-CA zu ersetzen.«
++ Zwischen-CA
+- NAT
+- PCIe
+- Pull Request
+! Zwischen-CA: Zertifizierungsstelle unterhalb der Root-CA, die im Alltag Zertifikate ausstellt. Wird sie kompromittiert, kann man sie sperren, ohne die Root-CA zu ersetzen.
+@ tags: glossar

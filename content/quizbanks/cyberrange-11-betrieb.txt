@@ -1,0 +1,164 @@
+# titel: Cyber Range 11 · Betrieb, Skalierung & 2-Maschinen-Setup
+# kategorie: Cyber Range
+# os: linux
+# schwierigkeit: hard
+# modul: Cyber Range 11 · Betrieb & Skalierung
+# beschreibung: Pilot-Setup, Startreihenfolge, Ausfälle, Ceph, SDN, Kapazität, Leistung, Backup und Wiederanlauf.
+
+? Über welches Netz spricht iac-01 mit der Proxmox-API von range-01?
++ Über das Management-Netz (vmbr0)
+- Über das Übungsnetz
+- Über die Mirror-Leitung
+- Über das SINET
+
+? Welche Eigenschaft hat die Mirror-Leitung?
++ Einseitig und ohne IP-Adressen auf beiden Seiten
+- Bidirektional mit DHCP
+- Sie führt ins Internet
+- Sie ist ein WLAN
+
+? Womit wird die Spiegelung der Router-NIC beim VM-Start gesetzt?
++ Mit einem Proxmox-Hookscript (tc-Filter in der Phase post-start)
+- Manuell nach jedem Neustart
+- Über Guacamole
+- Über DNS
+
+? Auf welcher Proxmox-Ebene wird die Host-Firewall für alle Knoten konfiguriert?
+= /etc/pve/firewall/cluster.fw
+= cluster.fw
+
+?order Bringe die Startreihenfolge der Range in die richtige Reihenfolge
+> iac-01
+> wazuh-01 und so-01
+> rtr-01 (OPNsense)
+> SINET-Dienste
+> Domänencontroller
+> Server
+> Clients, NPCs, Red-VMs
+> access-01 und score-01
+
+? Was passiert bei einem Ausfall von ops-01 während der Übung?
++ Kein Monitoring, kein Zugang, kein Scoring – Übung pausieren und Zeit einfrieren
+- Nichts, alles läuft normal weiter
+- Das Übungsnetz wird mit dem Internet verbunden
+- range-01 wird automatisch gelöscht
+
+?order Bringe die Skalierungsstufen in die richtige Reihenfolge
+> 1 Rechner
+> 2 Rechner (Pilot)
+> Cluster ab 3 Knoten mit Ceph und SDN
+> Institutionelle Plattform
+
+? Was bedeutet der Ceph-Pool »size=3, min_size=2«?
++ Jeder Block liegt dreimal auf verschiedenen Knoten; mit zwei Kopien bleibt der Pool schreibbar
+- Drei Pools mit je zwei Platten
+- Maximal drei VMs
+- Zwei Kopien, drei Netze
+
+? Welche Ports nutzt der Ceph-Monitor? (mehrere)
++ 3300
++ 6789
+- 8006
+- 1514
+
+? Welche Ports nutzt Corosync?
++ 5405–5412/udp
+- 22/tcp
+- 3389/tcp
+- 4789/udp
+
+? Wie schnell sollte das Netz für Ceph mindestens sein?
++ 10 GbE, besser 25 GbE
+- 100 Mbit/s
+- WLAN genügt
+- 1 GbE ist ideal
+
+? Wie trennt Proxmox SDN die Teams, damit alle identische IP-Adressen nutzen können?
++ Eine eigene VXLAN-Zone mit eigenen VNIs je Team
+- Durch unterschiedliche Hostnamen
+- Durch verschiedene Passwörter
+- Gar nicht – das ist unmöglich
+
+? Welche MTU haben VNets bei einem Underlay mit MTU 1500?
+= 1450
+
+? Welche Faustformel nennt das Dokument für den RAM-Bedarf?
++ 48 GB + n × 70 GB (n = Teams)
+- 8 GB je Team
+- 1 TB fest
+- RAM ist egal
+
+? Wie viel RAM braucht das Beispielszenario »Nordlicht« für ein Team laut Beispielrechnung?
++ etwa 92 GB für 25 VMs
+- etwa 9 GB
+- etwa 900 GB
+- etwa 2 GB
+
+?tf Auf range-01 mit 128 GB RAM passen zwei parallele Teams des Szenarios »Nordlicht«.
+= falsch
+! 2 × 92 GB übersteigen 128 GB – nötig wäre ein zweiter Host oder mehr RAM.
+
+? Was bedeutet N+1 bei der Clusterplanung?
++ Ein Knoten muss ausfallen dürfen, ohne dass die Übung stoppt
+- Ein zusätzlicher Admin
+- Ein Knoten mehr als Teams
+- Eine VM mehr pro Knoten
+
+? Mit welchem Werkzeug misst man IOPS?
+= fio
+
+? Mit welchem Werkzeug misst man Netzwerkdurchsatz?
+= iperf3
+= iperf
+
+? Ab welchem IO-Delay sollte man reagieren (Richtwert)?
++ über 10 % für 5 Minuten
+- über 0,1 %
+- erst ab 90 %
+- nie
+
+? Wofür steht die 3-2-1-Regel?
++ 3 Kopien, 2 verschiedene Medien, 1 Kopie außer Haus/offline
+- 3 Server, 2 Switches, 1 Firewall
+- 3 Tage, 2 Wochen, 1 Monat
+- 3 Admins, 2 Teams, 1 Leitung
+
+? Auf welchem Port läuft die Weboberfläche des Proxmox Backup Server?
+= 8007
+
+?tf Übungs-VMs werden täglich gesichert, damit man sie wiederherstellen kann.
+= falsch
+! Übungs-VMs entstehen aus Code neu; gesichert werden Git, Templates, Betriebs-VMs und Ergebnisse.
+
+? Was beschreibt das RPO?
++ Den maximal tolerierten Datenverlust in Zeit
+- Die maximale Ausfallzeit
+- Die Anzahl der Backups
+- Die Größe des Backup-Servers
+
+? Was beschreibt das RTO?
++ Die maximal tolerierte Zeit bis zur Wiederherstellung
+- Den maximalen Datenverlust
+- Die Backup-Frequenz
+- Die Verschlüsselungsstärke
+
+? Was ermöglicht die Dirty Bitmap?
++ Sehr schnelle inkrementelle Backups, weil nur geänderte Blöcke übertragen werden
+- Verschlüsselung der Backups
+- Schnelleres Booten
+- Mehr RAM
+
+?tf Geht der Verschlüsselungsschlüssel der Backups verloren, sind die Sicherungen wertlos.
+= wahr
+
+? Welches Ziel (RTO) hat der Wiederanlauf der gesamten Plattform nach Totalausfall?
++ etwa ein Arbeitstag
+- 5 Minuten
+- ein Monat
+- kein Ziel
+
+? Ab wann gilt vor einer Übung eine Sperrzeit für normale und große Änderungen?
++ ab 3 Arbeitstagen vor der Übung
+- ab 3 Minuten vorher
+- nie
+- ab 3 Monaten vorher

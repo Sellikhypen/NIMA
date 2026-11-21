@@ -1,0 +1,123 @@
+# titel: Cyber Range 15 · Referenzprojekte & Orchestrierung
+# kategorie: Cyber Range
+# os: general
+# schwierigkeit: medium
+# modul: Cyber Range 15 · Referenzprojekte & Orchestrierung
+# beschreibung: Locked Shields, KYPO, Crucible, Ludus, GOAD, Literatur und der Aufbau eines eigenen Orchestrators.
+
+? Wer organisiert Locked Shields?
++ NATO CCDCOE in Tallinn
+- ENISA
+- BSI
+- MITRE
+
+? Wie viele Nationen nahmen an Locked Shields 2025 teil?
+= 41
+
+? Wie viele multinationale Blue Teams gab es bei Locked Shields 2025?
+= 17
+
+? Wie viele Personen waren an Locked Shields 2025 ungefähr beteiligt?
++ mehr als 4.000
+- etwa 40
+- etwa 400
+- etwa 40.000
+
+? Wie heißen die fiktiven Konfliktparteien im Locked-Shields-Szenario?
++ Berylia und Crimsonia
+- Nordwind und Südwind
+- Alpha und Beta
+- Red und Blue
+
+? An welcher Universität wurde KYPO CRP entwickelt?
+= Masaryk-Universität
+= Masaryk
+= Masaryk-Universität Brno
+
+? Auf welcher Plattform basiert KYPO CRP?
+= OpenStack
+
+? Welche Datei beschreibt bei KYPO die Topologie einer Sandbox?
+= topology.yml
+
+? Welche Elemente kennt eine KYPO-Topologie-Datei? (mehrere)
++ hosts
++ routers
++ networks
++ net_mappings
+- firewalls_extern
+
+? Welches Adressschema verwendet Ludus?
++ 10.<Range>.<VLAN>.<Host>
+- 192.168.<Host>.<VLAN>
+- 172.16.0.0/12 ohne Struktur
+- nur IPv6
+
+? Auf welchem Hypervisor baut Ludus auf?
+= Proxmox
+= Proxmox VE
+
+? Von wem stammen Crucible und GHOSTS?
++ CMU SEI (Carnegie Mellon University, Software Engineering Institute)
+- NATO
+- Microsoft
+- ENISA
+
+? Welche Organisation veranstaltet Cyber Europe?
+= ENISA
+
+? Seit wann findet Cyber Europe statt?
+= 2010
+
+? Woher stammen CyRIS und CyTrONE?
++ JAIST (Japan)
+- MIT (USA)
+- ETH (Schweiz)
+- TU Berlin
+
+? Welche Übersichtsarbeit ist die Basis des Schichtenmodells im Dokument?
++ Yamin, Katt, Gkioulos (2020)
+- Davis & Magrath (2013)
+- Vykopal et al. (2017)
+- Ukwandu et al. (2020)
+
+?order Bringe die Komponenten eines Orchestrators in Datenflussrichtung
+> Web-Frontend
+> Range-API
+> Job-Queue
+> Worker
+> Proxmox
+
+? Was ist ein Pool im Orchestrator?
++ Eine Gruppe gleichartiger, vorab erzeugter Sandboxes
+- Ein Swimmingpool
+- Ein ZFS-Speicher
+- Eine Firewall-Regel
+
+?order Bringe die Sandbox-Zustände in die normale Reihenfolge
+> REQUESTED
+> BUILDING
+> READY
+> ALLOCATED
+> RESETTING
+
+? Welche Prüfregeln gelten für Topologie-Dateien? (mehrere)
++ Eindeutige Namen
++ Keine überlappenden Netzbereiche
++ Adressen liegen im Bereich ihres Netzes
+- Mindestens 100 Hosts
+
+? Welche Python-Bibliothek kapselt die Proxmox-REST-API?
+= proxmoxer
+
+? Welche drei Prinzipien machen einen Orchestrator robust? (mehrere)
++ Idempotente Schritte
++ Wiederholung mit Wartezeit
++ Quoten und Vorabprüfung
+- Manuelle Eingriffe bei jedem Fehler
+
+? Warum braucht ein Orchestrator einen nächtlichen Aufräumjob?
++ Fehlgeschlagene Bauvorgänge hinterlassen halbe Sandboxes, verwaiste Netze und belegte VMIDs
+- Damit die Server kühler werden
+- Damit Passwörter rotieren
+- Er braucht keinen

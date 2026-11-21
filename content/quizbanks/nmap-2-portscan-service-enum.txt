@@ -1,0 +1,137 @@
+# titel: Nmap 2 · Port Scanning & Service Enumeration
+# kategorie: Netzwerk
+# os: network
+# schwierigkeit: medium
+# zert: CJCA, CPTS
+# modul: Network Enumeration with Nmap
+# beschreibung: Aus deinen Notizen: die 6 Port-Zustände, -sS vs. -sT, dropped vs. rejected, UDP, Versions-Scan, Ausgabeformate und Banner Grabbing.
+
+? Welcher Port-Zustand tritt NUR beim TCP-ACK-Scan auf: erreichbar, aber offen/geschlossen unklar?
+= unfiltered
+
+? Welcher Port-Zustand tritt nur beim IP-ID-Idle-Scan auf?
+= closed|filtered
+
+? Welcher Zustand bedeutet: keine Antwort – evtl. schützt eine Firewall oder ein Paketfilter den Port?
+= open|filtered
+
+?tf Ein Port im Zustand „closed“ zeigt auch, dass der Host erreichbar ist.
+= wahr
+! Die Antwort enthält ein RST-Flag – der Host lebt also.
+
+? Wie viele Port-Zustände kennt Nmap?
+= 6
+= sechs
+! open, closed, filtered, unfiltered, open|filtered, closed|filtered.
+
+? Welche Option scannt schnell die Top 100 Ports?
+= -F
+
+? Wie scannt man die 10 häufigsten Ports?
+= --top-ports=10
+= --top-ports 10
+
+? Welche Option schaltet die DNS-Auflösung ab?
+= -n
+
+? Warum nutzt Nmap ohne root den Connect-Scan statt des SYN-Scans?
++ Der SYN-Scan braucht Raw-Sockets und damit root-Rechte
+- Der Connect-Scan ist immer schneller
+- Ohne root ist UDP verboten
+- Der SYN-Scan funktioniert nur unter Windows
+
+? In --packet-trace steht bei der Antwort `RA`. Was bedeutet das?
++ RST + ACK – der Port ist closed
+- SYN + ACK – der Port ist open
+- Retry Attempt – Nmap wiederholt
+- Raw ACK – der Port ist unfiltered
+! ACK bestätigt den Empfang, RST beendet die Sitzung.
+
+? Welcher Scan ist am wenigsten unauffällig, gilt aber als „höflich“ und sehr genau?
++ Connect-Scan (-sT)
+- SYN-Scan (-sS)
+- Xmas-Scan (-sX)
+- Idle-Scan (-sI)
+! Vollständiger Three-Way-Handshake: erzeugt Logs, IDS/IPS erkennen ihn leicht – stört Dienste aber kaum.
+
+? Ein Port wird „dropped“. Was passiert beim Scannen?
++ Keine Antwort, Nmap wiederholt (Standard 10 Retries) – der Scan dauert deutlich länger
+- Sofortige ICMP-Antwort type 3 / code 3
+- Der Host antwortet mit RST
+- Nmap bricht den Scan ab
+
+? Welche ICMP-Antwort bekommt man, wenn eine Firewall einen Port „rejected“ (Port unreachable)?
++ type 3 / code 3
+- type 8 / code 0
+- type 0 / code 0
+- type 11 / code 0
+
+? Welche Option legt die Anzahl der Wiederholungen fest (Standard 10)?
+= --max-retries
+
+?tf UDP-Scans sind meist viel langsamer als TCP-Scans, weil UDP zustandslos ist.
+= wahr
+! Kein Handshake, keine Bestätigung → lange Timeouts (Beispiel: 98 s für 100 Ports).
+
+? UDP-Scan: Nmap bekommt „ICMP Port unreachable (code 3)“. Welcher Zustand?
+= closed
+
+? UDP-Scan: Keine Antwort. Welcher Zustand?
+= open|filtered
+
+? Welche Zeile im -sV-Ergebnis verrät oft den Hostnamen des Ziels?
++ Service Info: Host:
+- PORT STATE SERVICE
+- Nmap done:
+- MAC Address:
+
+? Welche Option speichert die grepable Ausgabe (.gnmap)?
+= -oG
+
+? Welche Option speichert die XML-Ausgabe?
+= -oX
+
+? Welche Option speichert die normale Ausgabe (.nmap)?
+= -oN
+
+? Mit welchem Befehl erzeugst du aus target.xml einen HTML-Bericht?
+= xsltproc target.xml -o target.html
+
+? Was zeigt Nmap, wenn du während eines Scans die Leertaste drückst?
++ Den aktuellen Scan-Status
+- Eine Liste aller NSE-Skripte
+- Die Hilfe
+- Nichts, der Scan wird pausiert
+
+? Mit welcher Option zeigt Nmap den Fortschritt automatisch alle 5 Sekunden?
+= --stats-every=5s
+= --stats-every 5s
+
+? Nmap zeigte nur „Postfix smtpd“, das echte Banner lautet „220 inlane ESMTP Postfix (Ubuntu)“. Was lernst du daraus?
++ Banner auch manuell prüfen – automatische Scans übersehen Details wie die Distribution
+- -sV ist immer vollständig
+- Banner sind immer gefälscht
+- SMTP verrät nie die Distribution
+
+? Mit welchem Befehl verbindest du dich manuell auf Port 25, um das Banner zu lesen?
+= nc -nv 10.129.2.28 25
+= re:n?c(at)? -nv \S+ 25
+
+? In welchem Paket kommt beim Banner Grabbing das Banner (tcpdump-Flags [P.])?
++ PSH-ACK
+- SYN-ACK
+- RST
+- FIN-ACK
+! PSH = der Server sendet Daten, ACK = Bestätigung.
+
+?order Bringe den TCP-Mitschnitt beim Banner Grabbing in die richtige Reihenfolge
+> SYN (wir → Ziel)
+> SYN-ACK (Ziel → wir)
+> ACK (wir → Ziel)
+> PSH-ACK mit Banner (Ziel → wir)
+> ACK (wir bestätigen)
+
+?order Bringe das empfohlene Vorgehen bei der Service Enumeration in Reihenfolge
+> Schneller Port-Scan mit wenig Traffic
+> Vollständigen Scan (-p-) im Hintergrund laufen lassen
+> Versions-Scan (-sV) gezielt auf gefundene Ports

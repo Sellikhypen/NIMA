@@ -1,0 +1,148 @@
+# titel: Nmap 3 · NSE, Performance & Firewall-Evasion
+# kategorie: Netzwerk
+# os: network
+# schwierigkeit: hard
+# zert: CPTS
+# modul: Network Enumeration with Nmap
+# beschreibung: Aus deinen Notizen: NSE-Kategorien, -A, Timing-Vorlagen, RTT/Retries/min-rate, ACK-Scan, Decoys, Quell-IP und der Quell-Port-53-Trick aus den Labs.
+
+? In welcher Sprache sind NSE-Skripte geschrieben?
+= Lua
+
+? Wie viele NSE-Kategorien gibt es?
+= 14
+= vierzehn
+
+? Welche NSE-Kategorie läuft mit -sC?
+= default
+
+? Welche NSE-Kategorie identifiziert bestimmte Schwachstellen?
+= vuln
+
+? Welche NSE-Kategorien können laut den Notizen Dienste stören oder schaden?
++ dos
++ intrusive
++ exploit
+- safe
+- version
+- discovery
+! Nur einsetzen, wenn der Scope das ausdrücklich erlaubt.
+
+? Welche NSE-Kategorie enthält defensive Skripte ohne aufdringliche Zugriffe?
+= safe
+
+? Wie führt man zwei bestimmte Skripte (banner und smtp-commands) auf Port 25 aus?
+= --script banner,smtp-commands
+= nmap -p 25 --script banner,smtp-commands
+= re:.*--script[ =]banner,smtp-commands.*
+
+? Was kann das Skript smtp-commands verraten, das beim Finden von Benutzern hilft?
++ Welche SMTP-Befehle erlaubt sind (z. B. VRFY)
+- Die Passwörter der Mailboxen
+- Die TLS-Zertifikatskette
+- Die MX-Records der Domain
+
+? Was kombiniert die Option -A?
++ -sV, -O, --traceroute und -sC
+- -sS, -sU, -p-
+- -T5 und --min-rate
+- -Pn, -n und --disable-arp-ping
+
+? Welche Option macht die Betriebssystem-Erkennung?
+= -O
+
+? Welches NSE-Skript fand im vuln-Beispiel Pfade wie /wp-login.php?
+= http-enum
+
+? Welches Skript listete im Beispiel bekannte CVEs zur Apache-Version?
+= vulners
+
+? Welches Timing-Template ist der Standard, wenn nichts angegeben ist?
++ -T 3 (normal)
+- -T 4 (aggressive)
+- -T 2 (polite)
+- -T 0 (paranoid)
+
+? Wie heißt -T 0?
+= paranoid
+
+? Wie heißt -T 1?
+= sneaky
+
+? Wie heißt -T 5?
+= insane
+
+? Mit welchem Initial-Timeout (RTT) startet Nmap?
+= 100ms
+= 100 ms
+= 100
+
+? Welche Option sorgt dafür, dass Nmap mindestens 300 Pakete pro Sekunde sendet?
+= --min-rate 300
+= --min-rate=300
+
+?tf Laut den Tests in den Notizen fand ein Scan mit zu kurzem RTT-Timeout weniger Hosts.
+= wahr
+! 8 statt 10 Hosts. Schneller ist nicht immer besser – man übersieht wichtige Infos.
+
+? Mit welchem Befehl zählst du gefundene Ports in einer gespeicherten Scan-Datei?
+= grep "/tcp" | wc -l
+= re:.*grep ["']?/tcp["']?.*\|\s*wc -l
+
+? Was unterscheidet IPS von IDS?
++ Das IPS ergreift zusätzlich automatisch Gegenmaßnahmen
+- Das IDS blockt, das IPS meldet nur
+- Beide sind identisch
+- Das IPS arbeitet nur mit UDP
+
+? ACK-Scan (-sA) auf einen offenen Port: Was antwortet das Ziel?
++ RST – Nmap meldet „unfiltered“
+- SYN-ACK – Nmap meldet „open“
+- Nichts – Nmap meldet „filtered“
+- ICMP type 3 – Nmap meldet „closed“
+
+? Warum kommen ACK-Pakete oft durch Firewalls, SYN-Pakete aber nicht?
++ Die Firewall kann nicht erkennen, ob die Verbindung von innen oder außen aufgebaut wurde
+- ACK-Pakete sind verschlüsselt
+- ACK-Pakete sind kleiner
+- Firewalls prüfen nur UDP
+
+? Welche Option mischt 5 zufällige Decoy-IPs unter die Pakete?
+= -D RND:5
+
+?tf Decoy-IPs sollten erreichbar (alive) sein.
+= wahr
+! Sonst kann SYN-Flooding-Schutz den Dienst unerreichbar machen.
+
+? Mit welcher Option setzt man eine eigene Quell-IP?
+= -S
+
+? Mit welcher Option wählt man das Interface (z. B. tun0)?
+= -e
+= -e tun0
+
+? Welcher Quell-Port wird im Hard-Lab genutzt, weil die Firewall ihm vertraut?
+= 53
+= --source-port 53
+
+? Mit welchem ncat-Befehl liest man das Banner von Port 50000 über Quell-Port 53?
+= ncat -nv --source-port 53 10.129.40.136 50000
+= re:ncat -nv --source-port 53 \S+ 50000
+
+? Mit welcher Option gibt man eigene DNS-Server an (nützlich in einer DMZ)?
+= --dns-server
+
+? Wie fragst du per dig die Version eines DNS-Servers ab (Medium-Lab)?
+= dig CH TXT version.bind @IP
+= re:dig (CH TXT|chaos txt|txt chaos) version\.bind @\S+
+
+? Über welches Protokoll muss man im Medium-Lab die DNS-Version scannen?
++ UDP (Port 53, -sU -sV)
+- TCP (Port 53, -sT)
+- ICMP
+- SCTP
+
+?order Bringe den Lösungsweg des Hard-Labs in Reihenfolge
+> Alle Ports mit --source-port 53 scannen und den versteckten Port finden
+> Version mit -sV und --source-port 53 auf den Port holen
+> Banner per ncat über Quell-Port 53 lesen und Flag ablesen

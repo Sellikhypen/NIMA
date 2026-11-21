@@ -1,0 +1,88 @@
+# titel: Linux Pfade & Dateien
+# kategorie: Linux
+# os: linux
+# schwierigkeit: easy
+# zert: CJCA, CPTS
+# modul: Linux Fundamentals
+# beschreibung: Die wichtigsten Dateien und Verzeichnisse auf Linux-Zielen – von Passwort-Hashes bis zu SSH-Keys und Logs.
+
+? In welcher Datei liegen unter Linux die Passwort-Hashes der Benutzer?
+= /etc/shadow
+! /etc/shadow ist nur für root lesbar. Hashes beginnen z. B. mit `$6$` (SHA-512) oder `$y$` (yescrypt).
+~ Sie liegt direkt neben /etc/passwd.
+
+? Welche Datei listet alle lokalen Benutzer inkl. UID, Home-Verzeichnis und Login-Shell?
+= /etc/passwd
+! Weltlesbar. Format: `name:x:UID:GID:Kommentar:Home:Shell`. Ein `x` bedeutet: Hash steht in /etc/shadow.
+
+? Wo werden lokale Hostnamen statisch auf IP-Adressen gemappt (wichtig für vHosts auf HTB)?
+= /etc/hosts
+! Auf HTB trägst du z. B. `10.10.11.x  box.htb` hier ein, damit Name-based Virtual Hosting funktioniert.
+
+? Welche Datei definiert, wer welche Befehle mit sudo ausführen darf?
+= /etc/sudoers
+! Bearbeiten nur mit `visudo`. Zusätzliche Regeln liegen oft in /etc/sudoers.d/.
+
+? In welchem Verzeichnis liegen die privaten SSH-Schlüssel eines Benutzers (Ordner)?
+= ~/.ssh
+= /home/<user>/.ssh
+= $HOME/.ssh
+! Typische Dateinamen: `id_rsa`, `id_ed25519`, `id_ecdsa`. Gefundene Keys brauchen `chmod 600`, sonst verweigert ssh sie.
+
+? Welche Datei im .ssh-Ordner enthält die Public Keys, die sich als dieser Benutzer anmelden dürfen?
+= ~/.ssh/authorized_keys
+= authorized_keys
+! Hast du Schreibrechte darauf, kannst du deinen eigenen Public Key eintragen → Persistenz per SSH.
+
+? Systemweite Cronjobs werden klassisch in welcher Datei definiert?
+= /etc/crontab
+! Zusätzlich: /etc/cron.d/, /etc/cron.daily/ usw. und Benutzer-Crontabs unter /var/spool/cron/crontabs/.
+
+? Welche Logdatei protokolliert auf Debian/Ubuntu SSH-Logins und sudo-Nutzung?
++ /var/log/auth.log
+- /var/log/syslog.d
+- /etc/log/secure
+- /var/log/kern.log
+! Auf RHEL/CentOS heißt das Pendant /var/log/secure.
+
+? Welche Datei enthält oft die zuletzt eingegebenen Befehle eines Benutzers (Bash)?
+= ~/.bash_history
+= .bash_history
+! Ein Klassiker für Credentials, die jemand versehentlich in der Kommandozeile getippt hat.
+
+? Wo liegt auf HTB-Linux-Maschinen typischerweise die root-Flag?
+= /root/root.txt
+! Die User-Flag liegt meist unter /home/<user>/user.txt.
+
+?tf /tmp und /dev/shm sind auf den meisten Systemen für alle Benutzer beschreibbar.
+= wahr
+! Deshalb laden Angreifer Tools wie linpeas gerne dorthin. /dev/shm liegt im RAM.
+
+? Welches ist das Standard-Webroot von Apache/Nginx auf Debian-basierten Systemen?
+= /var/www/html
+! Konfigurationen findest du unter /etc/apache2/sites-enabled/ bzw. /etc/nginx/sites-enabled/ – dort stehen oft weitere vHosts.
+
+? Welche Datei verrät Distribution und Version (z. B. „Ubuntu 22.04“)?
++ /etc/os-release
+- /proc/version_name
+- /etc/distro
+- /boot/os.cfg
+! Alternativ: `cat /etc/issue`, `lsb_release -a`. Kernelversion: `uname -a`.
+
+? Welche Datei zeigt Gruppen und deren Mitglieder?
+= /etc/group
+! Interessant für PrivEsc: Mitgliedschaft in docker, lxd, disk, adm oder sudo.
+
+? Welches Pseudo-Verzeichnis enthält Infos zu laufenden Prozessen (z. B. Befehlszeile, Umgebung)?
+= /proc
+! `/proc/<PID>/cmdline` und `/proc/<PID>/environ` können Passwörter enthalten. `/proc/self/` = aktueller Prozess (beliebt bei LFI).
+
+? Was bedeutet in der /etc/passwd ein `x` im zweiten Feld?
++ Der Passwort-Hash steht in /etc/shadow
+- Der Account ist gesperrt
+- Der Benutzer hat kein Passwort
+- Der Benutzer darf sudo nutzen
+
+? Welche Datei kann bei einer LFI die Umgebungsvariablen des Webserver-Prozesses verraten?
+= /proc/self/environ
+! Früher ein Weg zu RCE: User-Agent landet in environ, wird per LFI mit PHP inkludiert.

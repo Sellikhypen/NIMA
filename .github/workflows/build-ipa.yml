@@ -1,0 +1,70 @@
+name: Build NIMA IPA
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Xcode-Version
+        run: |
+          ls /Applications | grep -i xcode || true
+          LATEST=$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -n 1)
+          if [ -n "$LATEST" ]; then sudo xcode-select -s "$LATEST"; fi
+          xcodebuild -version
+
+      - name: Inhalte kompilieren (Markdown -> JSON)
+        run: python3 tools/build_content.py --strict
+
+      - name: XcodeGen
+        run: |
+          brew install xcodegen
+          xcodegen generate
+
+      - name: Build (unsigniert)
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project NIMA.xcodeproj \
+            -scheme NIMA \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            build 2>&1 | tee build.log | grep -E "error:|warning: unre|BUILD (SUCCEEDED|FAILED)" || true
+          test -d build/Build/Products/Release-iphoneos/NIMA.app
+
+      - name: Fehlerprotokoll
+        if: failure()
+        run: grep -n -E "error:" build.log | head -n 80 || true
+
+      - name: IPA packen
+        run: |
+          mkdir -p Payload
+          cp -R build/Build/Products/Release-iphoneos/NIMA.app Payload/
+          zip -qry NIMA.ipa Payload
+          ls -lh NIMA.ipa
+          du -sh Payload/NIMA.app
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NIMA-ipa
+          path: NIMA.ipa
+          retention-days: 30
+
+      - name: Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="build-${{ github.run_number }}"
+          gh release create "$TAG" NIMA.ipa --title "NIMA Build ${{ github.run_number }}" --notes "Unsignierte IPA für iOS 18 – mit AltStore/Sideloadly signieren." --latest

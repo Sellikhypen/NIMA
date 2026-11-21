@@ -1,0 +1,80 @@
+# titel: Blue Team & SOC Basics
+# kategorie: Blue Team
+# os: blue
+# schwierigkeit: medium
+# zert: CDSA, CJCA
+# modul: Windows Event Logs & Finding Evil, Security Monitoring & SIEM Fundamentals
+# beschreibung: Windows Event IDs, Sysmon, Splunk/SPL, MITRE ATT&CK, YARA und Memory-Forensik – Grundlagen für CDSA.
+
+? Welche Windows Event ID steht für eine erfolgreiche Anmeldung?
+= 4624
+! Der Logon Type verrät die Art: 2 = interaktiv, 3 = Netzwerk, 10 = RDP.
+
+? Welche Windows Event ID steht für eine fehlgeschlagene Anmeldung?
+= 4625
+! Viele 4625 von einer Quelle in kurzer Zeit → Brute Force / Password Spraying.
+
+? Welche Event ID protokolliert die Erstellung eines neuen Prozesses (mit aktivierter Auditierung)?
+= 4688
+
+? Welche Event ID meldet, dass ein neuer Dienst installiert wurde (System-Log) – typisch für PsExec?
+= 7045
+
+? Welche Event ID zeigt, dass das Security-Log gelöscht wurde?
+= 1102
+! Ein klassisches Anti-Forensik-Indiz.
+
+? Welche Event ID steht für das Anlegen eines neuen Benutzerkontos?
+= 4720
+
+? Welche Sysmon Event ID protokolliert die Prozesserstellung (inkl. Kommandozeile und Hash)?
+= 1
+! Sysmon 3 = Netzwerkverbindung, 11 = Datei erstellt, 10 = Prozesszugriff (z. B. auf LSASS).
+
+? Welche Sysmon Event ID deutet bei Zugriff auf lsass.exe auf Credential Dumping hin?
++ 10 (ProcessAccess)
+- 1 (ProcessCreate)
+- 22 (DNSEvent)
+- 5 (ProcessTerminate)
+
+? Welcher SPL-Befehl zählt in Splunk Ereignisse gruppiert nach einem Feld?
++ stats count by Feld
+- count group Feld
+- select count(*) from Feld
+- sort -count Feld
+! z. B. `index=main EventCode=4625 | stats count by src_ip | sort -count`.
+
+? Wie heißt das Framework, das Angreifer-Taktiken und -Techniken (z. B. T1003 Credential Dumping) katalogisiert?
+= MITRE ATT&CK
+= ATT&CK
+= MITRE ATTACK
+! Taktiken = das Warum (z. B. Persistence), Techniken = das Wie.
+
+? Welches Werkzeug beschreibt Malware-Merkmale über Regeln mit Strings und Bedingungen?
+= YARA
+! Struktur: `rule Name { strings: $a = "evil" condition: $a }`.
+
+? Mit welchem Framework analysiert man RAM-Dumps (z. B. `windows.pslist`)?
+= Volatility
+= Volatility 3
+= vol.py
+
+?tf Sigma-Regeln sind ein generisches Format für Log-Detections, das in SIEM-Abfragen (Splunk, Elastic …) übersetzt werden kann.
+= wahr
+
+? Welche Phase folgt im Incident-Response-Prozess (NIST) auf „Detection & Analysis“?
++ Containment, Eradication & Recovery
+- Preparation
+- Post-Incident Activity
+- Lessons Learned Only
+! NIST: Preparation → Detection & Analysis → Containment, Eradication & Recovery → Post-Incident Activity.
+
+? Welches Tool erzeugt aus Netzwerkverkehr strukturierte Logs wie conn.log, dns.log und http.log?
++ Zeek
+- Hashcat
+- Nmap
+- BloodHound
+
+? Welcher Windows-Prozess sollte legitimerweise der Parent von svchost.exe sein?
+= services.exe
+! svchost.exe mit anderem Parent oder aus falschem Pfad = verdächtig.

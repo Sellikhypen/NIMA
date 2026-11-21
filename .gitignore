@@ -1,0 +1,9 @@
+.DS_Store
+build/
+Payload/
+*.ipa
+NIMA.xcodeproj/
+App/Content/content.json
+App/Content/img/
+__pycache__/
+*.pyc

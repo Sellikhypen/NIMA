@@ -1,0 +1,114 @@
+# titel: Windows PrivEsc & Active Directory
+# kategorie: Active Directory
+# os: ad
+# schwierigkeit: hard
+# zert: CPTS, CAPE
+# modul: Active Directory Enumeration & Attacks, Windows Privilege Escalation
+# beschreibung: Privilegien, Potatoes, Kerberoasting, AS-REP-Roasting, DCSync, Pass-the-Hash und BloodHound.
+
+? Welcher Befehl zeigt die Privilegien des aktuellen Windows-Benutzers?
+= whoami /priv
+! Achte auf SeImpersonatePrivilege, SeBackupPrivilege, SeDebugPrivilege, SeLoadDriverPrivilege.
+
+? Ein Service-Account hat `SeImpersonatePrivilege`. Welche Tool-Familie führt fast immer zu SYSTEM?
++ Potato-Exploits (z. B. PrintSpoofer, GodPotato, JuicyPotato)
+- Mimikatz sekurlsa::tickets
+- BloodHound
+- Responder
+! Typisch für IIS- oder MSSQL-Service-Accounts.
+
+? Wie heißt der Angriff, bei dem man für Accounts mit SPN ein TGS-Ticket anfordert und offline knackt?
+= Kerberoasting
+= Kerberoast
+! Impacket: `GetUserSPNs.py domain/user:pass -dc-ip IP -request`.
+
+? Welcher Hashcat-Modus knackt Kerberoast-Hashes (TGS-REP, RC4, `$krb5tgs$23$`)?
+= 13100
+! AES-Varianten: 19600 (etype 17) und 19700 (etype 18).
+
+? Wie heißt der Angriff auf Accounts mit „Do not require Kerberos preauthentication“?
+= AS-REP Roasting
+= ASREPRoasting
+= AS-REP-Roasting
+= asreproast
+! Impacket: `GetNPUsers.py domain/ -usersfile users.txt -no-pass -dc-ip IP`.
+
+? Welcher Hashcat-Modus gehört zu AS-REP-Hashes (`$krb5asrep$23$`)?
+= 18200
+
+? Welcher Hashcat-Modus knackt NTLM-Hashes?
+= 1000
+
+? Welcher Hashcat-Modus gehört zu NetNTLMv2 (z. B. von Responder abgefangen)?
+= 5600
+! NetNTLMv1 = 5500. NetNTLM-Hashes kann man NICHT für Pass-the-Hash nutzen – nur knacken oder relayen.
+
+?tf Mit einem NTLM-Hash kann man sich ohne Klartext-Passwort an SMB/WinRM anmelden (Pass-the-Hash).
+= wahr
+! z. B. `evil-winrm -i IP -u Administrator -H <NThash>` oder `netexec smb IP -u user -H hash`.
+
+? Welche Rechte braucht ein Account für einen DCSync-Angriff?
++ Replicating Directory Changes und Replicating Directory Changes All
+- Nur lokale Admin-Rechte auf einer Workstation
+- SeShutdownPrivilege
+- Mitgliedschaft in „Remote Desktop Users“
+! Standardmäßig haben das Domain Admins, Enterprise Admins und DCs. Ausführung: `secretsdump.py domain/user@DC -just-dc-ntlm`.
+
+? Welches Impacket-Skript dumpt SAM, LSA-Secrets und per DCSync die NTDS-Hashes?
+= secretsdump.py
+= secretsdump
+= impacket-secretsdump
+
+? Welches Tool vergiftet LLMNR/NBT-NS-Anfragen im lokalen Netz, um NetNTLM-Hashes abzufangen?
+= Responder
+! `sudo responder -I tun0` – Windows-Clients fragen bei Tippfehlern per Broadcast nach Namen.
+
+? Welches Tool visualisiert Angriffspfade im Active Directory als Graph?
+= BloodHound
+! Daten sammeln mit SharpHound (Windows) oder `bloodhound-python` (Linux).
+
+? Mit welchem Mimikatz-Befehl liest man Klartext-Credentials/Hashes angemeldeter Benutzer aus LSASS?
+= sekurlsa::logonpasswords
+! Benötigt Admin + `privilege::debug`.
+
+? Wessen Hash braucht man für ein Golden Ticket?
++ krbtgt
+- Administrator (lokal)
+- Guest
+- Computer-Account des Angreifers
+! Golden Ticket = gefälschtes TGT → beliebiger Benutzer in der Domain.
+
+? Welche zwei Registry-Werte müssen auf 1 stehen, damit AlwaysInstallElevated ausnutzbar ist?
++ HKLM und HKCU …\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated
+- Nur HKLM\SAM\Elevate
+- HKCU\Run und HKLM\Run
+- UAC EnableLUA = 1 in HKLM und HKCU
+! Dann führt eine bösartige .msi (`msfvenom -f msi`) als SYSTEM aus.
+
+? Ein Dienstpfad lautet `C:\Program Files\My App\svc.exe` ohne Anführungszeichen. Wie heißt die Schwachstelle?
+= Unquoted Service Path
+= unquoted service path
+! Windows probiert nacheinander `C:\Program.exe`, `C:\Program Files\My.exe` … – Schreibrechte dort = Code als Dienst-Account.
+
+? Mit welchem Tool verbindet man sich bequem per WinRM auf Port 5985?
+= evil-winrm
+
+? Welches Privileg erlaubt, SAM/SYSTEM bzw. ntds.dit trotz fehlender Dateirechte zu kopieren?
++ SeBackupPrivilege
+- SeChangeNotifyPrivilege
+- SeTimeZonePrivilege
+- SeIncreaseWorkingSetPrivilege
+! Mitglieder der Gruppe „Backup Operators“ haben es. `reg save` bzw. `robocopy /b` nutzen.
+
+? Was zeigt `net user /domain`?
++ Alle Benutzer der Domain
+- Nur lokale Administratoren
+- Die Passwort-Hashes der Domain
+- Die Gruppenrichtlinien des DCs
+
+?order Bringe eine typische AD-Angriffskette in die richtige Reihenfolge
+> Initial Access mit einem Low-Priv-Domain-User
+> Domain enumerieren (BloodHound, LDAP)
+> Kerberoasting / AS-REP-Roasting und Hashes knacken
+> Lateral Movement mit gefundenen Credentials
+> DCSync als Domain Admin

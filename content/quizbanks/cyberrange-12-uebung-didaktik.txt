@@ -1,0 +1,155 @@
+# titel: Cyber Range 12 · Übungsbetrieb, Scoring & Didaktik
+# kategorie: Cyber Range
+# os: general
+# schwierigkeit: medium
+# modul: Cyber Range 12 · Übungsbetrieb & Didaktik
+# beschreibung: Teams, Rollen, Spielregeln, Codewörter, Lebenszyklus, Scoring, AAR, Purple Teaming und Ausbildungskonzept.
+
+? Welche Rolle hat das White Team?
++ Übungsleitung und Schiedsrichter
+- Angreifer
+- Verteidiger
+- Betrieb der Infrastruktur
+
+? Welche Rolle hat das Green Team?
++ Betrieb der Infrastruktur
+- Angreifer
+- Bewertung
+- Simulierte Benutzer
+
+? Was macht ein Purple Team?
++ Red und Blue arbeiten offen zusammen, um Erkennungslücken zu schließen
+- Es baut Hardware auf
+- Es schreibt nur Berichte
+- Es greift ohne Regeln an
+
+? Wofür steht RoE?
+= Rules of Engagement
+= Spielregeln
+
+? Welche Ziele sind laut Spielregeln keine Übungsziele? (mehrere)
++ Hypervisoren und Proxmox-API
++ Monitoring- und Scoring-Systeme
++ Keycloak und Guacamole
+- Die Server der fiktiven Firma im Übungsnetz
+
+? Welches Codewort kennzeichnet einen echten Notfall?
+= REALEREIGNIS
+= NO DUFF
+
+? Was bewirkt das Codewort »STOPP« durch den Exercise Director?
++ Alle Aktivitäten werden sofort angehalten
+- Die Übung wird bewertet
+- Das Red Team gewinnt
+- Nichts
+
+? Was steht vor jeder Nachricht aus der Übungswelt, die mit echter Kommunikation verwechselt werden könnte?
+= ÜBUNG – ÜBUNG – ÜBUNG
+= ÜBUNG ÜBUNG ÜBUNG
+= Übung
+
+? Wie heißt die Übungsleitung bei größeren Übungen oft?
++ White Cell bzw. EXCON
+- Red Cell
+- SOC
+- CSIRT
+
+?order Bringe den Lebenszyklus einer Übung in die richtige Reihenfolge
+> Planung
+> Aufbau
+> Dry-Run
+> Durchführung
+> Hot-Wash
+> After-Action-Review
+> Reset
+
+? Was ist ein Hot-Wash?
++ Eine kurze Nachbesprechung direkt nach Übungsende
+- Ein Reinigungsvorgang der Server
+- Ein Backup-Verfahren
+- Ein Angriffstyp
+
+? Was ist ein AAR?
+= After-Action-Review
+= After Action Review
+
+? Was ist der Grundsatz eines guten AAR?
++ Ursachen statt Schuldige
+- Schuldige finden
+- Nur das Red Team spricht
+- Keine Daten verwenden
+
+? Wie oft prüft die Scoring-Engine die Dienste im Beispiel?
++ alle 60 Sekunden
+- einmal am Tag
+- jede Millisekunde
+- nur am Ende
+
+?tf Das Abschalten eines Pflichtdienstes kostet mehr Punkte als ein erfolgreicher Angriff.
+= wahr
+! So wird verhindert, dass Teams einfach alles abschalten.
+
+? Welche Kriterien hat die Rubrik für Vorfallsberichte? (mehrere)
++ Zeitbezug
++ Betroffene Systeme
++ Technik mit ATT&CK-ID
++ Belege
++ Maßnahme
+- Schriftart
+
+? Was wird bei Inject-Antworten bewertet? (mehrere)
++ Rechtzeitigkeit
++ Adressatengerechte Sprache
++ Optionen und Empfehlung
++ Rechtliche Aspekte
+- Länge in Seiten
+
+?order Bringe die Bloom-Stufen in die richtige Reihenfolge (unten nach oben)
+> Erinnern
+> Verstehen
+> Anwenden
+> Analysieren
+> Bewerten
+> Erschaffen
+
+? Welche Bloom-Stufe trainiert das Entwickeln einer eigenen Sigma-Regel?
+= Erschaffen
+
+? Wie viele Rollenprofile hat das ENISA ECSF?
+= 12
+= zwölf
+
+? Welche Version des NICE Framework erschien im März 2025?
+= 2.0.0
+= 2.0
+
+? Welche vier Ebenen der Wirkungsmessung gibt es (Kirkpatrick)? (mehrere)
++ Reaktion
++ Lernen
++ Verhalten
++ Ergebnis
+- Hardware
+
+? Was ist ein Exercise Director?
++ Gesamtverantwortlicher mit Go/No-Go- und Abbruchentscheidung
+- Der Leiter des Red Teams
+- Ein Teilnehmer
+- Ein Software-Tool
+
+? Wie wird die Schwierigkeit für ein schwaches Team gesenkt? (mehrere)
++ Längere Pausen zwischen Angriffsphasen
++ Hinweis-Injects
++ Weniger Grundrauschen
+- Mehr verschleierte Befehle
+
+? Was wird beim Purple Teaming pro getesteter Technik festgehalten?
++ Technik, Zeitpunkt, erzeugte Telemetrie, Alarm ja/nein/spät, verantwortliche Regel, offene Maßnahme
+- Nur der Name des Angreifers
+- Nichts
+- Nur die Punkte
+
+? Was ist der aussagekräftigste Wert der Lernerfolgsmessung?
++ Der Unterschied zwischen Vorher und Nachher
+- Die Teilnehmerzufriedenheit allein
+- Die Anzahl der Pausen
+- Die Bildschirmgröße

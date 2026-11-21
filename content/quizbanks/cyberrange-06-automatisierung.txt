@@ -1,0 +1,131 @@
+# titel: Cyber Range 06 · L3 Automatisierung
+# kategorie: Cyber Range
+# os: linux
+# schwierigkeit: medium
+# modul: Cyber Range 06 · L3 Automatisierung
+# beschreibung: Infrastructure as Code mit Packer, OpenTofu und Ansible, GitOps, Tests, Drift und Geheimnisse.
+
+? Wofür steht IaC?
+= Infrastructure as Code
+
+?order Bringe die Werkzeuge der Pipeline in die Reihenfolge, in der sie die Range erzeugen
+> Packer baut Templates
+> OpenTofu erzeugt VMs und Netze
+> Ansible konfiguriert die Systeme
+
+? Welches Werkzeug baut die Golden Images (Templates)?
+= Packer
+
+? Welcher Terraform-Provider wird für Proxmox verwendet?
+= bpg/proxmox
+= bpg
+
+? Über welchen Port und welches Protokoll konfiguriert Ansible Windows-Systeme verschlüsselt?
++ WinRM über Port 5986
+- SSH über Port 22
+- RDP über Port 3389
+- SMB über Port 445
+
+? Was bedeutet Idempotenz bei Ansible?
++ Ein zweiter Lauf ändert nichts mehr, wenn der Soll-Zustand schon erreicht ist
+- Jeder Lauf installiert alles neu
+- Ansible arbeitet nur einmal
+- Tasks laufen parallel auf allen Hosts
+
+? Wann läuft ein Ansible-Handler?
++ Nur wenn ein anderer Task eine Änderung gemeldet hat
+- Bei jedem Lauf immer zuerst
+- Nur bei Fehlern
+- Nie automatisch
+
+?tf Ansible braucht auf jedem Zielsystem einen dauerhaft installierten Agenten.
+= falsch
+! Ansible ist agentenlos: SSH bzw. WinRM, Modul übertragen, ausführen, löschen.
+
+?order Bringe die Ansible-Begriffe von außen nach innen in die richtige Reihenfolge
+> Inventar
+> Playbook
+> Rolle
+> Task
+> Modul
+
+? Was sammelt Ansible zu Beginn eines Laufs automatisch über jedes Zielsystem?
+= Facts
+
+?order Bringe den GitOps-Kreislauf in die richtige Reihenfolge
+> Änderung auf Branch
+> Pull Request
+> Lint und Validate
+> tofu plan
+> Review und Freigabe
+> tofu apply
+> Ansible
+> Tests
+
+? Wo liegen die Workflows von Gitea Actions im Repository?
+= .gitea/workflows/
+= .gitea/workflows
+
+? Welches Programm führt Gitea-Actions-Workflows aus?
+= act_runner
+
+?tf Die terraform.tfstate-Datei gehört ins Git-Repository, damit alle sie haben.
+= falsch
+! Der State enthält oft Geheimnisse und gehört in ein geschütztes Backend.
+
+? Welches Sprachmittel erzeugt in OpenTofu aus einer Tabelle beliebig viele gleichartige Ressourcen?
+= for_each
+
+? In welcher Reihenfolge hängen die OpenTofu-Module der Range voneinander ab?
++ network → firewall → vm → inventory
+- vm → network → inventory → firewall
+- inventory → vm → firewall → network
+- alle gleichzeitig ohne Abhängigkeit
+
+? Was ist Drift?
++ Eine Abweichung zwischen Code (Soll) und tatsächlicher Infrastruktur (Ist)
+- Ein langsamer Festplattenzugriff
+- Eine Zeitabweichung der Uhr
+- Ein Fehler in der Firewall
+
+? Mit welchen Befehlen erkennt man Drift? (mehrere)
++ tofu plan
++ ansible-playbook --check --diff
+- tofu destroy
+- rm -rf
+
+? Welches Werkzeug prüft nach dem Ansible-Lauf in YAML, ob Ports offen und Dienste aktiv sind?
+= Goss
+
+? Womit werden Betriebsgeheimnisse im Repository verschlüsselt? (mehrere)
++ Ansible Vault
++ SOPS
+- Base64
+- ROT13
+
+?tf Ein absichtlich schwaches Szenario-Passwort darf auch für Keycloak oder Proxmox verwendet werden.
+= falsch
+
+? Woher bekommen Übungs-VMs ihre Pakete, da das Übungsnetz kein Internet hat?
++ Aus einem lokalen Spiegel auf iac-01
+- Direkt aus dem Internet
+- Von USB-Sticks der Teilnehmer
+- Gar nicht
+
+?order Bringe die Testpyramide der Range in die Reihenfolge von einfach zu umfassend
+> Syntax
+> Plan
+> Host
+> Netz
+> Isolation
+> Szenario
+
+? Was passiert bei einer Notfalländerung während der Übung?
++ Sofort umsetzen, dokumentieren und noch am selben Tag als Pull Request nachziehen
+- Gar nicht dokumentieren
+- Erst nach einem Monat in Git übernehmen
+- Die Übung neu starten
+
+? Welche Packer-Plugin-Quelle wird für Proxmox verwendet?
+= github.com/hashicorp/proxmox
+= hashicorp/proxmox
