@@ -231,6 +231,41 @@ class Linker:
         self.refs = {}  # term id -> set of module ids
         self.unknown = {}
 
+    def build_auto(self, terms):
+        """Regex über alle Begriffe/Aliasse (längste zuerst) für die automatische Verlinkung."""
+        names = {}
+        for t in terms.values():
+            for n in [t["term"]] + t["aka"]:
+                n = n.strip()
+                if len(n) >= 3 and not n.isdigit():
+                    names[n] = t["id"]
+        self.auto_names = names
+        alts = sorted(names, key=len, reverse=True)
+        self.auto_re = re.compile(r"(?<![\w\-/.])(" + "|".join(re.escape(a) for a in alts) + r")(?![\w\-])") if alts else None
+
+    def autolink(self, text, ctx_module, seen):
+        if not getattr(self, "auto_re", None):
+            return text
+        parts = re.split(r"(\[[^\]]*\]\([^)]*\)|`[^`]*`)", text)
+        out = []
+        for p in parts:
+            if p.startswith("`") or (p.startswith("[") and "](" in p):
+                out.append(p)
+                continue
+
+            def rep(m):
+                word = m.group(1)
+                tid = self.auto_names.get(word)
+                if not tid or tid in seen:
+                    return word
+                seen.add(tid)
+                if ctx_module:
+                    self.refs.setdefault(tid, set()).add(ctx_module)
+                return f"[{word}](nima://term/{tid})"
+
+            out.append(self.auto_re.sub(rep, p))
+        return "".join(out)
+
     def resolve(self, name):
         s = slug(name)
         if s in self.alias:
@@ -260,18 +295,22 @@ class Linker:
                 self.refs.setdefault(tid, set()).add(ctx_module)
             return f"[{label}](nima://term/{tid})"
 
-        return re.sub(r"\[\[([^\]]+)\]\]", rep, text)
+        # nicht innerhalb von Inline-Code (`...`) verlinken
+        parts = re.split(r"(`[^`]*`)", text)
+        return "".join(p if p.startswith("`") and p.endswith("`") and len(p) > 1 else re.sub(r"\[\[([^\]]+)\]\]", rep, p) for p in parts)
 
 
-def md_to_blocks(lines, linker, ctx, origin):
+def md_to_blocks(lines, linker, ctx, origin, seen=None):
     blocks = []
     i = 0
     para = []
+    seen = set() if seen is None else seen
+    al = lambda s: linker.autolink(s, ctx, seen)
 
     def flush_para():
         nonlocal para
         if para:
-            blocks.append({"t": "p", "text": linker.inline(" ".join(x.strip() for x in para), ctx)})
+            blocks.append({"t": "p", "text": al(linker.inline(" ".join(x.strip() for x in para), ctx))})
             para = []
 
     while i < len(lines):
@@ -318,7 +357,7 @@ def md_to_blocks(lines, linker, ctx, origin):
             for b in body:
                 if not b:
                     continue
-                items.append(linker.inline(b, ctx))
+                items.append(al(linker.inline(b, ctx)))
             blocks.append({"t": "callout", "kind": kind.lower(), "title": linker.inline(title, ctx), "items": items})
             continue
         if s.startswith("|"):
@@ -346,7 +385,7 @@ def md_to_blocks(lines, linker, ctx, origin):
             flush_para()
             items = []
             while i < len(lines) and re.match(r"^\s*(-|\*|•)\s+", lines[i]):
-                items.append(linker.inline(re.sub(r"^\s*(-|\*|•)\s+", "", lines[i]).strip(), ctx))
+                items.append(al(linker.inline(re.sub(r"^\s*(-|\*|•)\s+", "", lines[i]).strip(), ctx)))
                 i += 1
             blocks.append({"t": "ul", "items": items})
             continue
@@ -354,7 +393,7 @@ def md_to_blocks(lines, linker, ctx, origin):
             flush_para()
             items = []
             while i < len(lines) and re.match(r"^\s*\d+[.)]\s+", lines[i]):
-                items.append(linker.inline(re.sub(r"^\s*\d+[.)]\s+", "", lines[i]).strip(), ctx))
+                items.append(al(linker.inline(re.sub(r"^\s*\d+[.)]\s+", "", lines[i]).strip(), ctx)))
                 i += 1
             blocks.append({"t": "ol", "items": items})
             continue
@@ -456,6 +495,7 @@ def main():
     if dup:
         errors.append(f"Doppelte Modul-IDs: {dup}")
     linker = Linker(terms, set(ids))
+    linker.build_auto(terms)
     for m in mods:
         build_module_body(m, linker)
 
