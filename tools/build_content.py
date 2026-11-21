@@ -407,11 +407,26 @@ def md_to_blocks(lines, linker, ctx, origin, seen=None):
     return blocks
 
 
-def parse_module(path, linker):
+SERIES_SEP = re.compile(r"^@@@ MODULE @@@\s*$", re.M)
+
+
+def parse_modules(path):
+    """Eine Datei kann mehrere Module enthalten (Serien), getrennt durch '@@@ MODULE @@@'."""
     raw = path.read_text(encoding="utf-8").replace("\r", "")
+    chunks = [c.strip("\n") + "\n" for c in SERIES_SEP.split(raw) if c.strip()]
+    out = []
+    for n, c in enumerate(chunks, 1):
+        origin = path.name if len(chunks) == 1 else f"{path.name}#{n}"
+        m = parse_module(path, c, origin)
+        if m:
+            out.append(m)
+    return out
+
+
+def parse_module(path, raw, origin):
     m = re.match(r"^---\n(.*?)\n---\n(.*)$", raw, re.S)
     if not m:
-        errors.append(f"{path.name}: Front-Matter fehlt")
+        errors.append(f"{origin}: Front-Matter fehlt")
         return None
     fm = {}
     for line in m.group(1).split("\n"):
@@ -435,14 +450,14 @@ def parse_module(path, linker):
         "lessons": [],
         "quiz": [],
         "_body": body,
-        "_file": path,
+        "_file": origin,
     }
     return mod
 
 
 def build_module_body(mod, linker):
     body = mod.pop("_body")
-    origin = mod.pop("_file").name
+    origin = mod.pop("_file")
     lessons, cur, quiz_lines, in_quiz = [], None, [], False
     in_code = False
     for line in body:
@@ -489,7 +504,7 @@ def main():
     paths = json.loads((CONTENT / "paths.json").read_text(encoding="utf-8"))
     terms = load_glossary()
     files = sorted((CONTENT / "modules").rglob("*.md"))
-    mods = [m for m in (parse_module(f, None) for f in files) if m]
+    mods = [m for f in files for m in parse_modules(f)]
     ids = [m["id"] for m in mods]
     dup = {i for i in ids if ids.count(i) > 1}
     if dup:
