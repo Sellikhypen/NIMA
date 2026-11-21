@@ -55,6 +55,7 @@ final class Store {
 
     // MARK: Loading
 
+    @MainActor
     func load() async {
         loadProgress()
         do {
