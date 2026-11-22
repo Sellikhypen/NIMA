@@ -41,6 +41,7 @@ final class QuizSession {
     var results: [QuizResult] = []
     var remaining: Int
     var finished = false
+    private var anyRewarded = false
     var reinserted: Set<String> = []
     var questionStart = Date()
     var extra: [String] = []
@@ -120,8 +121,10 @@ final class QuizSession {
         lastTypo = typo
         if ok { combo += 1; maxCombo = max(maxCombo, combo) } else { combo = 0 }
         let secs = Int(Date().timeIntervalSince(questionStart))
+        let rewarded = config.mode != .check || store.earnsReward(q)
+        if rewarded { anyRewarded = true }
         lastXP = store.record(q, correct: ok, combo: config.mode == .exam ? 0 : combo, hint: hintShown, typo: typo, seconds: secs,
-                              grade: grade, rated: config.mode != .flashcards)
+                              grade: grade, rated: config.mode != .flashcards && rewarded, rewarded: rewarded)
         xp += lastXP
         results.append(QuizResult(question: q, correct: ok, given: given))
         store.haptic(ok ? .success : .error)
@@ -170,8 +173,8 @@ final class QuizSession {
                 extra.append("Daily Box geknackt: +100 XP · +20 Credits")
             }
         case .check:
-            store.checkPassed(correct: correctCount, total: results.count)
-            if correctCount == results.count && !results.isEmpty { extra.append("Wissens-Check fehlerfrei: +10 XP · +3 Credits") }
+            store.checkPassed(correct: correctCount, total: results.count, rewarded: anyRewarded)
+            if anyRewarded && correctCount == results.count && !results.isEmpty { extra.append("Wissens-Check fehlerfrei: +10 XP · +3 Credits") }
         default: break
         }
         if total >= 10 && correctCount == total && config.mode != .exam { extra.append("Perfekte Runde!") }
@@ -264,6 +267,16 @@ struct QuizView: View {
             }
         }
         .modifier(LocalLinks())
+        .overlay {
+            // Die Root-Ansicht liegt hinter dem Vollbild-Quiz; unter Zeitdruck erst nach der Auswertung feiern
+            if canCelebrate, let c = store.celebrations.first {
+                CelebrationView(c: c, confetti: store.progress.prefs.confetti) {
+                    if !store.celebrations.isEmpty { store.celebrations.removeFirst() }
+                }
+                .id(c.id)
+                .transition(.opacity)
+            }
+        }
         .sheet(item: $peek) { ref in
             NavigationStack {
                 LessonPager(module: ref.module, start: ref.index)
@@ -287,6 +300,11 @@ struct QuizView: View {
         } message: {
             Text("Dein Fortschritt und deine XP bleiben erhalten.")
         }
+    }
+
+    var canCelebrate: Bool {
+        if session.finished { return true }
+        return session.config.mode != .exam && session.config.mode != .blitz && session.config.timeLimit == 0
     }
 
     var emptyHint: String {

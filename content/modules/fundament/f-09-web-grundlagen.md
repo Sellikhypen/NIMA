@@ -66,6 +66,9 @@ Die [[OWASP]] Top 10 sind die bekannteste Übersicht der häufigsten Web-Risiken
 | A09 | Security Logging and Monitoring Failures | Angriffe werden nicht bemerkt |
 | A10 | Server-Side Request Forgery ([[SSRF]]) | der Server ruft vom Angreifer bestimmte Adressen ab |
 
+> [!INFO] Nachfolger: OWASP Top 10:2025
+> Die neue Ausgabe ordnet um: A01 Broken Access Control (jetzt mit SSRF), A02 Security Misconfiguration, A03 Software Supply Chain Failures, A04 Cryptographic Failures, A05 Injection, A06 Insecure Design, A07 Authentication Failures, A08 Software or Data Integrity Failures, A09 Security Logging & Alerting Failures, A10 Mishandling of Exceptional Conditions. Nenne bei einer Nummer immer die Jahreszahl.
+
 > [!EXAM] Für CWES, CPTS und CWEE
 > Die Web-Pfade gehen jede dieser Klassen im Detail durch: wie die Schwachstelle entsteht, woran man sie erkennt und wie man sie behebt.
 

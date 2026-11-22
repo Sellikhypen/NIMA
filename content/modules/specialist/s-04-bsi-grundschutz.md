@@ -21,6 +21,9 @@ Der **IT-Grundschutz** des Bundesamts für Sicherheit in der Informationstechnik
 | 200-3 | Risikoanalyse auf Basis von IT-Grundschutz |
 | 200-4 | Business Continuity Management (BCM) |
 
+> [!INFO] Übergang zu Grundschutz++
+> Das Kompendium Edition 2023 ist die letzte Ausgabe der klassischen Form. Das BSI löst es schrittweise durch den maschinenlesbaren **Grundschutz++** ab. Für eine Zertifizierung zählen die Übergangsfristen auf der BSI-Seite.
+
 ## Drei Vorgehensweisen
 
 | Vorgehensweise | Ziel | geeignet für |

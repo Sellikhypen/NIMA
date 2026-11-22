@@ -13,6 +13,9 @@ summary: Die häufigste Web-Schwachstelle – wenn Benutzer Daten oder Funktione
 
 Zugriffskontrolle stellt sicher, dass Benutzer nur das tun können, wofür sie berechtigt sind. **Broken Access Control** steht seit 2021 auf Platz 1 der OWASP Top 10: In über 90 % der getesteten Anwendungen wurde irgendeine Form gefunden.
 
+> [!INFO] Nummern gelten für die Ausgabe 2021
+> Die OWASP-Module dieser Serie folgen der Ausgabe 2021. In der Ausgabe 2025 bleibt A01 vorn und nimmt SSRF auf, die meisten anderen Nummern verschieben sich ([[mod:f-09|Übersicht 2025]]).
+
 ## Erscheinungsformen
 
 | Form | Beispiel |

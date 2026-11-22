@@ -315,7 +315,7 @@ summary: Kritische Infrastrukturen in Deutschland – Sektoren, Schwellenwerte, 
 
 ## Entwicklung
 
-Mit der NIS2-Umsetzung wurde der Kreis der regulierten Unternehmen stark erweitert ([[mod:s-05|Recht]]). Das **KRITIS-Dachgesetz** ergänzt Anforderungen an die **physische** Resilienz kritischer Einrichtungen.
+Mit der NIS2-Umsetzung wurde der Kreis der regulierten Unternehmen stark erweitert ([[mod:s-05|Recht]]). Das **KRITIS-Dachgesetz** (in Kraft seit März 2026) ergänzt Anforderungen an die **physische** Resilienz kritischer Anlagen. Das NIS2-Umsetzungsgesetz gilt seit dem 6. Dezember 2025. Fristen hängen teils an Verordnungen, prüfe deshalb den Stand bei BSI und BBK.
 
 ## Quiz
 

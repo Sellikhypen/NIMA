@@ -3,14 +3,15 @@
 Lern-App für alle Hack-The-Box-Zertifikate (CJCA, CPTS, CWES/CBBH, CDSA, CWEE, CAPE), WiFi-Pentesting,
 Cyber Security Specialist und die eigene Cyber Range.
 
-**Umfang:** 470 Module · 2.434 Lektionen · 3.887 Modulfragen (+ ~1.000 generierte Begriffsfragen) · 1.007 Lexikonbegriffe.
+**Umfang:** 470 Module · 2.664 Lektionen (inkl. kurzer Einstiege und Vertiefungen) · 3.887 Modulfragen (+ ~1.000 generierte Begriffsfragen) · 1.007 Lexikonbegriffe.
 
 ## Lernkonzept (App 2.0)
 
-- **Einfach rein, tief raus:** Jedes Modul beginnt mit „Einfach erklärt“ (Alltagsanalogie) und endet mit „Tiefer eingetaucht“.
-  Lektionen tragen die Stufe Einstieg / Kern / Vertiefung (Compiler erkennt sie an der Überschrift bzw. `content/einfach/*.md`).
+- **Einfach rein, tief raus:** Jedes Modul beginnt mit einer Einstiegslektion („Einfach erklärt“ oder Überblick) und hat mindestens eine
+  Vertiefung. Bei den 230 Modulen der ersten Ausbaustufe ist das eine kurze Lektion mit Denkaufgabe (`content/vertiefung/*.md`).
 - **Wissens-Check** nach jeder Lektion (1–3 Fragen, vom Compiler per Textähnlichkeit der Lektion zugeordnet).
-- **Erklär-Panel:** „Warum?“ + „Aus der Lektion“ (Kontextsatz) + Sprung in die passende Lektion – für 94 % aller Fragen.
+- **Erklär-Panel:** 59 % der Fragen (2.280 von 3.887) haben eine geschriebene Erklärung. Weitere 36 % zeigen nur einen
+  automatisch gewählten Satz aus der Lektion, der nicht immer passt.
 - **Spaced Repetition 2.0:** SM-2-Variante (Leichtigkeit, Intervalle, Problemkarten/Leeches), Karteikarten mit Nochmal/Schwer/Gut/Leicht,
   Migration alter Leitner-Boxen.
 - **Zwei Fortschrittsachsen:** 15 XP-Ränge (Fleiß, bis Level 100) und Elo-basierte **Skill-Ligen** (Können) gesamt und pro Pfad.
@@ -31,11 +32,19 @@ Cyber Security Specialist und die eigene Cyber Range.
 | `content/glossary/*.md` | Lexikon (`## Begriff`, `kat:`, `kurz:`, `siehe:`) |
 | `content/quizbanks/*.txt` | Fragen im PwnDeck-Format, Zuordnung über `# modul:` ↔ `htb:` im Modul oder Abschnitte `=== modul-id ===` |
 | `content/einfach/*.md` | „Einfach erklärt“-Einstiege für Module (`## modul-id` + Text, wird Lektion 0) |
+| `content/vertiefung/*.md` | Vertiefungen (`## modul-id \| Thema` + Text, wird letzte Lektion `<id>.deep`) |
+| `content/erklaerungen/*.txt` | nachgetragene Erklärungen (`fragen-id \| Text`) |
 | `content/modules/series2/*.md` | Serien der Ausbaustufe 2.0 (mehrere Module je Datei, getrennt durch `@@@ MODULE @@@`) |
 | `content/assets/` | Bilder (`![Text](asset:ordner/datei.png)`) |
 | `tools/build_content.py` | Content-Compiler mit Prüfung (`--strict`) |
 | `tools/convert_docx.py` | Cyber-Range-Dokumentation (.docx) → Module |
 | `.github/workflows/build-ipa.yml` | baut die unsignierte IPA auf macOS (Artefakt + Release) |
+
+## Stand der Inhalte
+
+Die Inhalte der Ausbaustufe 2.0 sind mit KI-Unterstützung aus Modellwissen geschrieben und **nicht vollständig gegen Quellen geprüft**.
+Stichprobenartig mit Websuche abgeglichen wurden am 22.11.2026 einzelne zeitkritische Punkte (ATT&CK v19, OWASP Top 10:2025,
+NIST SP 800-61r3, NIS2-Umsetzung, KRITIS-Dachgesetz, Grundschutz++, TLS-Laufzeiten, HTB-Zertifikate). Keine Rechtsberatung.
 
 ## IPA bauen
 

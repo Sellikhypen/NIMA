@@ -31,7 +31,7 @@ Wer mit einfachen Rechten startet, will mehr. **Privilege Escalation** ist der A
 Je weniger Rechte jedes Konto hat und je sauberer Systeme konfiguriert sind, desto steiler wird diese Treppe.
 
 ## att-07
-Angreifer wollen unsichtbar bleiben: Virenscanner abschalten, Logs löschen, Code verschleiern, sich als legitime Programme tarnen. **Defense Evasion** ist die umfangreichste Taktik in ATT&CK.
+Angreifer wollen unsichtbar bleiben: Virenscanner abschalten, Logs löschen, Code verschleiern, sich als legitime Programme tarnen. **Defense Evasion** war bis v18 die umfangreichste Taktik in ATT&CK, seit v19 ist sie in Stealth und Defense Impairment aufgeteilt.
 
 Die Gegenstrategie: Auch das Verschwinden von Daten ist ein Signal. Wenn ein Log plötzlich verstummt, ist das verdächtig.
 

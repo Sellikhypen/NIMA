@@ -24,6 +24,9 @@ htb: Incident Handling Process
 3. **Containment, Eradication & Recovery** – eindämmen, Ursache beseitigen, wiederherstellen
 4. **Post-Incident Activity** – Lessons Learned, Bericht, Verbesserungen
 
+> [!INFO] Aktueller Stand: Revision 3
+> Die vier Phasen stammen aus Revision 2. Sie wurde im April 2025 durch **SP 800-61 Rev. 3** ersetzt, die Incident Response den sechs Funktionen des CSF 2.0 zuordnet (Govern, Identify, Protect, Detect, Respond, Recover). Die Phasen bleiben als Denkmodell verbreitet.
+
 > [!INFO] SANS-Variante
 > SANS beschreibt sechs Phasen: Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned. Inhaltlich ist es dasselbe Modell.
 

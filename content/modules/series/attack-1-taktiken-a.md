@@ -412,7 +412,10 @@ summary: Die größte ATT&CK-Taktik – wie Angreifer Schutzmechanismen umgehen,
 
 ## Ziel der Taktik
 
-**Defense Evasion** umfasst alles, womit Angreifer unentdeckt bleiben wollen. Es ist die Taktik mit den meisten Techniken – und gleichzeitig eine große Chance für Verteidiger, denn viele Tarnversuche erzeugen selbst auffällige Spuren.
+> [!INFO] Aktueller Stand: seit ATT&CK v19 aufgeteilt
+> Seit dem 28. April 2026 gibt es Defense Evasion in der Enterprise-Matrix nicht mehr. **Stealth** (verbergen, tarnen) führt die ID TA0005 weiter, **Defense Impairment** (Schutz und Protokollierung beschädigen) ist die neue Taktik TA0112. Technik-IDs können sich dabei geändert haben. Dieses Modul zeigt die bis v18 gültige Einteilung, die in vielen Regeln und Kursen noch vorkommt.
+
+**Defense Evasion** umfasst alles, womit Angreifer unentdeckt bleiben wollen. Es war die Taktik mit den meisten Techniken – und gleichzeitig eine große Chance für Verteidiger, denn viele Tarnversuche erzeugen selbst auffällige Spuren.
 
 ## Wichtige Techniken
 
@@ -452,6 +455,7 @@ summary: Die größte ATT&CK-Taktik – wie Angreifer Schutzmechanismen umgehen,
 
 ? Welche ATT&CK-ID hat Defense Evasion?
 = TA0005
+! Bis v18 hieß TA0005 Defense Evasion. Seit v19 trägt Stealth diese ID, Defense Impairment ist TA0112.
 
 ? Welche Technik beschreibt das Löschen von Indikatoren wie Logs?
 = T1070

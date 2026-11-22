@@ -19,6 +19,9 @@ summary: Welche HTB-Zertifizierung wofür steht, wie die Prüfungen aufgebaut si
 | **CWEE** – Web Exploitation Expert | fortgeschrittene Web-Exploitation, Whitebox, Code-Review | fortgeschritten | anspruchsvolle Web-Ziele + Bericht |
 | **CAPE** – Active Directory Pentesting Expert | Active Directory in der Tiefe | fortgeschritten | komplexe AD-Umgebung + Bericht |
 
+> [!INFO] Weitere Zertifikate
+> Das Angebot ist gewachsen, unter anderem um **CWPE** (WLAN-Pentesting) und **COAE**. Die Tabelle ist deshalb nicht vollständig.
+
 > [!WARNUNG] Details ändern sich
 > Prüfungsdauer, Voraussetzungen, Preise und Bezeichnungen passt Hack The Box regelmäßig an. Prüfe vor der Buchung immer die aktuelle Beschreibung in der HTB Academy.
 

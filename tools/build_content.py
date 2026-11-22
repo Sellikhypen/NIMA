@@ -505,6 +505,34 @@ def load_intros():
 INTROS = {}
 
 
+def load_deep():
+    """content/vertiefung/*.md: '## <modul-id> | Thema' + Text -> letzte Lektion (stabile id <modul>.deep)."""
+    out = {}
+    d = CONTENT / "vertiefung"
+    if not d.exists():
+        return out
+    for f in sorted(d.glob("*.md")):
+        cur = None
+        for raw in f.read_text(encoding="utf-8").replace("\r", "").split("\n"):
+            if raw.startswith("## "):
+                m = re.match(r"^##\s+([a-z0-9][a-z0-9\-_.]*)\s*\|\s*(\S.*?)\s*$", raw)
+                if not m:
+                    errors.append(f"{f.name}: ungültige Überschrift {raw}")
+                    cur = None
+                    continue
+                cur = m.group(1)
+                if cur in out:
+                    errors.append(f"{f.name}: Vertiefung doppelt {cur}")
+                out[cur] = {"topic": m.group(2), "lines": []}
+                continue
+            if cur is not None:
+                out[cur]["lines"].append(raw)
+    return out
+
+
+DEEP = {}
+
+
 def build_module_body(mod, linker):
     body = mod.pop("_body")
     origin = mod.pop("_file")
@@ -540,6 +568,11 @@ def build_module_body(mod, linker):
         blocks = md_to_blocks(l["lines"], linker, mod["id"], origin)
         words += len(" ".join(l["lines"]).split())
         mod["lessons"].append({"id": f"{mod['id']}.{n}", "title": linker.inline(l["title"]), "level": lesson_level(l["title"]), "blocks": blocks})
+    deep = DEEP.pop(mod["id"], None)
+    if deep:
+        blocks = md_to_blocks(deep["lines"], linker, mod["id"], origin + ":vertiefung")
+        words += len(" ".join(deep["lines"]).split())
+        mod["lessons"].append({"id": f"{mod['id']}.deep", "title": "Tiefer eingetaucht: " + deep["topic"], "level": "deep", "blocks": blocks})
     if quiz_lines:
         qs, _ = parse_quiz("\n".join(quiz_lines), origin)
         mod["quiz"].extend(qs)
@@ -634,6 +667,23 @@ def attach_refs(mods):
     return linked
 
 
+def apply_explanations(mods, linker):
+    """content/erklaerungen/*.txt: '<fragen-id> | Text' ergänzt Fragen ohne eigene Erklärung."""
+    by_id = {q["id"]: q for m in mods for q in m["quiz"]}
+    for f in sorted((CONTENT / "erklaerungen").glob("*.txt")):
+        for line in f.read_text(encoding="utf-8").replace("\r", "").split("\n"):
+            if not line.strip() or line.startswith("# "):
+                continue
+            qid, sep, text = line.partition(" | ")
+            q = by_id.get(qid)
+            if not sep or not q:
+                errors.append(f"{f.name}: Erklärung ohne Frage: {qid[:70]}")
+            elif q.get("explain"):
+                errors.append(f"{f.name}: Frage hat schon eine Erklärung: {qid}")
+            else:
+                q["explain"] = linker.inline(text) if "[[" in text else text
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--strict", action="store_true")
@@ -651,6 +701,7 @@ def main():
     linker = Linker(terms, set(ids))
     linker.build_auto(terms)
     INTROS.update(load_intros())
+    DEEP.update(load_deep())
     for m in mods:
         build_module_body(m, linker)
 
@@ -707,7 +758,13 @@ def main():
             if qq.get("explain") and "[[" in qq["explain"]:
                 qq["explain"] = linker.inline(qq["explain"])
 
+    apply_explanations(mods, linker)
     linked = attach_refs(mods)
+    for left in DEEP:
+        errors.append(f"Vertiefung ohne Modul: {left}")
+    for m in mods:
+        if not any(l["level"] == "deep" for l in m["lessons"]):
+            warnings.append(f"Modul {m['id']}: keine Vertiefung")
     for left in INTROS:
         errors.append(f"Einstieg ohne Modul: {left}")
 

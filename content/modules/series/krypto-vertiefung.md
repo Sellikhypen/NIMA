@@ -188,6 +188,9 @@ Fällt eine Zwischen-CA, kann die Root-CA sie sperren und eine neue ausstellen �
 | OCSP | Online-Abfrage des Status eines Zertifikats |
 | OCSP Stapling | Server liefert die OCSP-Antwort gleich mit |
 
+> [!INFO] Öffentliche Zertifikate werden kurzlebig
+> Die maximale Laufzeit öffentlicher TLS-Zertifikate beträgt seit 15. März 2026 **200 Tage**, ab 2027 100 und ab 2029 47 Tage. Automatisierung wird damit Pflicht. Let's Encrypt hat OCSP 2025 eingestellt und veröffentlicht Sperrungen nur noch über CRLs.
+
 ## Certificate Transparency
 
 Öffentliche CAs müssen jedes Zertifikat in öffentlichen, manipulationssicheren Logs eintragen. Domain-Inhaber können so fehlerhaft ausgestellte Zertifikate für ihre Domains entdecken – und Angreifer nutzen die Logs zur Aufklärung (siehe [[mod:c-04|Web-Recon]]).

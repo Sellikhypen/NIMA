@@ -91,7 +91,7 @@ struct SettingsView: View {
                 if let url = backupURL {
                     ShareLink(item: url) { Label("Backup teilen / sichern", systemImage: "square.and.arrow.up") }
                 } else {
-                    Button { backupURL = store.exportBackup() } label: { Label("Backup erstellen", systemImage: "externaldrive.fill.badge.plus") }
+                    Button { refreshBackup() } label: { Label("Backup erstellen", systemImage: "externaldrive.fill.badge.plus") }
                 }
                 Button { importing = true } label: { Label("Backup laden", systemImage: "square.and.arrow.down") }
                 Button(role: .destructive) { confirmReset = true } label: { Label("Fortschritt zurücksetzen", systemImage: "trash") }
@@ -104,27 +104,36 @@ struct SettingsView: View {
         .scrollContentBackground(.hidden)
         .background(AppBackground())
         .navigationTitle("Einstellungen")
+        .onAppear { refreshBackup() }
         .onChange(of: store.progress.prefs) { old, new in
             store.save()
+            refreshBackup()
             if old.reminder != new.reminder || old.reminderHour != new.reminderHour || old.reminderMinute != new.reminderMinute {
                 store.scheduleReminder()
             }
         }
-        .onChange(of: store.progress.dailyGoal) { _, _ in store.save() }
-        .onChange(of: store.progress.haptics) { _, _ in store.save() }
-        .onChange(of: store.progress.name) { _, _ in store.save() }
-        .onChange(of: store.progress.experience) { _, _ in store.save() }
+        .onChange(of: store.progress.dailyGoal) { _, _ in store.save(); refreshBackup() }
+        .onChange(of: store.progress.haptics) { _, _ in store.save(); refreshBackup() }
+        .onChange(of: store.progress.name) { _, _ in store.save(); refreshBackup() }
+        .onChange(of: store.progress.experience) { _, _ in store.save(); refreshBackup() }
         .fileImporter(isPresented: $importing, allowedContentTypes: [.json]) { result in
             if case .success(let url) = result {
-                if !store.importBackup(url) {
+                if store.importBackup(url) {
+                    refreshBackup()
+                } else {
                     store.showToast(icon: "xmark.octagon.fill", title: "Backup ungültig", detail: "Die Datei konnte nicht gelesen werden.", color: "#FF4D5E")
                 }
             }
         }
         .confirmationDialog("Wirklich alles zurücksetzen?", isPresented: $confirmReset, titleVisibility: .visible) {
-            Button("Zurücksetzen", role: .destructive) { store.resetProgress() }
+            Button("Zurücksetzen", role: .destructive) {
+                store.resetProgress()
+                refreshBackup()
+            }
         } message: { Text("XP, Level, Statistiken, Achievements, Notizen und Lernkartei werden gelöscht. Tipp: vorher ein Backup erstellen.") }
     }
+
+    func refreshBackup() { backupURL = store.exportBackup() }
 
     var reminderTime: Binding<Date> {
         Binding(

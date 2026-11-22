@@ -652,7 +652,7 @@ final class Store {
     }
 
     @discardableResult
-    func record(_ q: Question, correct: Bool, combo: Int, hint: Bool = false, typo: Bool = false, seconds: Int = 0, grade: Int? = nil, rated: Bool = true) -> Int {
+    func record(_ q: Question, correct: Bool, combo: Int, hint: Bool = false, typo: Bool = false, seconds: Int = 0, grade: Int? = nil, rated: Bool = true, rewarded: Bool = true) -> Int {
         let prev = progress.cards[q.id]
         let g: Int = grade ?? {
             guard correct else { return 0 }
@@ -673,8 +673,10 @@ final class Store {
             if hint { v *= 0.5 }
             if wasDue { v *= 1.2 }          // Wiederholung fälliger Karten lohnt sich
             if c.lapses >= 3 && c.streak == 1 { v *= 1.5 } // Problemkarte geknackt
-            xp = max(1, Int(v.rounded()))
-            progress.coins += 1
+            if rewarded {
+                xp = max(1, Int(v.rounded()))
+                progress.coins += 1
+            }
         }
         progress.maxCombo = max(progress.maxCombo, combo)
         let hour = Calendar.current.component(.hour, from: Date())
@@ -728,7 +730,14 @@ final class Store {
         out += due.dropFirst(Int(Double(size) * 0.75)).prefix(max(0, size - out.count))
         out += fresh.dropFirst(min(newLimit, fresh.count)).prefix(max(0, size - out.count))
         out += rest.prefix(max(0, size - out.count))
-        return out.shuffled()
+        return sessionOrder(out)
+    }
+
+    /// Mit "leicht -> schwer" steigt die Session an, innerhalb einer Stufe bleibt die Reihenfolge zufällig
+    func sessionOrder(_ qs: [Question]) -> [Question] {
+        guard progress.prefs.simpleFirst else { return qs.shuffled() }
+        let rank: [String: Int] = ["easy": 0, "medium": 1, "hard": 2, "insane": 3]
+        return qs.shuffled().sorted { (rank[$0.difficulty ?? "medium"] ?? 1) < (rank[$1.difficulty ?? "medium"] ?? 1) }
     }
 
     func buildExam(_ moduleIds: [String]?, count: Int) -> [Question] {
@@ -790,8 +799,14 @@ final class Store {
 
     func checkCount(_ lesson: Lesson) -> Int { min(3, lessonQuestions[lesson.id]?.count ?? 0) }
 
-    func checkPassed(correct: Int, total: Int) {
-        guard total > 0 else { return }
+    /// Belohnung im Wissens-Check nur für neue oder fällige Fragen
+    func earnsReward(_ q: Question) -> Bool {
+        guard let c = progress.cards[q.id], c.seen > 0 else { return true }
+        return c.due <= Date().timeIntervalSince1970
+    }
+
+    func checkPassed(correct: Int, total: Int, rewarded: Bool) {
+        guard total > 0, rewarded else { return }
         bumpDay { $0.checks += 1 }
         if correct == total {
             progress.checksPassed += 1

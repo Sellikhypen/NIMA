@@ -1,0 +1,155 @@
+# Erklärungen zu Fragen ohne eigene Erklärung: '<fragen-id> | Text'
+f-01#was-ist-die-binaerzahl-11000000-im-dezim | Nur die beiden höchsten Stellen sind gesetzt: 128 + 64 = 192.
+f-01#welcher-hex-wert-entspricht-dezimal-255 | Jede Hex-Stelle fasst 4 Bit. F ist 15, also 15×16 + 15 = 255.
+f-01#mit-welchen-magic-bytes-ascii-beginnen-w | PE-Dateien beginnen mit den Bytes 4D 5A, in ASCII „MZ“. Die Dateiendung kann lügen, dieser Kopf verrät das Format.
+f-01#welches-verfahren-ist-eine-einwegfunktio | Ein Hash lässt sich nicht zurückrechnen. Kodierung kann jeder umkehren, Verschlüsselung jeder mit dem Schlüssel.
+f-01#welches-zeichen-nutzt-base64-zum-auffuel | Base64 arbeitet in Blöcken von 3 Bytes zu 4 Zeichen. Fehlende Bytes am Ende werden mit = markiert.
+f-01#was-bedeutet-20-in-einer-url | URL-Kodierung schreibt ein Byte als % plus zwei Hex-Ziffern. 0x20 ist 32, das Leerzeichen.
+f-02#auf-welcher-osi-schicht-arbeitet-ein-rou | Ein Router entscheidet anhand von IP-Adressen, und die gehören zur Vermittlungsschicht.
+f-02#auf-welcher-osi-schicht-arbeitet-ein-kla | Ein Switch leitet Frames anhand von MAC-Adressen weiter, das ist die Sicherungsschicht.
+f-02#welche-osi-schicht-ist-fuer-portnummern- | TCP und UDP arbeiten auf Schicht 4 und benutzen Ports, um Anwendungen auf einem Host zu unterscheiden.
+f-02#ordne-die-osi-schichten-von-unten-nach-o | Jede Schicht nutzt die darunter: vom Signal über Frame, Paket und Segment bis zu den Daten der Anwendung.
+f-02#wie-nennt-man-das-schrittweise-hinzufueg | Jede Schicht verpackt die Daten der oberen mit ihrem Header. Der Empfänger packt in umgekehrter Reihenfolge aus.
+f-02#wie-heisst-die-dateneinheit-auf-schicht- | Schicht 2 überträgt Frames, Schicht 3 Pakete, Schicht 4 Segmente oder Datagramme.
+f-02#wie-viele-schichten-hat-das-tcp-ip-model | Netzzugang, Internet, Transport und Anwendung. Die oberen drei OSI-Schichten fallen in „Anwendung“ zusammen.
+f-02#welcher-portbereich-gilt-als-well-known | 0–1023 sind für Standarddienste vergeben, unter Unix braucht das Binden daran meist besondere Rechte.
+f-02#welche-angaben-bilden-das-5-tupel-einer- | Erst alle fünf Werte unterscheiden parallele Verbindungen eindeutig, deshalb rechnen Firewalls damit.
+f-03#wie-viele-nutzbare-hosts-hat-ein-24-netz | 8 Hostbits ergeben 256 Adressen. Netz- und Broadcastadresse gehen ab, bleiben 254.
+f-03#wie-viele-adressen-umfasst-ein-27-netz-i | 32 − 27 = 5 Hostbits, und 2 hoch 5 sind 32.
+f-03#welche-subnetzmaske-entspricht-26 | /26 setzt im letzten Oktett zwei Bits: 128 + 64 = 192.
+f-03#wie-lautet-die-netzadresse-von-10-10-14- | /27 bildet 32er-Blöcke: 0, 32, 64, 96. Die 77 liegt im Block, der bei 64 beginnt.
+f-03#wie-lautet-die-broadcast-adresse-von-10- | Der Block beginnt bei 64 und hat 32 Adressen. Die letzte ist 64 + 31 = 95.
+f-03#welche-bereiche-sind-private-ipv4-bereic | Diese drei Bereiche werden im Internet nicht geroutet. Achtung: Bei 172 gehören nur 16 bis 31 dazu.
+f-03#was-bedeutet-eine-adresse-aus-169-254-0- | Ohne DHCP-Antwort gibt sich der Client selbst eine Link-Local-Adresse. Suche also bei DHCP, VLAN oder Kabel.
+f-03#nat-ersetzt-eine-firewall | NAT übersetzt nur Adressen. Was erlaubt ist, muss eine Filterregel entscheiden.
+f-03#wie-viele-bit-hat-eine-ipv6-adresse | 128 Bit, geschrieben als acht Gruppen zu je 16 Bit in Hexadezimal.
+f-03#welches-ipv6-praefix-steht-fuer-link-loc | Jede IPv6-Schnittstelle hat eine solche Adresse. Sie gilt nur im lokalen Segment und wird nicht geroutet.
+f-03#wie-heisst-das-prinzip-netze-aufzuteilen | Sind Zonen getrennt und gefiltert, erreicht ein übernommenes System nicht automatisch alle anderen.
+f-04#bringe-den-tcp-verbindungsaufbau-in-die- | Beide Seiten tauschen Startsequenznummern aus und bestätigen die der Gegenseite, das braucht drei Schritte.
+f-04#welches-tcp-flag-bricht-eine-verbindung- | RST verwirft die Verbindung sofort. FIN beendet sie geordnet.
+f-04#ein-host-antwortet-auf-ein-syn-mit-syn-a | SYN-ACK heißt: Etwas nimmt Verbindungen an. Bei geschlossenem Port käme RST.
+f-04#keine-antwort-auf-ein-syn-welcher-zustan | Ein erreichbarer Host antwortet mit SYN-ACK oder RST. Schweigen spricht für einen Filter.
+f-04#udp-bestaetigt-jedes-empfangene-datagram | UDP sendet ohne Verbindung und Bestätigung. Zuverlässigkeit muss bei Bedarf die Anwendung liefern.
+f-04#welche-dienste-nutzen-typischerweise-udp | Kurze Anfrage-Antwort-Muster und Broadcasts passen zu UDP. DNS nutzt bei großen Antworten auch TCP.
+f-04#welcher-port-gehoert-zu-smb | Modernes SMB läuft direkt über TCP 445, das ältere über NetBIOS auf 139.
+f-04#welcher-port-gehoert-zu-rdp | RDP nutzt 3389, über TCP und für bessere Leistung auch UDP.
+f-04#welcher-port-deutet-auf-einen-domain-con | Der KDC läuft auf jedem DC. 88 zusammen mit 389 und 445 ist die typische DC-Signatur.
+f-04#welcher-port-gehoert-zu-ldaps | LDAPS ist LDAP in TLS auf 636. Port 389 kann per StartTLS oder Signierung geschützt werden.
+f-04#warum-ist-telnet-heute-ein-sicherheitsri | Wer den Verkehr sieht, liest Passwörter mit. SSH verschlüsselt und prüft die Serveridentität.
+f-05#welcher-dns-record-enthaelt-den-mailserv | MX steht für Mail Exchanger. Die kleinste Prioritätszahl wird zuerst versucht.
+f-05#welcher-dns-record-loest-eine-ip-adresse | PTR-Einträge liegen in Reverse-Zonen wie in-addr.arpa.
+f-05#welcher-dns-record-ist-ein-alias | CNAME verweist auf einen anderen Namen. Erst dessen A- oder AAAA-Eintrag liefert die IP.
+f-05#wie-heisst-die-uebertragung-einer-komple | AXFR repliziert Zonen zwischen Nameservern. Für beliebige Clients offen, verrät es alle Einträge.
+f-05#bringe-den-dhcp-ablauf-in-die-richtige-r | Merkwort DORA: Der Client sucht, der Server bietet, der Client wählt, der Server bestätigt.
+f-05#welche-switch-funktion-schuetzt-vor-frem | Der Switch lässt DHCP-Serverantworten nur auf vertrauenswürdigen Ports zu.
+f-05#auf-welcher-osi-schicht-arbeitet-arp | ARP ordnet IPs MAC-Adressen im lokalen Segment zu und steckt direkt im Ethernet-Frame.
+f-05#arp-authentifiziert-antworten-kryptograf | Jeder im Segment kann antworten, daher ist Spoofing möglich. Dagegen hilft Dynamic ARP Inspection.
+f-05#welcher-http-statuscode-bedeutet-nicht-a | 401 bedeutet fehlende oder ungültige Anmeldung, trotz des Namens „Unauthorized“.
+f-05#welcher-http-statuscode-bedeutet-verbote | Bei 403 hat der Server verstanden und verweigert. Erneutes Anmelden mit derselben Identität hilft nicht.
+f-05#welche-http-methode-ruft-nur-die-header- | HEAD entspricht GET ohne Antwort-Body.
+f-05#http-ist-ein-zustandsloses-protokoll | Jede Anfrage steht für sich. Sitzungen entstehen erst durch Cookies oder Tokens.
+f-06#in-welcher-datei-liegen-unter-linux-die- | /etc/passwd muss für alle lesbar sein, deshalb liegen die Hashes getrennt in der geschützten shadow-Datei.
+f-06#welche-oktalzahl-entspricht-rwxr-x | r=4, w=2, x=1: rwx ist 7, r-x ist 5, --- ist 0.
+f-06#welches-spezialrecht-laesst-ein-programm | SUID setzt die effektive Benutzer-ID auf den Besitzer. Bei root-eigenen Programmen ist das heikel.
+f-06#welches-verzeichnis-enthaelt-konfigurati | /etc enthält die systemweite Konfiguration, /var veränderliche Daten, /home die Benutzerdaten.
+f-06#welcher-befehl-zeigt-welche-befehle-der- | -l steht für list. Die Ausgabe zeigt auch NOPASSWD-Regeln.
+f-06#welche-logdatei-enthaelt-auf-ubuntu-ssh- | Debian und Ubuntu schreiben Authentifizierung dorthin, RHEL-Systeme nach /var/log/secure.
+f-06#mit-welchem-befehl-zeigst-du-lauschende- | t TCP, u UDP, l lauschend, p Prozess, n numerisch. Fremde Prozesse siehst du nur als root.
+f-06#das-sticky-bit-verhindert-in-tmp-dass-be | In Verzeichnissen mit Sticky Bit löschen nur Besitzer der Datei, des Verzeichnisses oder root.
+f-06#mit-welchem-werkzeug-werden-systemdienst | systemctl steuert systemd: start, stop, enable, status.
+f-06#welche-verzeichnisse-sind-typischerweise | Beide haben Rechte 1777 und sind deshalb beliebte Ablageorte, die man überwachen sollte.
+f-06#was-bedeutet-in-der-etc-passwd-ein-x-im- | Das x ist ein Platzhalter. Die Hashes stehen in /etc/shadow, damit nicht jeder sie lesen kann.
+f-07#welches-konto-ist-auf-einem-windows-rech | SYSTEM ist das Betriebssystem selbst und hat mehr lokale Rechte als ein Administrator.
+f-07#in-welcher-datenbank-stehen-lokale-benut | Der Security Account Manager speichert lokale Konten samt Hashes, Domänenkonten stehen in NTDS.dit.
+f-07#welcher-befehl-zeigt-die-privilegien-des | Er listet die Privilegien im Token und ob sie aktiviert sind.
+f-07#mit-welcher-endung-der-sid-wird-das-eing | Die RID 500 bleibt gleich, auch wenn das Konto umbenannt wird.
+f-07#welche-event-id-steht-fuer-eine-fehlgesc | 4625 ist der Fehlschlag, 4624 der Erfolg. Der Statuscode nennt den Grund.
+f-07#welche-event-id-zeigt-die-installation-e | 7045 schreibt der Service Control Manager ins System-Log, im Security-Log entspricht dem 4697.
+f-07#welche-event-id-protokolliert-powershell | Script Block Logging zeigt den ausgeführten Code auch dann, wenn er kodiert übergeben wurde.
+f-07#welcher-registry-hauptschluessel-enthael | HKEY_LOCAL_MACHINE gilt für den Computer, HKCU für den aktuellen Benutzer.
+f-07#welches-sysinternals-werkzeug-zeigt-alle | Autoruns sammelt Run-Keys, Dienste, Aufgaben und viele weitere Startorte in einer Ansicht.
+f-07#uac-ist-eine-vollwertige-sicherheitsgren | Microsoft stuft UAC nicht als Sicherheitsgrenze ein. Für echte Trennung braucht es getrennte Konten.
+f-07#wo-liegen-die-windows-ereignisprotokolle | Dort liegt je Protokoll eine binäre .evtx-Datei, das ist wichtig bei der Sicherung von Beweisen.
+f-07#wo-liegt-die-hosts-datei-unter-windows | Der Pfad stammt aus Unix-Tradition, daher „etc“. Änderungen dort überstimmen meist DNS.
+f-08#welche-verschluesselungsart-nutzt-densel | Ein gemeinsamer Schlüssel ist schnell, muss aber erst sicher verteilt werden.
+f-08#mit-welchem-schluessel-wird-eine-digital | Nur der Absender hat den privaten Schlüssel, prüfen kann jeder mit dem öffentlichen.
+f-08#welcher-aes-betriebsmodus-verraet-muster | ECB macht aus gleichen Klartextblöcken gleiche Geheimtextblöcke, Muster bleiben sichtbar.
+f-08#welche-verfahren-eignen-sich-zum-speiche | Sie sind absichtlich langsam, Argon2 und scrypt zusätzlich speicherhungrig. SHA-256 allein ist zu schnell.
+f-08#wozu-dient-ein-salt | Das Salt ist nicht geheim. Es erzwingt, dass jeder Hash einzeln angegriffen werden muss.
+f-08#md5-gilt-heute-als-sicher-fuer-signature | Für MD5 lassen sich gezielt Kollisionen erzeugen, also zwei Inhalte mit derselben Signatur.
+f-08#wie-heisst-die-eigenschaft-dass-ein-gest | Flüchtige Sitzungsschlüssel (ECDHE) werden verworfen, der langfristige Schlüssel dient nur der Signatur.
+f-08#welcher-standard-beschreibt-das-format-v | X.509 legt Felder wie Subjekt, Aussteller, Gültigkeit und Erweiterungen fest.
+f-08#welches-prinzip-besagt-dass-ein-verfahre | Geheime Algorithmen werden irgendwann bekannt. Ein Schlüssel lässt sich wechseln.
+f-08#welche-tls-version-ist-aktuell | TLS 1.3 stammt von 2018. 1.2 ist bei guter Konfiguration noch zulässig, ältere sind abgekündigt.
+f-08#was-ist-ein-hmac | Ohne Schlüssel kann niemand den Wert nach einer Änderung neu berechnen, anders als beim einfachen Hash.
+f-09#was-bewirkt-das-cookie-attribut-httponly | Das erschwert Cookie-Diebstahl per XSS, verhindert XSS selbst aber nicht.
+f-09#welches-cookie-attribut-schuetzt-vor-csr | SameSite begrenzt das Mitsenden bei fremden Websites. Tokens bleiben als zweite Schicht sinnvoll.
+f-09#woraus-besteht-eine-origin | Weicht einer der drei Teile ab, ist es eine andere Origin.
+f-09#welche-kategorie-steht-in-den-owasp-top- | Broken Access Control führt die Liste 2021 an und auch 2025.
+f-09#wie-heisst-die-schwachstelle-bei-der-man | Insecure Direct Object Reference: Der Server prüft nicht, ob das Objekt dir gehört.
+f-09#was-ist-die-grundursache-fast-aller-inje | Der Interpreter kann nicht erkennen, was Wert und was Befehl ist. Die Trennung löst das.
+f-09#welche-massnahme-verhindert-sql-injectio | Die Abfragestruktur steht fest, bevor die Werte eingesetzt werden.
+f-09#eine-pruefung-im-javascript-des-browsers | Alles im Browser ist manipulierbar oder umgehbar. Entscheidend ist die Prüfung auf dem Server.
+f-09#wofuer-steht-ssrf | Der Server wird dazu gebracht, selbst Anfragen an gewählte Ziele zu senden.
+f-10#welcher-exit-code-bedeutet-in-bash-erfol | 0 heißt Erfolg, 1 bis 255 stehen für Fehlerarten.
+f-10#mit-welchem-zeichen-verbindet-man-in-bas | Die Pipe leitet stdout des linken Programms in stdin des rechten. Fehlerausgaben laufen daran vorbei.
+f-10#welches-python-modul-eignet-sich-fuer-ht | requests ist ein verbreitetes Zusatzpaket, in der Standardbibliothek gibt es urllib.
+f-10#wofuer-steht-d-in-regulaeren-ausdruecken | \d steht für digit. Je nach Engine zählen auch Ziffern anderer Schriften dazu.
+f-10#die-powershell-execution-policy-ist-eine | Sie verhindert Versehen. Benutzer können sie leicht umgehen, echte Kontrolle liefert App Control.
+f-10#warum-sollte-man-variablen-in-bash-in-an | Ohne Anführungszeichen zerlegt die Shell den Wert und deutet * oder ? als Muster.
+f-10#welche-bash-befehle-kombiniert-man-typis | uniq zählt nur benachbarte Zeilen, darum erst sortieren. Danach nach Anzahl absteigend ordnen.
+f-10#mit-welchem-cmdlet-liest-man-windows-ere | Get-WinEvent liest alle modernen Kanäle und filtert an der Quelle, Get-EventLog ist veraltet.
+f-11#welcher-hypervisor-typ-laeuft-direkt-auf | Typ 1 wie ESXi braucht kein Wirtssystem, Typ 2 wie VirtualBox läuft darauf.
+f-11#was-teilen-sich-container-mit-dem-host | Container sind isolierte Prozesse. Eine Kernel-Lücke betrifft deshalb alle.
+f-11#welche-linux-mechanismen-isolieren-conta | Namespaces begrenzen die Sicht, cgroups die Ressourcen.
+f-11#bei-welchem-cloud-modell-verwaltet-der-k | Bei IaaS endet die Arbeit des Anbieters an der Virtualisierung, bei PaaS erst über dem Betriebssystem.
+f-11#wer-ist-im-shared-responsibility-model-f | Der Anbieter sichert die Cloud, der Kunde das, was er darin einstellt.
+f-11#mitglieder-der-gruppe-docker-haben-fakti | Über den Daemon lässt sich das Host-Dateisystem einbinden, und der Daemon läuft als root.
+f-11#wie-heisst-die-kleinste-einheit-in-kuber | Ein Pod enthält einen oder mehrere Container mit gemeinsamem Netz und wird als Einheit geplant.
+f-11#welche-abkuerzung-steht-fuer-das-identit | Identity and Access Management regelt, wer welche Aktion auf welcher Ressource darf.
+f-12#welche-datei-enthaelt-die-ad-datenbank-a | NTDS.dit enthält Objekte und Passwort-Hashes der ganzen Domäne, ein DC-Backup ist daher so sensibel wie der DC.
+f-12#was-ist-die-eigentliche-sicherheitsgrenz | Domänen eines Forests vertrauen einander und teilen Schema und Konfiguration.
+f-12#wie-heisst-das-ticket-das-ein-benutzer-b | Mit dem Ticket Granting Ticket fordert man Service-Tickets an, ohne das Passwort erneut einzugeben.
+f-12#mit-dem-schluessel-welches-kontos-ist-ei | Nur der KDC kennt diesen Schlüssel. Ist er gestohlen, lassen sich TGTs fälschen.
+f-12#wie-werden-dienste-in-kerberos-identifiz | Der Service Principal Name sagt dem KDC, mit welchem Kontoschlüssel er das Ticket verschlüsselt.
+f-12#auf-welchem-port-laeuft-kerberos | Kerberos nutzt 88 über TCP und UDP, Passwortänderungen laufen über 464.
+f-12#in-welchem-share-liegen-gruppenrichtlini | Die Dateien der GPOs liegen in SYSVOL, das alle authentifizierten Benutzer lesen können.
+f-12#bringe-den-kerberos-ablauf-in-die-richti | Erst beweist du deine Identität, dann verlangst du einen Dienst, dann zeigst du dessen Ticket vor.
+f-12#welches-werkzeug-verwaltet-lokale-admini | Verschiedene Passwörter je Rechner verhindern, dass ein erbeuteter lokaler Hash überall passt.
+f-12#welcher-hashcat-modus-gehoert-zu-as-rep- | 18200 ist AS-REP mit etype 23. 13100 wäre dagegen ein Service-Ticket aus Kerberoasting.
+f-12#welcher-hashcat-modus-knackt-ntlm-hashes | 1000 ist der NT-Hash, 5600 die Netzwerk-Antwort NetNTLMv2.
+f-12#welches-impacket-skript-dumpt-sam-lsa-se | Es liest über Remote-Protokolle und braucht hohe Rechte. Verteidiger achten auf 4662 von Nicht-DCs.
+f-12#mit-welchem-tool-verbindet-man-sich-bequ | Es ist ein Client für Windows Remote Management, das auf 5985 (HTTP) und 5986 (HTTPS) lauscht.
+f-12#was-zeigt-net-user-domain | /domain fragt einen Domänencontroller statt der lokalen Benutzerdatenbank.
+f-12#bringe-eine-typische-ad-angriffskette-in | Jeder Schritt liefert die Voraussetzung des nächsten. Darum kann die Abwehr die Kette an mehreren Stellen brechen.
+f-13#welches-vpn-protokoll-gilt-als-besonders | WireGuard hat wenig Code und einen festen modernen Satz an Kryptografie.
+f-13#welches-protokoll-dient-bei-ipsec-zur-sc | IKEv2 authentifiziert die Seiten und vereinbart die Schlüssel, ESP schützt danach die Daten.
+f-13#wie-heisst-der-modus-bei-dem-nur-verkehr | Das spart Bandbreite, der übrige Verkehr geht aber an den Kontrollen der Firma vorbei.
+f-13#welche-proxy-art-steht-vor-den-servern | Ein Reverse Proxy vertritt Server, ein Forward Proxy vertritt Clients.
+f-13#welcher-header-uebertraegt-hinter-einem- | Clients können den Header fälschen. Vertraue nur dem Teil, den eigene Proxys gesetzt haben.
+f-13#warum-sind-vpn-gateways-besonders-gefaeh | Eine einzige Lücke dort führt direkt ins Innere, oft ohne EDR auf dem Gerät.
+f-13#wofuer-steht-ztna | Zugriff gibt es je Anwendung nach Prüfung von Identität und Gerät statt auf das ganze Netz.
+f-13#rdp-sollte-direkt-aus-dem-internet-errei | Lücken, gestohlene Passwörter und Brute Force bleiben. RDP gehört hinter VPN oder Gateway mit MFA.
+f-14#welcher-sql-befehl-liest-daten | SELECT fragt ab. INSERT, UPDATE und DELETE verändern Daten.
+f-14#zu-welcher-sql-kategorie-gehoeren-grant- | Data Control Language verwaltet Rechte, DDL Strukturen, DML Daten.
+f-14#welche-bedingung-muss-bei-union-erfuellt | UNION stapelt Ergebniszeilen, daher müssen die Spalten zusammenpassen.
+f-14#in-welcher-datenbank-liegen-bei-mysql-di | Dieses Schema beschreibt Datenbanken, Tabellen und Spalten, sichtbar je nach eigenen Rechten.
+f-14#welches-kommentarzeichen-gibt-es-nur-in- | MySQL und MariaDB akzeptieren #, der Standard kennt -- und /* */.
+f-14#welches-mssql-feature-ermoeglicht-betrie | xp_cmdshell startet Befehle im Kontext des Dienstkontos. Standardmäßig ist es aus.
+f-14#welche-rechte-braucht-ein-anwendungskont | So bleibt der Schaden einer Injection auf diese Anwendung begrenzt.
+f-14#welcher-operator-bindet-in-sql-staerker | a OR b AND c bedeutet a OR (b AND c). Klammern vermeiden Irrtümer.
+f-15#in-welcher-richtung-liest-man-received-h | Jeder Server setzt seinen Eintrag oben drauf, der unterste ist der älteste und der am leichtesten gefälschte.
+f-15#welcher-dns-record-bestimmt-den-mailserv | Absendende Server fragen den MX-Eintrag der Empfängerdomain ab.
+f-15#was-prueft-dmarc-zusaetzlich-zu-spf-und- | SPF und DKIM können für eine fremde Domain bestehen. DMARC verlangt den Bezug zum sichtbaren Absender.
+f-15#wo-liegt-der-oeffentliche-dkim-schluesse | Der Selektor steht in der DKIM-Signatur und erlaubt mehrere Schlüssel sowie Wechsel.
+f-15#welche-dmarc-richtlinie-weist-mails-bei- | reject weist ab, quarantine sortiert aus, none berichtet nur.
+f-15#welche-verfahren-erzwingen-verschluessel | STARTTLS allein lässt sich herabstufen. MTA-STS nutzt HTTPS-Richtlinien, DANE DNSSEC.
+f-15#der-from-header-einer-e-mail-ist-vertrau | Der Absender schreibt ihn selbst. Erst ein DMARC-Ergebnis des eigenen Servers gibt ihm Gewicht.
+f-15#welcher-port-wird-fuer-die-einlieferung- | 587 ist Submission mit Anmeldung, 465 die Variante mit sofortigem TLS, 25 der Weg zwischen Servern.
+f-16#was-ist-ein-commit | Ein Commit zeigt auf einen Schnappschuss und seinen Vorgänger und bildet so die Historie.
+f-16#welche-datei-legt-fest-welche-dateien-gi | .gitignore wirkt nur auf noch nicht verfolgte Dateien.
+f-16#was-muss-man-tun-wenn-ein-passwort-in-di | Klone und Forks behalten das Geheimnis. Nur ein Wechsel macht es wertlos.
+f-16#welches-werkzeug-konfiguriert-systeme-ag | Ansible arbeitet über SSH oder WinRM, auf dem Ziel ist kein Agent nötig.
+f-16#welches-werkzeug-legt-infrastruktur-dekl | Du beschreibst den Zielzustand, das Werkzeug berechnet die nötigen Änderungen.
+f-16#warum-ist-ein-oeffentlich-erreichbares-g | Aus den Objekten lässt sich das Repository samt alter Geheimnisse wiederherstellen.
+f-16#wofuer-steht-ci-cd | CI baut und testet jede Änderung automatisch, CD bringt sie bis zur Auslieferung.
