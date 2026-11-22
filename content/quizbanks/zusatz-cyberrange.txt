@@ -1,0 +1,508 @@
+# Zusatzfragen für Cyber-Range-Module ohne eigenes Quiz
+
+=== cr-12 ===
+? Welches Team führt in einer Cyber-Übung die Angriffskette nach Drehbuch aus?
+= Red Team
+! Das Red Team spielt die Angreifer, das Blue Team verteidigt.
+
+? Welches Team steuert und bewertet die Übung?
++ White Team
+- Red Team
+- Blue Team
+- Green Team
+! Das White Team (Exercise Control) leitet, spielt Injects ein und bewertet.
+
+? Welches Team betreibt die technische Infrastruktur der Range?
+= Green Team
+! Es baut und betreibt die Systeme, auf denen geübt wird.
+
+? Wofür steht das A in einer RACI-Matrix?
+= Accountable
+! R = Responsible, A = Accountable, C = Consulted, I = Informed.
+
+? Wie nennt man die Übungsleitung größerer Übungen auch?
++ White Cell
++ EXCON
+- SOC
+- CERT
+! Exercise Control.
+
+?tf Die Spielregeln (Rules of Engagement) werden vor jeder Übung schriftlich festgelegt und bestätigt.
+= wahr
+! Sie legen u. a. Geltungsbereich, Verbote und Abbruchregeln fest.
+
+? Welche Rolle trifft die Abbruchentscheidung (Go/No-Go)?
+= Exercise Director
+! Er trägt die Gesamtverantwortung der Übung.
+
+=== cr-13 ===
+? Welches Grundprinzip verlangt, dass nichts aus der Range in reale Netze gelangt?
+= Isolation
+! Umgesetzt u. a. mit Bridge ohne Uplink, Default Deny und simuliertem Internet.
+
+?tf Realismus und Rücksetzbarkeit einer Range stehen teilweise im Spannungsverhältnis.
+= wahr
+! Realismus will viele Systeme, Rücksetzbarkeit wenige schlanke.
+
+? Womit beginnt ein gutes Szenario-Design?
++ mit den Lernzielen
+- mit dem spannendsten Angriff
+- mit der Hardware-Bestellung
+- mit dem Punktesystem
+! Szenarien werden rückwärts von den Lernzielen her entwickelt.
+
+? Welche Inject-Art ist „Geschäftsführung verlangt Lagebericht in 20 Minuten“?
++ kommunikativ
+- technisch
+- physisch
+- zufällig
+! Kommunikative Injects trainieren verständliche Berichte unter Zeitdruck.
+
+? Warum erzeugt man Varianten eines Szenarios?
++ damit Notizen aus früheren Durchläufen nichts nützen und die Vergleichbarkeit erhalten bleibt
+- damit die Range mehr Strom verbraucht
+- weil Szenarien verboten sind
+- um Logs zu löschen
+! Grundstruktur bleibt, Details wie Namen und Einstiegspunkt ändern sich.
+
+? Welcher Zustand einer Sandbox bedeutet, dass die Topologie als Code vorliegt?
+= DEFINIERT
+= definiert
+! Danach folgen u. a. ALLOKIERT, gebaut, bereit.
+
+? Wie kann das White Team die Schwierigkeit für schwache Teams senken?
++ Tempo des Red Teams verringern
++ lautere, bekannte Werkzeuge einsetzen
+- mehr Living-off-the-Land
+- Phasen parallel ausführen
+! Stellschrauben wie Tempo und Lautstärke steuern die Schwierigkeit.
+
+=== cr-15 ===
+? Wie heißt der Vorgang, bei dem jede Schicht die Daten mit einem eigenen Header verpackt?
+= Kapselung
+= Encapsulation
+! Wie eine russische Puppe.
+
+? Wie heißt der vierschrittige DHCP-Austausch abgekürzt?
+= DORA
+! Discover, Offer, Request, Acknowledge.
+
+? Was bedeutet der Zeek-Verbindungszustand S0?
++ SYN gesendet, keine Antwort
+- normal auf- und abgebaut
+- Verbindung abgewiesen
+- Verbindung verschlüsselt
+! Typisch für Portscans auf gefilterte Ports.
+
+? Was bedeutet der Zeek-Verbindungszustand SF?
++ Verbindung normal auf- und abgebaut
+- SYN ohne Antwort
+- abgewiesen mit RST
+- unvollständig
+! SF steht für einen sauberen Verbindungsauf- und -abbau.
+
+? Wie lang darf ein einzelnes DNS-Label höchstens sein?
+= 63
+= 63 Zeichen
+! Tunnel-Werkzeuge reizen solche Grenzen aus und fallen dadurch auf.
+
+? Welches Protokoll kapselt Ethernet-Frames in UDP, um Segmente über mehrere Hosts zu verteilen?
+= VXLAN
+! RFC 7348; das physische Netz heißt dabei Underlay.
+
+? Welche ICMP-Typen gehören zum Ping?
++ 8 Echo Request
++ 0 Echo Reply
+- 3 Destination Unreachable
+- 11 Time Exceeded
+! Traceroute nutzt dagegen Time Exceeded (Typ 11).
+
+?tf Moderne Windows-Systeme bevorzugen IPv6, auch wenn das Netz eigentlich nur IPv4 nutzt.
+= wahr
+! Das schafft Angriffsflächen wie Rogue DHCPv6.
+
+=== cr-17 ===
+? Warum wird vom 2-Knoten-Proxmox-Cluster abgeraten?
++ der Ausfall eines Knotens führt zum Quorumverlust
+- Proxmox unterstützt keine Cluster
+- zwei Knoten sind zu schnell
+- Cluster verhindern Backups
+! Corosync braucht ein Quorum; mit zwei Knoten fehlt es beim Ausfall.
+
+? Welche Aufteilung wird im Minimal-Setup empfohlen?
++ Rollentrennung: ein Host für Übungs-VMs, einer für Monitoring, Zugang und Scoring
+- beide Hosts identisch als Cluster
+- alles auf dem Laptop eines Teilnehmers
+- Monitoring in der Cloud
+! So bleiben Übung und Betrieb getrennt.
+
+?tf vCPUs dürfen überbucht werden, Arbeitsspeicher sollte nicht überbucht werden.
+= wahr
+! RAM-Überbuchung führt schnell zu Instabilität.
+
+? Warum wird die SPAN-Spiegelung per Proxmox-Hookscript gesetzt?
++ weil das tap-Interface bei jedem VM-Start neu erzeugt wird
+- weil Hookscripts schneller sind
+- weil tc nicht funktioniert
+- weil es keine Netzwerkkarten gibt
+! Das Hookscript setzt den Filter in der Phase post-start erneut.
+
+? Was muss nach einem Stromausfall zuerst starten?
++ Infrastrukturdienste wie Firewall, dann Domänencontroller, dann weitere Systeme
+- die Angreifer-VMs
+- die Clients der Teilnehmer
+- zufällige Reihenfolge
+! Ohne Firewall kein Netz, ohne DC keine Anmeldung.
+
+? Was passiert bei Ausfall des Ops-Hosts?
++ kein Monitoring, kein Teilnehmerzugang, kein Scoring – das Übungsnetz läuft weiter
+- das Übungsnetz wird gelöscht
+- nichts ändert sich
+- die Teilnehmer erhalten Admin-Rechte
+! Übung pausieren und Zeit im Scoring einfrieren.
+
+=== cr-18 ===
+? Welche Werkzeugkette nutzt die Bauanleitung für Vorlagen, Provisionierung und Konfiguration?
++ Packer
++ OpenTofu
++ Ansible
+- Photoshop
+! Templates mit Packer, VMs mit OpenTofu, Konfiguration mit Ansible.
+
+? Welcher Abnahmetest ist der wichtigste?
++ der Isolationstest: Kommt etwas aus der Range heraus?
+- der Geschwindigkeitstest des Webbrowsers
+- die Farbwahl im Portal
+- die Anzahl der Benutzer
+! Er wird automatisiert aus jeder Zone ausgeführt.
+
+?tf Eine Test-VM in einem Übungs-VLAN sollte das reale Internet erreichen können.
+= falsch
+! Egress aus der Range muss scheitern bzw. im simulierten Internet landen.
+
+? Was sollte ein nmap -sS-Scan aus dem Angreifernetz im Monitoring auslösen?
++ Zeek-Einträge mit conn_state S0/REJ und Suricata-Alarme
+- nichts
+- einen Neustart
+- eine E-Mail an alle Teilnehmer
+! So wird geprüft, ob das Monitoring funktioniert.
+
+? Auf welchem Port ist die Proxmox-Weboberfläche erreichbar?
+= 8006
+! Zugriff nur aus dem Management-Netz mit 2FA.
+
+=== cr-19 ===
+? Welche Technik erlaubt mehreren Teams identische Szenarien mit denselben IP-Adressen?
++ vollständig getrennte Netze pro Team, z. B. über Proxmox SDN-Zonen bzw. VRFs
+- ein gemeinsames VLAN für alle
+- zufällige IP-Adressen ohne Trennung
+- ein gemeinsamer DHCP-Server
+! Nur getrennte Netze verhindern Überschneidungen.
+
+? Ab wie vielen Knoten lohnt sich Ceph als verteilter Speicher?
++ ab drei Knoten
+- ab einem Knoten
+- nur bei genau zwei Knoten
+- nie
+! Ceph braucht mindestens drei Monitore für ein Quorum.
+
+?tf Für Sensoren und Monitoring sollte keine CPU-Überbuchung eingeplant werden.
+= wahr
+! Sie müssen auch unter Last zuverlässig mitschneiden.
+
+? Was ermöglicht Ceph unter anderem?
++ Live-Migration von VMs zwischen Knoten
++ keinen Datenverlust beim Ausfall eines Knotens
+- Betrieb ohne Netzwerk
+- kostenlose Hardware
+! VM-Disks liegen verteilt und mehrfach auf den Knoten.
+
+? Welche Technik bündelt Netzwerkverbindungen über zwei Switches im Cluster?
+= LACP
+= 802.3ad
+! Oft mit MLAG über zwei Switches.
+
+=== cr-20 ===
+? Wie heißt das fiktive Unternehmen im Szenario „Operation Nordlicht“?
+= Nordwind Logistik
+= Nordwind Logistik GmbH
+! Mit Webshop, Mailserver, Dateiserver und Active Directory.
+
+? Womit beginnt die Angriffskette in Operation Nordlicht?
++ Spearphishing mit Anhang
+- physischer Einbruch
+- DDoS-Angriff
+- Satellitenhack
+! ATT&CK T1566.001.
+
+? Mit welchem Werkzeug wird die Angriffskette automatisiert, damit alle Teams identische Bedingungen haben?
+= Caldera
+! Ein Agent führt die Fähigkeiten in festgelegter Reihenfolge aus.
+
+? Wofür dient die Musterlösung des White Teams?
++ als Bewertungsmaßstab für Leistung und After-Action-Review
+- zur Verteilung an die Teilnehmer vor der Übung
+- als Ersatz für das Szenario
+- zur Werbung
+! Sie wird nicht an die Teilnehmer ausgegeben.
+
+?tf Das Lernziel „Kerberoasting identifizieren“ lässt sich über Event 4769 im SIEM prüfen.
+= wahr
+! Service-Ticket-Anforderungen mit auffälliger Verschlüsselung.
+
+=== cr-21 ===
+? Was misst MTTD in der Auswertung?
++ die Zeit bis zur Erkennung einer Angriffstechnik
+- die Zeit bis zum Mittagessen
+- die Anzahl der Teams
+- die Größe der Logdateien
+! Zusammen mit MTTR die zentralen Zeitkennzahlen.
+
+? Was prüft ein guter Service-Check?
++ ob der Dienst wirklich funktioniert, nicht nur ob der Port offen ist
+- nur ob der Server Strom hat
+- die Farbe der Webseite
+- die Anzahl der Benutzer
+! Zum Beispiel die richtige Seite ausliefern oder Mails annehmen.
+
+? Welche Kriterien enthält die Rubrik für Vorfallsberichte?
++ Zeitbezug
++ betroffene Systeme
++ Technik
+- Schriftart
+! Exakte Zeitstempel und vollständige Systemangaben geben volle Punkte.
+
+?tf Nicht-technische Leistungen wie Lageberichte werden ebenfalls nach einer Rubrik bewertet.
+= wahr
+! Rechtzeitigkeit und Verständlichkeit für die Leitung zählen.
+
+? Wie heißt die strukturierte Nachbesprechung nach der Übung?
+= After-Action-Review
+= AAR
+! Mit Zeitstrahl aus Red- und Blue-Aktivitäten.
+
+=== cr-23 ===
+? Was unterscheidet Purple Teaming von Red vs. Blue?
++ offener Informationsfluss in Echtzeit zur Verbesserung der Erkennung
+- verdecktes Arbeiten bis zum Ende
+- es gibt kein Blue Team
+- es geht nur um Punkte
+! Ziel ist, Erkennungslücken zu finden und zu schließen.
+
+? Welches Regelformat wird für Detection as Code empfohlen, weil es herstellerneutral ist?
+= Sigma
+! Sigma-Regeln lassen sich in viele SIEM-Sprachen übersetzen.
+
+? Was beschreibt die Kennzahl Erkennungsrate?
++ Anteil der ausgeführten Tests, die einen Alarm erzeugten
+- Anzahl der Regeln
+- Anzahl der Teammitglieder
+- Speicherplatz im SIEM
+! Zielwert in der Range: über 90 %.
+
+?tf Beim Threat Hunting in der Range erhält das Blue Team eine Hypothese statt eines Alarms.
+= wahr
+! Das Red Team hat vorher unauffällig Spuren hinterlassen.
+
+? Welche Reifegradstufe beschreibt „keine zentrale Sammlung von Logs“?
+= Blind
+= 0
+! Nächster Schritt: Agenten und Spiegelung einrichten.
+
+=== cr-24 ===
+? Was gehört in einen Szenario-Steckbrief?
++ Name und Version
++ Zielgruppe und Niveau
++ messbare Lernziele
+- Lieblingsfarbe des Autors
+! Steckbriefe machen Szenarien vergleichbar und wiederverwendbar.
+
+? Welcher Schwerpunkt passt zum Szenario „Webshop unter Beschuss“?
++ Web-Logs, Netzwerkanalyse und Segmentierung
+- Funkstörungen
+- physische Sicherheit
+- Druckerwartung
+! Der Angreifer versucht, von der DMZ ins interne Netz zu gelangen.
+
+?tf Das Szenario „Phishing-Kampagne“ eignet sich gut für Einsteiger.
+= wahr
+! Schwerpunkt sind E-Mail-Analyse und schnelle Bereinigung.
+
+? Was trainiert ein Insider-Szenario besonders?
++ Verhaltensanalyse, Datenschutzfragen und Zusammenarbeit mit HR
+- WLAN-Kanalplanung
+- Hardwarereparatur
+- Webdesign
+! Der Täter nutzt legitime Rechte.
+
+=== cr-26 ===
+? Welche Kubernetes-Distribution wird für die Range empfohlen?
+= k3s
+! Leichtgewichtig als einzelne Binärdatei.
+
+? Woher stammen die meisten Vorfälle in Container-Umgebungen?
++ aus Fehlkonfigurationen
+- aus Hardwaredefekten
+- aus Stromausfällen
+- aus zu starken Passwörtern
+! Privilegierte Container und automatisch eingebundene Tokens sind Klassiker.
+
+? Womit simuliert man S3-kompatiblen Objektspeicher lokal?
++ MinIO
++ Ceph RGW
+- Excel
+- Wireshark
+! Echte Cloud-Konten haben in einer isolierten Range nichts zu suchen.
+
+?tf CI/CD-Pipelines sind Teil der Angriffsfläche.
+= wahr
+! Wer eine Pipeline kontrolliert, kann Schadcode in Software einschleusen.
+
+=== cr-27 ===
+? Was ist eine Sandbox-Definition im Orchestrator?
++ ein Git-Repository mit Topologie, Variablen und Provisionierung
+- eine laufende VM
+- ein Benutzerkonto
+- eine Firewall-Regel
+! Daraus werden gleichartige Sandboxes erzeugt.
+
+? Was ist ein Pool?
++ eine Menge gleichartiger, vorab erzeugter Sandboxes einer Definition
+- ein Schwimmbad
+- ein Speichermedium
+- ein Logformat
+! So stehen Umgebungen zu Kursbeginn bereit.
+
+?tf Idempotente Schritte machen einen Orchestrator robuster.
+= wahr
+! Jeder Schritt kann gefahrlos wiederholt werden.
+
+? Mit welcher Python-Bibliothek spricht man die Proxmox-API an?
+= proxmoxer
+! Sie kapselt die REST-API.
+
+=== cr-28 ===
+? Welche drei Engpässe bestimmen die Leistung einer Range?
++ CPU
++ Arbeitsspeicher
++ Ein-/Ausgabe
+- Bildschirmgröße
+! Messbar z. B. über PSI und node_exporter.
+
+? Mit welchem Werkzeug misst man die Speicherleistung?
+= fio
+! Für das Netz nutzt man iperf3.
+
+? Mit welchem Werkzeug misst man den Netzwerkdurchsatz?
+= iperf3
+! Ergebnisse dokumentieren als Vergleichsbasis.
+
+?tf Die Steal-Zeit im Gast zeigt, dass der Hypervisor der VM CPU-Zeit vorenthält.
+= wahr
+! Ein Hinweis auf CPU-Überlastung des Hosts.
+
+=== cr-29 ===
+? Was ist die Quelle der gesamten Range, die mehrfach gesichert wird?
++ das Git-Repository mit dem Infrastrukturcode
+- die Teilnehmer-Notizen
+- die Bildschirmschoner
+- die Browser-Historie
+! Aus ihm lässt sich die Range neu aufbauen.
+
+? Welches Produkt wird für die 3-2-1-Sicherung genutzt?
+= Proxmox Backup Server
+= PBS
+! Mit Deduplizierung und Offsite-Kopie.
+
+?tf Wiederherstellungen sollten regelmäßig geübt werden.
+= wahr
+! Ungetestete Backups sind nur eine Hoffnung.
+
+=== cr-30 ===
+? Welche Methode wird für die Bedrohungsanalyse der Range genutzt?
+= STRIDE
+! Spoofing, Tampering, Repudiation, Information Disclosure, DoS, Elevation of Privilege.
+
+? Welches Risiko hat in der Risikomatrix die höchste Auswirkung?
++ Schadsoftware aus der Übung erreicht das reale Netz
+- ein Teilnehmer vergisst sein Passwort
+- ein Drucker hat kein Papier
+- eine VM startet langsam
+! Gegenmaßnahmen: Isolation, Egress-Test vor jeder Übung, Not-Aus.
+
+? Wie oft sollte der Isolationstest laufen?
++ vor jeder Übung
+- einmal im Leben
+- nie
+- nur nach einem Vorfall
+! Automatisch per Skript aus allen Zonen.
+
+=== cr-32 ===
+? Wie heißt die Lab-Umgebung für die Blue-Team-Praxislabore?
+= Nordlicht-Mini
+! Eine verkleinerte Version des Hauptszenarios.
+
+? Was trainiert das Labor „Zonenmatrix überprüfen“?
++ ob die tatsächlichen Netzwege der dokumentierten Matrix entsprechen
+- das Löschen von Logs
+- das Installieren von Spielen
+- das Ändern von Passwörtern anderer
+! Netzsegmentierung praktisch überprüfen.
+
+? Welches Werkzeug nutzt das Labor zur Entwicklung von Detektionsregeln?
+= sigma-cli
+= Sigma
+! Nach dem Prinzip Detection as Code.
+
+=== cr-33 ===
+? Wie lange dauert der Phasenplan des Projekts ungefähr?
++ etwa 16 Wochen
+- 1 Tag
+- 5 Jahre
+- 2 Stunden
+! Von der Initiierung bis zur Abnahme.
+
+? Was ist ein Abnahmekriterium für Reproduzierbarkeit?
++ vollständiger Neuaufbau aus Git in unter 90 Minuten
+- ein schönes Logo
+- 100 Teilnehmer gleichzeitig
+- ein gedrucktes Handbuch
+! Infrastructure as Code macht das möglich.
+
+?tf RAM ist laut Budget-Richtwerten ein Hauptkostentreiber.
+= wahr
+! Arbeitsspeicher bestimmt, wie viele VMs und Teams möglich sind.
+
+=== cr-34 ===
+? Was wird nach jeder Übung (Post-Flight) gesichert?
++ Logs, PCAPs, Sitzungsaufzeichnungen und Tickets mit Prüfsummen
+- nichts
+- nur die Punkteliste
+- nur die Teilnehmerliste
+! Grundlage für AAR und spätere Analysen.
+
+? Was muss vor der Aufnahme einer neuen VM in die Range geschehen?
++ Zone/VLAN und IP-Adresse im IP-Plan reservieren
+- die VM ins Internet stellen
+- die Firewall abschalten
+- alle Snapshots löschen
+! Ordnung im IP-Plan verhindert Konflikte.
+
+?tf Updates der Betriebs-VMs sollten nicht während einer laufenden Übungsserie eingespielt werden.
+= wahr
+! Sonst drohen unerwartete Änderungen mitten in der Übung.
+
+=== cr-36 ===
+? Wie wurden Angaben in der Dokumentation verifiziert?
++ zweistufig, möglichst in zwei unabhängigen Quellen
+- gar nicht
+- durch Raten
+- durch Umfrage in sozialen Medien
+! Zeitabhängige Angaben wurden gesondert gekennzeichnet.
+
+? Welche Adressbereiche sind nach RFC 5737 für Dokumentation reserviert?
++ 198.51.100.0/24
++ 203.0.113.0/24
+- 10.0.0.0/8
+- 8.8.8.0/24
+! Auch 192.0.2.0/24 gehört dazu.

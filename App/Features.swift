@@ -304,7 +304,7 @@ struct Heatmap: View {
                             let a = store.progress.daily[Store.dayKey(offset: offset)]?.activity ?? 0
                             let lvl = offset > 0 ? -1 : (a == 0 ? 0 : a < goal / 2 ? 1 : a < goal ? 2 : a < goal * 2 ? 3 : 4)
                             RoundedRectangle(cornerRadius: 3)
-                                .fill(lvl < 0 ? Color.clear : lvl == 0 ? Color.white.opacity(0.06) : NT.acc.opacity([0, 0.25, 0.5, 0.75, 1][lvl]))
+                                .fill(Heatmap.shade(lvl))
                                 .aspectRatio(1, contentMode: .fit)
                         }
                     }
@@ -313,7 +313,7 @@ struct Heatmap: View {
             HStack(spacing: 4) {
                 Text("weniger").font(NT.mono(9)).foregroundStyle(NT.tx3)
                 ForEach(0..<5, id: \.self) { l in
-                    RoundedRectangle(cornerRadius: 2).fill(l == 0 ? Color.white.opacity(0.06) : NT.acc.opacity([0, 0.25, 0.5, 0.75, 1][l])).frame(width: 10, height: 10)
+                    RoundedRectangle(cornerRadius: 2).fill(Heatmap.shade(l)).frame(width: 10, height: 10)
                 }
                 Text("mehr").font(NT.mono(9)).foregroundStyle(NT.tx3)
                 Spacer()
@@ -322,6 +322,13 @@ struct Heatmap: View {
             }
         }
         .card(padding: 14)
+    }
+
+    static func shade(_ lvl: Int) -> Color {
+        let opacities: [Double] = [0, 0.25, 0.5, 0.75, 1]
+        if lvl < 0 { return Color.clear }
+        if lvl == 0 { return Color.white.opacity(0.06) }
+        return NT.acc.opacity(opacities[min(lvl, 4)])
     }
 }
 

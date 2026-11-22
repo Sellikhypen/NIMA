@@ -651,8 +651,26 @@ def main():
         if not d.exists():
             continue
         for f in sorted(d.glob("*.txt")):
-            qs, meta = parse_quiz(f.read_text(encoding="utf-8"), f.name)
+            text = f.read_text(encoding="utf-8").replace("\r", "")
+            # Sammeldateien: Abschnitte "=== modul-id ===" ordnen Fragen direkt Modulen zu
+            if re.search(r"^=== [a-z0-9][a-z0-9\-_.]* ===$", text, re.M):
+                mod_by_id = {m["id"]: m for m in mods}
+                for sec in re.split(r"^(?==== [a-z0-9][a-z0-9\-_.]* ===$)", text, flags=re.M):
+                    mm = re.match(r"^=== ([a-z0-9][a-z0-9\-_.]*) ===\n", sec)
+                    if not mm:
+                        continue
+                    target = mod_by_id.get(mm.group(1))
+                    if not target:
+                        errors.append(f"Quizbank {f.name}: unbekanntes Modul {mm.group(1)}")
+                        continue
+                    qs, _ = parse_quiz(sec[mm.end():], f"{f.name}:{mm.group(1)}")
+                    target["quiz"].extend(qs)
+                    bank_count += len(qs)
+                continue
+            qs, meta = parse_quiz(text, f.name)
             targets = []
+            for mid in split_list(meta.get("modulid", "")):
+                targets += [m for m in mods if m["id"] == mid]
             for h in split_list(meta.get("modul", "")):
                 targets += by_htb.get(slug(h), [])
             if not targets:

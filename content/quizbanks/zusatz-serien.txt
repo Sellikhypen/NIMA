@@ -1,0 +1,411 @@
+# Zusatzfragen für Serien-Module
+
+=== ow-04 ===
+? Was unterscheidet Insecure Design von Implementierungsfehlern?
++ der Fehler steckt im Entwurf, nicht erst im Code
+- es betrifft nur das Layout
+- es ist immer ein Tippfehler
+- es betrifft nur Datenbanken
+! Ein perfekter Code eines unsicheren Entwurfs bleibt unsicher.
+
+? Welche Methode hilft, Designfehler früh zu finden?
+= Threat Modeling
+= Bedrohungsmodellierung
+! Zum Beispiel mit STRIDE vor der Umsetzung.
+
+?tf Fehlende Limits für Passwort-Resets können ein Designfehler sein.
+= wahr
+! Geschäftsregeln und Missbrauchsfälle müssen im Entwurf bedacht werden.
+
+=== ow-05 ===
+? Welche Beispiele gehören zu Security Misconfiguration?
++ Standardpasswörter
++ ausführliche Fehlermeldungen mit Stacktraces
++ offene Admin-Oberflächen
+- aktuelle Patches
+! Unordnung im Betrieb ist eine der häufigsten Ursachen.
+
+? Was hilft dauerhaft gegen Fehlkonfigurationen?
++ automatisierte, versionierte Konfiguration mit Prüfungen
+- manuelles Klicken auf jedem Server
+- Konfiguration geheim halten
+- seltener prüfen
+! Infrastructure as Code und Baselines machen Abweichungen sichtbar.
+
+?tf Directory Listing auf Webservern sollte deaktiviert sein.
+= wahr
+! Es verrät Dateien, die nicht für Besucher gedacht sind.
+
+=== ow-07 ===
+? Was gehört zu Identification and Authentication Failures?
++ fehlende Begrenzung von Anmeldeversuchen
++ schwache Wiederherstellungsverfahren
+- korrekt umgesetzte MFA
+- Passkeys
+! Auch unsichere Sitzungsverwaltung zählt dazu.
+
+? Was sollte nach einer erfolgreichen Anmeldung mit der Session-ID geschehen?
++ eine neue Session-ID ausstellen
+- dieselbe ID behalten
+- die ID in der URL anzeigen
+- die ID per E-Mail senden
+! Schutz gegen Session Fixation.
+
+=== ow-08 ===
+? Was ist ein Beispiel für Software and Data Integrity Failures?
++ Updates ohne Signaturprüfung installieren
+- zu lange Passwörter
+- eine Firewall verwenden
+- TLS 1.3 nutzen
+! Auch unsichere Deserialisierung und manipulierte CI/CD-Pipelines gehören dazu.
+
+?tf Abhängigkeiten aus nicht vertrauenswürdigen Quellen gefährden die Integrität der Software.
+= wahr
+! Lieferkettenangriffe nutzen genau das.
+
+=== ow-09 ===
+? Was ist ein typischer Logging-Fehler?
++ fehlgeschlagene Anmeldungen werden nicht protokolliert
+- Logs werden zentral gesammelt
+- Zeitstempel sind in UTC
+- Alarme werden bearbeitet
+! Ohne Logs bleiben Angriffe unbemerkt.
+
+?tf Logs sollten keine Passwörter oder vollständige Kartennummern enthalten.
+= wahr
+! Logs selbst dürfen nicht zum Datenleck werden.
+
+=== bsi-01 ===
+? Wer trägt nach BSI-Grundschutz die Gesamtverantwortung für Informationssicherheit?
++ die Institutionsleitung
+- der Praktikant
+- der Hersteller
+- der Internetprovider
+! Sie kann Aufgaben delegieren, aber nicht die Verantwortung.
+
+? Welche Rolle koordiniert das Sicherheitsmanagement operativ?
+= ISB
+= Informationssicherheitsbeauftragter
+! Er berichtet direkt an die Leitung.
+
+=== bsi-02 ===
+? Wofür steht die Bausteinschicht ORP?
+= Organisation und Personal
+! Zuständigkeiten, Regelungen für Mitarbeitende, Schulung, Identitätsmanagement.
+
+?tf Regelungen beim Ausscheiden von Mitarbeitenden gehören zu ORP.
+= wahr
+! Zugänge entziehen, Geräte zurückgeben, Pflichten erinnern.
+
+=== bsi-03 ===
+? Welche Themen gehören zur Schicht CON?
++ Kryptokonzept
++ Datensicherungskonzept
++ Löschen und Vernichten
+- Serverraum-Klimatisierung
+! CON steht für Konzepte und Vorgehensweisen.
+
+=== bsi-04 ===
+? Welche Themen gehören zur Schicht OPS?
++ Patch- und Änderungsmanagement
++ Protokollierung
++ Fernwartung
+- Organigramm der Geschäftsleitung
+! OPS steht für den Betrieb.
+
+=== bsi-06 ===
+? Wofür steht die Schicht APP?
+= Anwendungen
+! Zum Beispiel Webanwendungen, Datenbanken, Office und E-Mail.
+
+=== bsi-07 ===
+? Was umfasst die Schicht SYS?
++ IT-Systeme wie Server, Clients und Mobilgeräte
+- nur Gebäude
+- nur Verträge
+- nur Schulungen
+! Mit spezifischen Anforderungen je Systemtyp.
+
+=== bsi-08 ===
+? Wofür steht die Schicht IND?
+= Industrielle IT
+! Steuerungen, Prozessleittechnik, industrielle Fernwartung.
+
+=== bsi-09 ===
+? Was gehört zur Schicht NET?
++ Netzarchitektur
++ WLAN
++ Firewalls
+- Bürostühle
+! NET steht für Netze und Kommunikation.
+
+=== bsi-10 ===
+? Was gehört zur Schicht INF?
++ Gebäude und Räume
++ Verkabelung
++ häuslicher Arbeitsplatz
+- Webanwendungen
+! INF steht für Infrastruktur.
+
+=== bt-01 ===
+? Was kann ein EDR im Ernstfall tun?
++ ein Gerät vom Netz isolieren
++ verdächtige Prozesse beenden
+- Hardware reparieren
+- Passwörter erraten
+! Zusätzlich liefert es Telemetrie für Untersuchungen.
+
+?tf Ein EDR erkennt auch Angriffe ohne bekannte Schaddatei anhand von Verhalten.
+= wahr
+! Zum Beispiel ungewöhnliche Prozessketten oder LSASS-Zugriffe.
+
+=== bt-02 ===
+? Was ist bei der Aufbewahrung von Logs zu beachten?
++ Zweck, Dauer und Datenschutz festlegen
++ Schutz vor Manipulation
+- Logs möglichst schnell löschen ohne Plan
+- Logs öffentlich speichern
+! Aufbewahrung muss begründet und dokumentiert sein.
+
+=== bt-03 ===
+? Was ist ein Playbook im SOC?
++ eine festgelegte Abfolge von Schritten für einen Alarm- oder Vorfalltyp
+- ein Theaterstück
+- ein Firewall-Regelwerk
+- ein Backup
+! SOAR automatisiert Teile davon.
+
+?tf Folgenreiche automatische Aktionen sollten eine menschliche Freigabe erfordern.
+= wahr
+! Fehlerhafte Automatisierung kann großen Schaden anrichten.
+
+=== bt-05 ===
+? Was ist ein häufiger Insider-Indikator?
++ große Datenzugriffe kurz vor dem Austritt
+- regelmäßige Arbeitszeiten
+- Teilnahme an Schulungen
+- Nutzung freigegebener Werkzeuge
+! Kontext und Verhältnismäßigkeit sind entscheidend.
+
+=== bt-06 ===
+? Warum sind Honeytokens besonders rauscharm?
++ legitime Nutzer haben keinen Grund, sie zu verwenden
+- sie erzeugen keine Logs
+- sie sind verschlüsselt
+- sie liegen im Internet
+! Jede Nutzung ist verdächtig.
+
+? Was ist ein Honeytoken?
++ ein Köder wie ein Fake-Konto oder eine Fake-Zugangsdatei
+- ein Kryptowährungs-Token
+- ein MFA-Gerät
+- ein Logformat
+! Wer ihn anfasst, verrät sich.
+
+=== bt-07 ===
+? Wann ist Threat Intelligence im Betrieb nützlich?
++ wenn sie relevant ist und zu konkreten Maßnahmen führt
+- wenn sie möglichst viele IOCs ohne Kontext enthält
+- wenn sie geheim bleibt
+- wenn niemand sie liest
+! Relevanz vor Menge.
+
+=== cl-05 ===
+? Was ersetzen private Endpunkte in der Cloud?
++ den Zugriff auf Dienste über öffentliche Internetadressen
+- die Verschlüsselung
+- die Identitätsprüfung
+- das Logging
+! Datenverkehr bleibt im privaten Netz.
+
+?tf In Zero-Trust-Architekturen ist die Identität wichtiger als der Netzwerkstandort.
+= wahr
+! Jeder Zugriff wird anhand von Identität und Kontext geprüft.
+
+=== dp-01 ===
+? Gelten pseudonymisierte Daten noch als personenbezogen?
++ ja
+- nein
+! Mit Zusatzwissen ist der Personenbezug herstellbar.
+
+? Was ist bei Anonymisierung besonders schwierig?
++ Re-Identifizierung durch Kombination mehrerer Merkmale auszuschließen
+- Daten zu speichern
+- Dateien umzubenennen
+- Tabellen zu sortieren
+! Schon wenige Merkmale können eine Person eindeutig machen.
+
+=== dp-02 ===
+? Wann ist eine Datenschutz-Folgenabschätzung nötig?
++ bei Verarbeitungen mit voraussichtlich hohem Risiko für Betroffene
+- bei jeder E-Mail
+- nie
+- nur bei Papierakten
+! Art. 35 DSGVO.
+
+=== dp-03 ===
+? Warum sind Löschkonzepte auch ein Sicherheitsthema?
++ Daten, die nicht mehr existieren, können nicht gestohlen werden
+- weil Löschen Strom spart
+- weil Backups dadurch schneller werden
+- weil es nichts mit Sicherheit zu tun hat
+! Datensparsamkeit verkleinert den Schaden bei Vorfällen.
+
+=== hd-03 ===
+? Welche Maßnahmen gehören zur Härtung mobiler Endgeräte?
++ Festplattenverschlüsselung
++ automatische Updates
++ Bildschirmsperre
+- Standardpasswörter behalten
+! Zentral per MDM durchsetzen.
+
+=== iso-02 ===
+? Welche personellen Maßnahmen nennt ISO 27001 Annex A?
++ Überprüfung vor der Einstellung
++ Sensibilisierung und Schulung
++ Pflichten nach Beendigung des Beschäftigungsverhältnisses
+- Auswahl der Bürofarbe
+! Abschnitt 6 des Annex A.
+
+=== iso-03 ===
+? Welche physischen Maßnahmen nennt ISO 27001 Annex A?
++ Zutrittskontrolle
++ sichere Entsorgung von Datenträgern
++ Clear Desk und Clear Screen
+- Passwortrichtlinien
+! Abschnitt 7 des Annex A.
+
+=== kar-01 ===
+? Welche Einstiegsrollen gibt es in der Cybersicherheit?
++ SOC-Analyst
++ Junior-Pentester
++ GRC/ISMS-Assistenz
+- nur Geschäftsführer
+! Quereinsteiger aus IT-Betrieb und Entwicklung bringen wertvolles Wissen mit.
+
+=== kar-02 ===
+? Was zeichnet ein gutes Notizsystem aus?
++ schnelles Wiederfinden durch Struktur und Suche
+- möglichst viele lose Zettel
+- nur Screenshots ohne Text
+- geheime Notizen ohne Ordnung
+! Ein zweites Gehirn spart in Prüfungen viel Zeit.
+
+=== kar-03 ===
+? Was hilft bei praktischen Prüfungen am meisten?
++ systematische Enumeration und laufende Dokumentation
+- möglichst wenig Schlaf
+- zufälliges Ausprobieren
+- den Bericht am Ende schreiben
+! Zeitboxen und Pausen gehören dazu.
+
+=== ot-02 ===
+? Warum wird in OT-Netzen meist passiv überwacht?
++ aktive Scans können empfindliche Steuerungen stören
+- weil OT keine Netzwerke hat
+- weil passiv teurer ist
+- weil es verboten ist
+! Mithören statt anklopfen.
+
+=== ot-03 ===
+? Was hat bei einem OT-Vorfall Vorrang?
++ die Sicherheit von Menschen und Anlage
+- die schnelle Löschung aller Logs
+- die Presseerklärung
+- das Abschalten aller Steuerungen ohne Abstimmung
+! Safety first – Eingriffe nur mit der Betriebsführung.
+
+=== rg-01 ===
+? Wer muss PCI DSS einhalten?
++ Organisationen, die Kreditkartendaten verarbeiten, speichern oder übertragen
+- nur Banken ohne Kartengeschäft
+- nur Schulen
+- niemand
+! Der Standard der Kartenorganisationen.
+
+?tf Die vollständige Kartennummer darf nach PCI DSS beliebig unverschlüsselt gespeichert werden.
+= falsch
+! Gespeicherte Kartendaten müssen geschützt und auf das Nötigste reduziert werden.
+
+=== rg-03 ===
+? Was müssen KRITIS-Betreiber nachweisen?
++ angemessene Sicherheitsmaßnahmen nach Stand der Technik
+- nur ihre Postanschrift
+- gar nichts
+- die Anzahl ihrer Drucker
+! Mit regelmäßigen Nachweisen gegenüber dem BSI.
+
+=== wl-01 ===
+? Was gehört von Anfang an zur WLAN-Planung?
++ Abdeckung
++ Kapazität
++ Sicherheit
+- Wandfarbe
+! Planung vor der Installation spart spätere Probleme.
+
+=== wl-02 ===
+? Was zeigt eine Spektrumanalyse, was eine normale WLAN-Karte nicht sieht?
++ Störquellen, die kein WLAN sind
+- Passwörter
+- Benutzernamen
+- Webseiteninhalte
+! Zum Beispiel Mikrowellen oder Funkkameras.
+
+=== wl-03 ===
+? Was ist bei Gästenetzen Pflicht?
++ Trennung vom internen Netz
+- Zugriff auf alle Drucker
+- gleiches VLAN wie Server
+- keine Firewall
+! Gäste brauchen nur Internet.
+
+=== att-01 ===
+? Wie lautet die ATT&CK-Kennung der Taktik Reconnaissance?
+= TA0043
+! Die Aufklärungsphase vor dem eigentlichen Angriff.
+
+=== att-02 ===
+? Was gehört zu Resource Development?
++ Registrieren von Domains
++ Beschaffen von Infrastruktur
+- Verschlüsseln von Daten beim Opfer
+- Löschen von Logs beim Opfer
+! Vorbereitungen außerhalb des Opfernetzes.
+
+=== att-03 ===
+? Welche Techniken gehören zu Initial Access?
++ Phishing
++ Ausnutzen öffentlich erreichbarer Anwendungen
++ gültige Konten
+- Datenverschlüsselung
+! Wege für den ersten Zugang.
+
+=== adv-01 ===
+? Wofür eignen sich Gruppenrichtlinien besonders?
++ einheitliche Härtung vieler Windows-Systeme
+- Datenbankabfragen
+- Webseitengestaltung
+- WLAN-Kanalplanung
+! Einstellungen werden zentral verteilt.
+
+=== adv-02 ===
+? Warum sind Rechte auf AD-Objekte sicherheitskritisch?
++ sie können zu Rechteausweitung führen, etwa durch Passwort-Reset fremder Konten
+- weil sie Speicher verbrauchen
+- weil sie die Uhrzeit ändern
+- weil sie Drucker steuern
+! Unsichtbare Rechte sind oft gefährlicher als Gruppenmitgliedschaften.
+
+=== adv-03 ===
+? Welches System verbindet lokales AD und Entra ID?
+= Entra Connect
+= Azure AD Connect
+! Es gehört zu Tier 0.
+
+=== adv-04 ===
+? Welche AD-Änderungen sollten überwacht werden?
++ Änderungen an privilegierten Gruppen
++ Änderungen an Gruppenrichtlinien
+- Änderungen des Bildschirmhintergrunds
+- Druckaufträge
+! Sie sind typische Schritte von Angreifern.

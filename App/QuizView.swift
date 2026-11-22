@@ -655,7 +655,7 @@ struct FeedbackPanel: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Image(systemName: ok ? "checkmark.circle.fill" : "xmark.octagon.fill")
-                Text(ok ? (session.lastTypo ? "Fast perfekt!" : ["Pwned!", "Korrekt!", "Sauber!", "Treffer!", "Root!", "Stark!"][q.id.count % 6]) : "Access denied")
+                Text(headline(ok))
                     .font(NT.mono(15, .heavy))
                 Spacer()
                 if ok { Text("+\(session.lastXP) XP").font(NT.mono(13, .bold)) }
@@ -706,6 +706,13 @@ struct FeedbackPanel: View {
         .background(RoundedRectangle(cornerRadius: 14).fill((ok ? NT.acc : NT.red).opacity(0.08)))
         .overlay(RoundedRectangle(cornerRadius: 14).stroke((ok ? NT.acc : NT.red).opacity(0.4), lineWidth: 1))
         .transition(.move(edge: .bottom).combined(with: .opacity))
+    }
+
+    func headline(_ ok: Bool) -> String {
+        if !ok { return "Access denied" }
+        if session.lastTypo { return "Fast perfekt!" }
+        let praise: [String] = ["Pwned!", "Korrekt!", "Sauber!", "Treffer!", "Root!", "Stark!"]
+        return praise[q.id.count % praise.count]
     }
 }
 
