@@ -8,6 +8,8 @@ struct LessonPager: View {
     @State private var index: Int = 0
     @State private var didInit = false
     @State private var quiz: QuizConfig?
+    @State private var editNote = false
+    @State private var opened = Date()
 
     var body: some View {
         let lesson = module.lessons[min(index, module.lessons.count - 1)]
@@ -15,7 +17,17 @@ struct LessonPager: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     Color.clear.frame(height: 0).id("top")
-                    LessonHeader(module: module, index: index)
+                    LessonHeader(module: module, index: min(index, module.lessons.count - 1))
+                    if !store.note(lesson.id).isEmpty {
+                        Button { editNote = true } label: {
+                            Label { MD(text: store.note(lesson.id), size: 14, color: NT.gold) } icon: { Image(systemName: "note.text").foregroundStyle(NT.gold) }
+                                .padding(12)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(RoundedRectangle(cornerRadius: 12).fill(NT.gold.opacity(0.08)))
+                        }
+                        .buttonStyle(.plain)
+                        .padding(.bottom, 8)
+                    }
                     LessonBody(lesson: lesson)
                     LessonFooter(module: module, index: $index, quiz: $quiz)
                 }
@@ -26,6 +38,7 @@ struct LessonPager: View {
             }
             .onChange(of: index) { _, _ in
                 withAnimation { proxy.scrollTo("top", anchor: .top) }
+                trackReading()
             }
         }
         .background(AppBackground())
@@ -34,28 +47,108 @@ struct LessonPager: View {
         .safeAreaInset(edge: .top) {
             BarView(value: Double(index + 1) / Double(max(module.lessons.count, 1)), height: 3).padding(.horizontal, 0)
         }
+        .toolbar {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                Button { editNote = true } label: { Image(systemName: store.note(lesson.id).isEmpty ? "square.and.pencil" : "note.text") }
+                Button { store.toggleMark(lesson.id) } label: { Image(systemName: store.isMarked(lesson.id) ? "bookmark.fill" : "bookmark") }
+            }
+        }
         .onAppear {
             if !didInit { index = start; didInit = true }
             store.progress.lastLesson = module.lessons[min(index, module.lessons.count - 1)].id
+            opened = Date()
         }
+        .onDisappear { trackReading() }
+        .sheet(isPresented: $editNote) { NoteEditor(lessonId: lesson.id, title: Store.plain(lesson.title)) }
         .fullScreenCover(item: $quiz) { QuizView(config: $0) }
+    }
+
+    func trackReading() {
+        store.addReading(Int(Date().timeIntervalSince(opened)))
+        opened = Date()
+    }
+}
+
+struct NoteEditor: View {
+    @Environment(Store.self) private var store
+    @Environment(\.dismiss) private var dismiss
+    let lessonId: String
+    let title: String
+    @State private var text = ""
+    var body: some View {
+        NavigationStack {
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Eigene Notiz – z. B. Merksatz, Eselsbrücke, Befehl oder offene Frage.").font(.footnote).foregroundStyle(NT.tx3)
+                TextEditor(text: $text)
+                    .scrollContentBackground(.hidden)
+                    .padding(10)
+                    .background(RoundedRectangle(cornerRadius: 12).fill(NT.panel))
+                    .font(.system(size: 16))
+            }
+            .padding(16)
+            .background(AppBackground())
+            .navigationTitle(title)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) { Button("Abbrechen") { dismiss() } }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Sichern") {
+                        store.setNote(lessonId, text)
+                        store.evaluateAchievements()
+                        dismiss()
+                    }
+                    .bold()
+                }
+            }
+            .onAppear { text = store.note(lessonId) }
+        }
+        .presentationDetents([.medium, .large])
     }
 }
 
 struct LessonHeader: View {
+    @Environment(Store.self) private var store
     let module: Module
     let index: Int
     var body: some View {
+        let l = module.lessons[index]
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 8) {
                 Image(systemName: module.icon).foregroundStyle(NT.acc)
                 Text(module.title.uppercased()).font(NT.mono(11, .bold)).tracking(1).foregroundStyle(NT.tx3).lineLimit(1)
             }
-            MD(text: module.lessons[index].title, size: 27, weight: .heavy)
+            MD(text: l.title, size: 27, weight: .heavy)
+            HStack(spacing: 8) {
+                LevelPill(stage: l.stage)
+                Label("\(l.readMinutes) min", systemImage: "clock").font(NT.mono(10)).foregroundStyle(NT.tx3)
+                if store.isRead(l) { Label("gelesen", systemImage: "checkmark.circle.fill").font(NT.mono(10)).foregroundStyle(NT.acc) }
+                Spacer()
+            }
+            StageTrack(module: module, index: index)
             Rectangle().fill(LinearGradient(colors: [NT.acc, .clear], startPoint: .leading, endPoint: .trailing)).frame(height: 2).padding(.top, 4)
         }
         .padding(.top, 14)
         .padding(.bottom, 10)
+    }
+}
+
+/// Lernweg eines Moduls: Einstieg -> Kern -> Vertiefung
+struct StageTrack: View {
+    @Environment(Store.self) private var store
+    let module: Module
+    let index: Int
+    var body: some View {
+        HStack(spacing: 3) {
+            ForEach(Array(module.lessons.enumerated()), id: \.offset) { i, l in
+                Capsule()
+                    .fill(i == index ? StageTrack.color(l.stage) : (store.isRead(l) ? StageTrack.color(l.stage).opacity(0.55) : Color.white.opacity(0.08)))
+                    .frame(height: i == index ? 6 : 4)
+            }
+        }
+        .animation(.easeOut, value: index)
+    }
+    static func color(_ stage: String) -> Color {
+        stage == "intro" ? NT.teal : stage == "deep" ? NT.purple : NT.blue
     }
 }
 
@@ -77,29 +170,69 @@ struct LessonFooter: View {
     @Binding var index: Int
     @Binding var quiz: QuizConfig?
     var body: some View {
-        let lesson = module.lessons[index]
+        let lesson = module.lessons[min(index, module.lessons.count - 1)]
         let read = store.isRead(lesson)
         let last = index + 1 >= module.lessons.count
+        let checks = store.checkCount(lesson)
         VStack(spacing: 12) {
             Divider().overlay(NT.line).padding(.vertical, 10)
+            if last {
+                ModuleRecap(module: module)
+            }
             Button {
+                let wasRead = read
                 store.markRead(lesson)
                 store.haptic(.success)
+                if !wasRead && store.prefs.lessonChecks && checks > 0 {
+                    quiz = QuizConfig(mode: .check, title: "Wissens-Check · " + Store.plain(lesson.title), questions: store.buildCheck(lesson))
+                }
                 if !last { index += 1 }
             } label: {
-                Label(last ? (read ? "Modul abgeschlossen" : "Abschließen (+15 XP)") : (read ? "Weiter zur nächsten Lektion" : "Gelesen · weiter (+15 XP)"),
-                      systemImage: last ? "flag.checkered" : "arrow.right")
+                Label(primaryLabel(read: read, last: last, checks: checks), systemImage: last ? "flag.checkered" : "arrow.right")
             }
             .buttonStyle(PrimaryButtonStyle())
             HStack(spacing: 10) {
                 if index > 0 {
                     Button { index -= 1 } label: { Label("Zurück", systemImage: "arrow.left") }.buttonStyle(GhostButtonStyle())
                 }
+                if checks > 0 && read {
+                    Button { quiz = QuizConfig(mode: .check, title: "Wissens-Check · " + Store.plain(lesson.title), questions: store.buildCheck(lesson)) } label: { Label("Check", systemImage: "checklist") }
+                        .buttonStyle(GhostButtonStyle(color: NT.teal))
+                }
                 if last && !module.quiz.isEmpty {
                     Button { quiz = QuizConfig(mode: .training, title: module.title, questions: store.buildTraining([module.id])) } label: { Label("Modul-Quiz", systemImage: "scope") }
                         .buttonStyle(GhostButtonStyle(color: NT.acc))
                 }
             }
+        }
+    }
+
+    func primaryLabel(read: Bool, last: Bool, checks: Int) -> String {
+        let check = !read && store.prefs.lessonChecks && checks > 0 ? " + Check" : ""
+        if last { return read ? "Modul abgeschlossen" : "Abschließen (+15 XP)" + check }
+        return read ? "Weiter zur nächsten Lektion" : "Gelesen · weiter (+15 XP)" + check
+    }
+}
+
+/// Zusammenfassung am Modulende: Kernaussagen aus Merke-/Prüfungs-Boxen
+struct ModuleRecap: View {
+    let module: Module
+    var body: some View {
+        let points = Array(module.lessons.flatMap { $0.keyPoints }.prefix(12))
+        if !points.isEmpty {
+            VStack(alignment: .leading, spacing: 10) {
+                Label("DAS NIMMST DU MIT", systemImage: "sparkles").font(NT.mono(11, .bold)).tracking(1.5).foregroundStyle(NT.gold)
+                ForEach(Array(points.enumerated()), id: \.offset) { _, p in
+                    HStack(alignment: .firstTextBaseline, spacing: 8) {
+                        Image(systemName: "checkmark").font(.system(size: 11, weight: .heavy)).foregroundStyle(NT.gold)
+                        MD(text: p, size: 14, color: NT.tx.opacity(0.92))
+                    }
+                }
+            }
+            .padding(14)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(RoundedRectangle(cornerRadius: 14).fill(NT.gold.opacity(0.07)))
+            .overlay(RoundedRectangle(cornerRadius: 14).stroke(NT.gold.opacity(0.3), lineWidth: 1))
         }
     }
 }

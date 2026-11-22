@@ -19,7 +19,7 @@ enum NT {
     static let tx = Color(hex: "#E8EEF8")
     static let tx2 = Color(hex: "#A4B1CD")
     static let tx3 = Color(hex: "#66738E")
-    static let acc = Color(hex: "#9FEF00")
+    static var acc: Color { Color(hex: Theme.accentHex) }
     static let red = Color(hex: "#FF4D5E")
     static let orange = Color(hex: "#FFAF00")
     static let blue = Color(hex: "#4CC2FF")
@@ -169,21 +169,62 @@ struct RankBadge: View {
     let index: Int
     var size: CGFloat = 60
     var body: some View {
-        let r = RANKS[max(0, min(RANKS.count - 1, index))]
+        let i = max(0, min(RANKS.count - 1, index))
+        let r = RANKS[i]
         let c = Color(hex: r.color)
+        let chevrons = i % 3 + 1
+        let stars = i / 3
         ZStack {
             Hexagon().fill(LinearGradient(colors: [c.opacity(0.45), Color.black.opacity(0.9)], startPoint: .topLeading, endPoint: .bottomTrailing))
             Hexagon().stroke(c, lineWidth: size * 0.045)
             Hexagon().stroke(c.opacity(0.3), lineWidth: 1).padding(size * 0.12)
-            VStack(spacing: -size * 0.1) {
-                if r.tier >= 5 { Image(systemName: "star.fill").font(.system(size: size * 0.16)).foregroundStyle(c).padding(.bottom, size * 0.04) }
-                ForEach(0..<min(r.tier, 4), id: \.self) { _ in
-                    Image(systemName: "chevron.up").font(.system(size: size * 0.2, weight: .heavy)).foregroundStyle(c)
+            if i >= 12 {
+                Hexagon().stroke(AngularGradient(colors: [c, NT.gold, c.opacity(0.3), c], center: .center), lineWidth: size * 0.03).padding(-size * 0.06)
+            }
+            VStack(spacing: size * 0.02) {
+                if stars > 0 {
+                    HStack(spacing: size * 0.015) {
+                        ForEach(0..<stars, id: \.self) { _ in
+                            Image(systemName: "star.fill").font(.system(size: size * 0.11)).foregroundStyle(c)
+                        }
+                    }
+                }
+                VStack(spacing: -size * 0.1) {
+                    ForEach(0..<chevrons, id: \.self) { _ in
+                        Image(systemName: "chevron.up").font(.system(size: size * 0.2, weight: .heavy)).foregroundStyle(c)
+                    }
                 }
             }
         }
         .frame(width: size, height: size * 1.1)
         .shadow(color: c.opacity(0.55), radius: size * 0.15)
+    }
+}
+
+struct SkillBadge: View {
+    let rating: Double
+    var size: CGFloat = 40
+    var body: some View {
+        let t = skillTier(rating)
+        let c = Color(hex: t.color)
+        ZStack {
+            Circle().fill(c.opacity(0.14))
+            Circle().stroke(c.opacity(0.8), lineWidth: size * 0.05)
+            Image(systemName: t.icon).font(.system(size: size * 0.42, weight: .bold)).foregroundStyle(c)
+        }
+        .frame(width: size, height: size)
+        .shadow(color: c.opacity(0.5), radius: size * 0.12)
+    }
+}
+
+struct LevelPill: View {
+    let stage: String
+    var body: some View {
+        switch stage {
+        case "intro": Pill(text: "Einstieg", color: NT.teal)
+        case "deep": Pill(text: "Vertiefung", color: NT.purple)
+        default: Pill(text: "Kern", color: NT.blue)
+        }
     }
 }
 
@@ -249,17 +290,29 @@ struct ToastView: View {
 }
 
 /// Inline-Markdown (fett, kursiv, Code, Links) als Text
+struct ReadScaleKey: EnvironmentKey {
+    static let defaultValue: CGFloat = 1
+}
+
+extension EnvironmentValues {
+    var readScale: CGFloat {
+        get { self[ReadScaleKey.self] }
+        set { self[ReadScaleKey.self] = newValue }
+    }
+}
+
 struct MD: View {
     let text: String
     var size: CGFloat = 16
     var color: Color = NT.tx
     var weight: Font.Weight = .regular
+    @Environment(\.readScale) private var scale
     var body: some View {
         Text(MD.attributed(text))
-            .font(.system(size: size, weight: weight))
+            .font(.system(size: size * scale, weight: weight))
             .foregroundStyle(color)
             .tint(NT.acc)
-            .lineSpacing(size * 0.28)
+            .lineSpacing(size * scale * 0.28)
             .textSelection(.enabled)
             .fixedSize(horizontal: false, vertical: true)
     }

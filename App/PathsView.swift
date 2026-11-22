@@ -99,6 +99,14 @@ struct PathDetailView: View {
                         ProgressRing(value: store.pathProgress(path), color: c, size: 70, line: 7, sub: "PFAD")
                     }
                     Text(path.description).font(.system(size: 14)).foregroundStyle(NT.tx2).fixedSize(horizontal: false, vertical: true)
+                    HStack(spacing: 10) {
+                        SkillBadge(rating: store.skillRating(path.id), size: 28)
+                        Text("Skill \(skillTier(store.skillRating(path.id)).name) · \(Int(store.skillRating(path.id)))").font(NT.mono(11, .bold)).foregroundStyle(Color(hex: skillTier(store.skillRating(path.id)).color))
+                        Spacer()
+                        if store.progress.pathCerts[path.id] != nil {
+                            Label("Zertifiziert", systemImage: "rosette").font(NT.mono(11, .bold)).foregroundStyle(NT.gold)
+                        }
+                    }
                     if let n = store.nextLesson(in: path) {
                         NavigationLink(value: LessonRef(module: n.0, index: n.1)) {
                             Label("Weiter: \(Store.plain(n.0.lessons[n.1].title))", systemImage: "play.fill").lineLimit(1)
@@ -108,7 +116,7 @@ struct PathDetailView: View {
                     HStack(spacing: 10) {
                         Button { quiz = QuizConfig(mode: .training, title: path.title, questions: store.buildTraining(ids)) } label: { Label("Training", systemImage: "scope") }
                             .buttonStyle(GhostButtonStyle())
-                        Button { quiz = QuizConfig(mode: .exam, title: path.title + " · Prüfung", questions: store.buildExam(ids, count: 40), timeLimit: 40 * 75) } label: { Label("Prüfung", systemImage: "checkmark.seal") }
+                        Button { quiz = QuizConfig(mode: .exam, title: path.title + " · Prüfung", questions: store.buildExam(ids, count: 40), timeLimit: 40 * store.prefs.examSeconds, pathId: path.id) } label: { Label(store.progress.pathCerts[path.id] != nil ? "Prüfung ✓" : "Prüfung", systemImage: "checkmark.seal") }
                             .buttonStyle(GhostButtonStyle())
                     }
                     .disabled(qCount == 0)
@@ -208,20 +216,38 @@ struct ModuleView: View {
                             .buttonStyle(PrimaryButtonStyle())
                         Button { quiz = QuizConfig(mode: .flashcards, title: module.title, questions: store.buildTraining([module.id], size: 25)) } label: { Label("Karten", systemImage: "rectangle.on.rectangle.angled") }
                             .buttonStyle(GhostButtonStyle())
-                        Button { quiz = QuizConfig(mode: .exam, title: module.title + " · Prüfung", questions: store.buildExam([module.id], count: 20), timeLimit: 20 * 75) } label: { Label("Prüfung", systemImage: "checkmark.seal") }
+                        Button { quiz = QuizConfig(mode: .exam, title: module.title + " · Prüfung", questions: store.buildExam([module.id], count: 20), timeLimit: 20 * store.prefs.examSeconds) } label: { Label("Prüfung", systemImage: "checkmark.seal") }
                             .buttonStyle(GhostButtonStyle())
                     }
                 }
 
-                SectionHeader(title: "Lektionen", trailing: "\(module.lessons.count)")
+                SectionHeader(title: "Lernweg", trailing: "\(module.lessons.count) Lektionen · \(module.lessons.reduce(0) { $0 + $1.readMinutes }) min")
+                HStack(spacing: 12) {
+                    Label("Einstieg", systemImage: "circle.fill").foregroundStyle(NT.teal)
+                    Label("Kern", systemImage: "circle.fill").foregroundStyle(NT.blue)
+                    Label("Vertiefung", systemImage: "circle.fill").foregroundStyle(NT.purple)
+                }
+                .font(NT.mono(10))
                 ForEach(Array(module.lessons.enumerated()), id: \.element.id) { i, l in
                     NavigationLink(value: LessonRef(module: module, index: i)) {
                         HStack(spacing: 12) {
-                            Image(systemName: store.isRead(l) ? "checkmark.circle.fill" : "circle")
-                                .font(.system(size: 20))
-                                .foregroundStyle(store.isRead(l) ? NT.acc : NT.tx3)
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text("Lektion \(i + 1)").font(NT.mono(10)).foregroundStyle(NT.tx3)
+                            ZStack {
+                                Circle().stroke(StageTrack.color(l.stage).opacity(0.6), lineWidth: 2)
+                                if store.isRead(l) {
+                                    Circle().fill(StageTrack.color(l.stage))
+                                    Image(systemName: "checkmark").font(.system(size: 11, weight: .heavy)).foregroundStyle(.black)
+                                } else {
+                                    Text("\(i + 1)").font(NT.mono(11, .heavy)).foregroundStyle(StageTrack.color(l.stage))
+                                }
+                            }
+                            .frame(width: 28, height: 28)
+                            VStack(alignment: .leading, spacing: 3) {
+                                HStack(spacing: 6) {
+                                    LevelPill(stage: l.stage)
+                                    Text("\(l.readMinutes) min").font(NT.mono(10)).foregroundStyle(NT.tx3)
+                                    if store.isMarked(l.id) { Image(systemName: "bookmark.fill").font(.system(size: 10)).foregroundStyle(NT.orange) }
+                                    if !store.note(l.id).isEmpty { Image(systemName: "note.text").font(.system(size: 10)).foregroundStyle(NT.gold) }
+                                }
                                 Text(Store.plain(l.title)).font(.system(size: 15, weight: .semibold)).foregroundStyle(NT.tx).multilineTextAlignment(.leading)
                             }
                             Spacer()
@@ -230,6 +256,24 @@ struct ModuleView: View {
                         .card(padding: 13)
                     }
                     .buttonStyle(.plain)
+                }
+                let points = Array(module.lessons.flatMap { $0.keyPoints }.prefix(8))
+                if !points.isEmpty {
+                    DisclosureGroup {
+                        VStack(alignment: .leading, spacing: 8) {
+                            ForEach(Array(points.enumerated()), id: \.offset) { _, p in
+                                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                                    Image(systemName: "checkmark").font(.system(size: 10, weight: .heavy)).foregroundStyle(NT.gold)
+                                    MD(text: p, size: 14, color: NT.tx.opacity(0.9))
+                                }
+                            }
+                        }
+                        .padding(.top, 8)
+                    } label: {
+                        Label("Kernaussagen vorab ansehen", systemImage: "sparkles").font(.system(size: 14, weight: .bold)).foregroundStyle(NT.gold)
+                    }
+                    .tint(NT.gold)
+                    .card(padding: 14)
                 }
             }
             .padding(16)

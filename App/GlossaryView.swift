@@ -5,6 +5,7 @@ struct GlossaryView: View {
     @State private var query = ""
     @State private var category = "Alle"
     @State private var onlyBookmarks = false
+    @State private var quiz: QuizConfig?
 
     var categories: [String] {
         let counts = Dictionary(grouping: store.glossary, by: { $0.cat }).mapValues { $0.count }
@@ -79,6 +80,16 @@ struct GlossaryView: View {
             .searchable(text: $query, prompt: "\(store.glossary.count) Fachbegriffe durchsuchen")
             .navigationTitle("Lexikon")
             .navigationDestination(for: Term.self) { TermView(term: $0) }
+            .navigationDestination(for: Module.self) { ModuleView(module: $0) }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        quiz = QuizConfig(mode: .vocab, title: "Begriffe · " + (onlyBookmarks ? "Gemerkt" : category),
+                                          questions: store.buildVocab(category: category == "Alle" ? nil : category, onlyBookmarks: onlyBookmarks))
+                    } label: { Label("Trainieren", systemImage: "textformat.abc") }
+                }
+            }
+            .fullScreenCover(item: $quiz) { QuizView(config: $0) }
         }
     }
 }
@@ -102,6 +113,10 @@ struct TermView: View {
                         Button { store.toggleBookmark(term) } label: {
                             Image(systemName: store.isBookmarked(term) ? "star.fill" : "star").font(.system(size: 22)).foregroundStyle(NT.gold)
                         }
+                    }
+                    if let c = store.progress.cards["term:" + term.id], c.seen > 0 {
+                        Label(c.mastered ? "Gemeistert im Begriffe-Training" : "Im Begriffe-Training · Stufe \(c.box)", systemImage: c.mastered ? "checkmark.seal.fill" : "brain")
+                            .font(NT.mono(11, .bold)).foregroundStyle(c.mastered ? NT.gold : NT.tx3)
                     }
                     if !term.short.isEmpty {
                         MD(text: term.short, size: 17, color: NT.tx, weight: .semibold)
@@ -133,7 +148,7 @@ struct TermView: View {
                 if !mods.isEmpty {
                     SectionHeader(title: "Wird erklärt in", trailing: "\(mods.count) Module")
                     ForEach(mods) { m in
-                        Button { store.sheetTerm = nil; DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { store.sheetModule = m } } label: {
+                        NavigationLink(value: m) {
                             HStack(spacing: 10) {
                                 IconTile(icon: m.icon, size: 34)
                                 Text(m.title).font(.system(size: 14, weight: .semibold)).foregroundStyle(NT.tx).multilineTextAlignment(.leading)
@@ -152,11 +167,7 @@ struct TermView: View {
         .navigationTitle(term.term)
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(for: Term.self) { TermView(term: $0) }
-        .onAppear {
-            store.progress.termsViewed[term.id] = Date().timeIntervalSince1970
-            store.evaluateAchievements()
-            store.save()
-        }
+        .onAppear { store.viewedTerm(term) }
     }
 }
 
@@ -230,6 +241,9 @@ struct SearchView: View {
         if h.kind == "term", let t = store.termIndex[h.termId] {
             dismiss()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { store.sheetTerm = t }
+        } else if h.kind == "lesson", let m = store.moduleIndex[h.moduleId] {
+            dismiss()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { store.openLesson(m, h.lessonIndex) }
         } else if let m = store.moduleIndex[h.moduleId] {
             dismiss()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { store.sheetModule = m }

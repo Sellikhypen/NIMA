@@ -12,8 +12,11 @@ struct HomeView: View {
                 VStack(alignment: .leading, spacing: 18) {
                     HeroCard()
                     StreakCard()
-                    ContinueCard()
+                    RecommendationCard(quiz: $quiz)
+                    PlanCard()
                     QuickActions(quiz: $quiz)
+                    QuestsCard()
+                    ContinueCard()
                     SectionHeader(title: "Zertifikate & Pfade", trailing: "\(store.paths.count) Pfade")
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
@@ -37,7 +40,14 @@ struct HomeView: View {
                         Text("NIMA").font(.system(size: 20, weight: .black, design: .monospaced))
                     }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    NavigationLink { ShopView() } label: {
+                        HStack(spacing: 3) {
+                            Image(systemName: "cube.fill").font(.system(size: 12))
+                            Text("\(store.progress.coins)").font(NT.mono(12, .heavy))
+                        }
+                        .foregroundStyle(NT.gold)
+                    }
                     Button { showSearch = true } label: { Image(systemName: "magnifyingglass") }
                 }
             }
@@ -50,9 +60,10 @@ struct HomeView: View {
     }
 }
 
-struct LessonRef: Hashable {
+struct LessonRef: Hashable, Identifiable {
     let module: Module
     let index: Int
+    var id: String { module.id + "#\(index)" }
 }
 
 struct HeroCard: View {
@@ -80,12 +91,20 @@ struct HeroCard: View {
                 BarView(value: lp.pct, height: 9)
                 if store.rankIndex + 1 < RANKS.count {
                     let nx = RANKS[store.rankIndex + 1]
-                    Text("Nächster Rang: \(nx.name) ab Level \(nx.level)").font(NT.mono(11)).foregroundStyle(NT.tx3)
+                    HStack(spacing: 6) {
+                        Text("Nächster Rang: \(nx.name) (Lvl \(nx.level))").font(NT.mono(11)).foregroundStyle(NT.tx3)
+                        Spacer()
+                        Text("\(Int(store.rankProgress.pct * 100)) %").font(NT.mono(11, .bold)).foregroundStyle(Color(hex: nx.color))
+                    }
+                    BarView(value: store.rankProgress.pct, color: Color(hex: nx.color), height: 4)
+                }
+                if store.boostActive {
+                    Label("XP-Booster ×2 aktiv · noch \(store.boostMinutesLeft) min", systemImage: "bolt.badge.clock.fill").font(NT.mono(11, .bold)).foregroundStyle(NT.orange)
                 }
             }
             HStack(spacing: 10) {
                 StatChip(icon: "bolt.fill", value: "\(store.progress.xp)", label: "XP", color: NT.acc)
-                StatChip(icon: "cube.fill", value: "\(store.progress.coins)", label: "Credits", color: NT.gold)
+                StatChip(icon: skillTier(store.overallSkill).icon, value: "\(Int(store.overallSkill))", label: "Skill · " + skillTier(store.overallSkill).name, color: Color(hex: skillTier(store.overallSkill).color))
                 StatChip(icon: "checkmark.seal.fill", value: "\(store.lessonsReadCount)", label: "Lektionen", color: NT.blue)
             }
         }
@@ -125,7 +144,7 @@ struct StreakCard: View {
     var body: some View {
         let st = store.streakAlive
         let d = store.today
-        let activity = d.answered + d.lessons * 3
+        let activity = d.activity
         HStack(spacing: 16) {
             Image(systemName: st > 0 ? "flame.fill" : "flame")
                 .font(.system(size: 34))
@@ -137,6 +156,9 @@ struct StreakCard: View {
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
                     Text("\(st)").font(NT.mono(28, .heavy))
                     Text("Tage Streak").foregroundStyle(NT.tx2)
+                    if store.progress.streakFreezes > 0 {
+                        Label("\(store.progress.streakFreezes)", systemImage: "snowflake").font(NT.mono(11, .bold)).foregroundStyle(NT.blue)
+                    }
                 }
                 WeekDots()
             }
@@ -211,6 +233,12 @@ struct QuickActions: View {
             }
             QuickTile(icon: "rectangle.on.rectangle.angled", title: "Karteikarten", sub: "Aufdecken & bewerten", color: NT.purple) {
                 quiz = QuizConfig(mode: .flashcards, title: "Karteikarten", questions: store.buildTraining(nil, size: 20))
+            }
+            QuickTile(icon: "textformat.abc", title: "Begriffe", sub: store.vocabDue > 0 ? "\(store.vocabDue) fällig" : "\(store.vocabMastered) gemeistert", color: NT.teal) {
+                quiz = QuizConfig(mode: .vocab, title: "Begriffe-Training", questions: store.buildVocab())
+            }
+            QuickTile(icon: "heart.fill", title: "Survival", sub: "3 Leben · Rekord \(store.progress.survivalBest)", color: NT.red) {
+                quiz = QuizConfig(mode: .survival, title: "Survival", questions: store.buildSurvival(nil))
             }
         }
     }

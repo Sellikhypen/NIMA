@@ -455,6 +455,43 @@ def parse_module(path, raw, origin):
     return mod
 
 
+INTRO_RE = re.compile(r"^(einfach erkl|einstieg|auf einen blick|worum geht|überblick|ueberblick|das große bild|das grosse bild)", re.I)
+DEEP_RE = re.compile(r"^(tiefer|vertiefung|experten|profi|für fortgeschrittene|fuer fortgeschrittene|deep dive|hinter den kulissen|im detail)", re.I)
+
+
+def lesson_level(title):
+    t = re.sub(r"[*`_\[\]]", "", title).strip()
+    if INTRO_RE.match(t):
+        return "intro"
+    if DEEP_RE.match(t):
+        return "deep"
+    return "core"
+
+
+def load_intros():
+    """content/einfach/*.md: '## <modul-id>' + Text -> vorangestellte Lektion 'Einfach erklärt' (id <modul>.0)."""
+    intros = {}
+    d = CONTENT / "einfach"
+    if not d.exists():
+        return intros
+    for f in sorted(d.glob("*.md")):
+        cur = None
+        for raw in f.read_text(encoding="utf-8").replace("\r", "").split("\n"):
+            m = re.match(r"^##\s+([a-z0-9][a-z0-9\-_.]*)\s*$", raw.strip())
+            if m:
+                cur = m.group(1)
+                if cur in intros:
+                    errors.append(f"{f.name}: Einstieg doppelt {cur}")
+                intros[cur] = []
+                continue
+            if cur is not None and not raw.startswith("# "):
+                intros[cur].append(raw)
+    return intros
+
+
+INTROS = {}
+
+
 def build_module_body(mod, linker):
     body = mod.pop("_body")
     origin = mod.pop("_file")
@@ -481,10 +518,15 @@ def build_module_body(mod, linker):
                 continue
         cur["lines"].append(line)
     words = 0
+    intro = INTROS.pop(mod["id"], None)
+    if intro and any(x.strip() for x in intro):
+        blocks = md_to_blocks(intro, linker, mod["id"], origin + ":einfach")
+        words += len(" ".join(intro).split())
+        mod["lessons"].append({"id": f"{mod['id']}.0", "title": "Einfach erklärt", "level": "intro", "blocks": blocks})
     for n, l in enumerate(lessons, 1):
         blocks = md_to_blocks(l["lines"], linker, mod["id"], origin)
-        words += sum(len(" ".join(l["lines"]).split()) for _ in [0])
-        mod["lessons"].append({"id": f"{mod['id']}.{n}", "title": linker.inline(l["title"]).replace("](nima://", "](nima://"), "blocks": blocks})
+        words += len(" ".join(l["lines"]).split())
+        mod["lessons"].append({"id": f"{mod['id']}.{n}", "title": linker.inline(l["title"]), "level": lesson_level(l["title"]), "blocks": blocks})
     if quiz_lines:
         qs, _ = parse_quiz("\n".join(quiz_lines), origin)
         mod["quiz"].extend(qs)
@@ -493,6 +535,90 @@ def build_module_body(mod, linker):
         mod["minutes"] = max(5, round(words / 180))
     if not mod["lessons"]:
         warnings.append(f"{origin}: keine Lektionen")
+
+
+STOP = set("""der die das den dem des ein eine einen einem einer eines und oder aber nicht kein keine ist sind war wird werden wurde
+mit von für fuer auf aus bei nach vor über ueber unter durch als wie was wer wo wann warum welche welcher welches welchen
+im in an am zu zum zur es sie er man sich auch nur noch schon sehr mehr dass daß wenn dann denn so diese dieser dieses
+diesen kann können koennen muss müssen soll sollte hat haben gibt alle allen jede jeder jedes beim bis ohne gegen um the
+and for with you your are this that from what which true false wahr falsch richtig typisch meist meistens etwa""".split())
+
+
+def toks(s):
+    s = re.sub(r"\]\([^)]*\)", "]", s or "")
+    return [w for w in re.findall(r"[a-zäöüß0-9][a-zäöüß0-9\-_.]{2,}", s.lower()) if w not in STOP]
+
+
+def block_texts(b):
+    out = []
+    if b.get("text") and b["t"] in ("p", "h3", "h4"):
+        out.append(b["text"])
+    for it in b.get("items") or []:
+        out.append(it)
+    for r in b.get("rows") or []:
+        out.append(" · ".join(r))
+    return out
+
+
+def clean_md(s):
+    return re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", s).strip()
+
+
+def attach_refs(mods):
+    """Ordnet jeder Frage die passendste Lektion ihres Moduls zu (lesson) und einen Kontextsatz (ctx)."""
+    import math
+    df, docs, lesson_tok = {}, 0, {}
+    for m in mods:
+        for li, l in enumerate(m["lessons"]):
+            sents = []
+            for b in l["blocks"]:
+                for t in block_texts(b):
+                    for sent in re.split(r"(?<=[.!?])(?<!\s[a-zA-Z]\.)(?<!\s[a-z][a-z]\.)\s+", t):
+                        if len(sent) > 25:
+                            sents.append(sent)
+            tk = set(toks(" ".join(sents) + " " + l["title"]))
+            lesson_tok[(m["id"], li)] = (tk, sents)
+            docs += 1
+            for w in tk:
+                df[w] = df.get(w, 0) + 1
+
+    def idf(w):
+        return math.log((docs + 1) / (df.get(w, 0) + 1)) + 0.3
+
+    linked = 0
+    for m in mods:
+        if not m["lessons"]:
+            continue
+        for q in m["quiz"]:
+            right = [o for i, o in enumerate(q.get("options") or []) if i in (q.get("correct") or [])]
+            ans = " ".join((q.get("answers") or [])[:2] + right + (q.get("order") or []))
+            qt = set(toks(q["q"] + " " + ans + " " + q.get("explain", "")))
+            if not qt or q["q"].startswith("Welcher Fachbegriff passt"):
+                continue
+            best, bs = None, 0.0
+            for li in range(len(m["lessons"])):
+                tk, _ = lesson_tok[(m["id"], li)]
+                sc = sum(idf(w) for w in qt if w in tk)
+                if sc > bs:
+                    best, bs = li, sc
+            if best is None or bs < 4.0:
+                continue
+            q["lesson"] = best
+            linked += 1
+            _, sents = lesson_tok[(m["id"], best)]
+            aset = set(toks(ans))
+            bsent, bss = None, 0.0
+            for sent in sents:
+                st = set(toks(sent))
+                sc = sum(idf(w) for w in qt if w in st) + sum(1.5 * idf(w) for w in aset if w in st)
+                if sc > bss:
+                    bsent, bss = sent, sc
+            if bsent and bss >= 3.5:
+                c = clean_md(bsent)
+                if len(c) > 320:
+                    c = c[:317].rsplit(" ", 1)[0] + " …"
+                q["ctx"] = c
+    return linked
 
 
 def main():
@@ -511,6 +637,7 @@ def main():
         errors.append(f"Doppelte Modul-IDs: {dup}")
     linker = Linker(terms, set(ids))
     linker.build_auto(terms)
+    INTROS.update(load_intros())
     for m in mods:
         build_module_body(m, linker)
 
@@ -548,6 +675,10 @@ def main():
             qq["q"] = linker.inline(qq["q"]) if "[[" in qq["q"] else qq["q"]
             if qq.get("explain") and "[[" in qq["explain"]:
                 qq["explain"] = linker.inline(qq["explain"])
+
+    linked = attach_refs(mods)
+    for left in INTROS:
+        errors.append(f"Einstieg ohne Modul: {left}")
 
     # glossary output
     gl = []
@@ -611,6 +742,7 @@ def main():
     (OUT / "content.json").write_text(data, encoding="utf-8")
 
     print(f"NIMA content {bundle['version']}: " + ", ".join(f"{k}={v}" for k, v in stats.items()))
+    print(f"Fragen mit Lektionsbezug: {linked}, mit Kontextsatz: {sum(1 for m in mods for q in m['quiz'] if q.get('ctx'))}, Einstiege: {sum(1 for m in mods for l in m['lessons'] if l['id'].endswith('.0'))}")
     print(f"content.json {len(data.encode()) / 1e6:.1f} MB, Bilder {img_bytes / 1e6:.1f} MB, Fragen aus Quizbanken {bank_count}, {time.time() - t0:.1f}s")
     if linker.unknown:
         top = sorted(linker.unknown.items(), key=lambda x: -x[1])

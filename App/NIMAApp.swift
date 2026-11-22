@@ -45,22 +45,38 @@ struct RootView: View {
                     GlossaryView().tabItem { Label("Lexikon", systemImage: "character.book.closed.fill") }.tag(3)
                     ProfileView().tabItem { Label("Profil", systemImage: "person.crop.circle.fill") }.tag(4)
                 }
+                .id(store.themeVersion)
                 .environment(\.openURL, OpenURLAction { url in
                     store.handle(url: url)
                     return .handled
                 })
                 .sheet(item: $store.sheetTerm) { t in
-                    NavigationStack { TermView(term: t) }
-                        .presentationDetents([.medium, .large])
-                        .presentationBackground(NT.bg2)
-                        .environment(\.openURL, OpenURLAction { url in
-                            store.handle(url: url)
-                            return .handled
-                        })
+                    NavigationStack {
+                        TermView(term: t)
+                            .navigationDestination(for: Module.self) { ModuleView(module: $0) }
+                    }
+                    .presentationDetents([.medium, .large])
+                    .presentationBackground(NT.bg2)
+                    .environment(\.openURL, OpenURLAction { url in
+                        store.handle(url: url)
+                        return .handled
+                    })
                 }
                 .sheet(item: $store.sheetModule) { m in
                     NavigationStack { ModuleView(module: m) }
+                        .modifier(LocalLinks())
                         .presentationBackground(NT.bg)
+                }
+                .sheet(item: $store.sheetLesson) { ref in
+                    NavigationStack {
+                        LessonPager(module: ref.module, start: ref.index)
+                            .toolbar { ToolbarItem(placement: .topBarLeading) { Button("Schließen") { store.sheetLesson = nil } } }
+                    }
+                    .modifier(LocalLinks())
+                    .presentationBackground(NT.bg)
+                }
+                .fullScreenCover(isPresented: Binding(get: { !store.progress.onboarded }, set: { _ in })) {
+                    OnboardingView()
                 }
             } else if let err = store.loadError {
                 VStack(spacing: 12) {
@@ -84,9 +100,11 @@ struct RootView: View {
             }
         }
         .animation(.spring(duration: 0.4), value: store.toast)
+        .environment(\.readScale, CGFloat(store.progress.prefs.readScale))
+        .tint(NT.acc)
         .overlay {
             if let c = store.celebrations.first {
-                CelebrationView(c: c) { store.celebrations.removeFirst() }
+                CelebrationView(c: c, confetti: store.progress.prefs.confetti) { store.celebrations.removeFirst() }
                     .transition(.opacity)
                     .zIndex(20)
             }
@@ -148,13 +166,14 @@ struct NimaLogo: View {
 
 struct CelebrationView: View {
     let c: Celebration
+    var confetti: Bool = true
     let done: () -> Void
     @State private var appear = false
     var body: some View {
         let col = Color(hex: c.color)
         ZStack {
             Color.black.opacity(0.85).ignoresSafeArea()
-            ConfettiView(color: col).ignoresSafeArea().allowsHitTesting(false)
+            if confetti { ConfettiView(color: col).ignoresSafeArea().allowsHitTesting(false) }
             VStack(spacing: 16) {
                 Text(c.subtitle.uppercased()).font(NT.mono(13, .heavy)).tracking(4).foregroundStyle(col)
                 Image(systemName: c.icon).font(.system(size: 80, weight: .bold)).foregroundStyle(col)

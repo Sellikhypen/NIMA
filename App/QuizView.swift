@@ -1,7 +1,7 @@
 import SwiftUI
 import Observation
 
-enum QuizMode { case training, flashcards, exam, blitz, daily }
+enum QuizMode { case training, flashcards, exam, blitz, daily, survival, vocab, check }
 
 struct QuizConfig: Identifiable {
     let id = UUID()
@@ -9,6 +9,7 @@ struct QuizConfig: Identifiable {
     let title: String
     let questions: [Question]
     var timeLimit: Int = 0
+    var pathId: String? = nil
 }
 
 struct QuizResult: Identifiable {
@@ -44,22 +45,44 @@ final class QuizSession {
     var questionStart = Date()
     var extra: [String] = []
     var examPassed: Bool? = nil
+    var lives = 3
+    var shuffle = true
 
-    init(_ c: QuizConfig) {
+    init(_ c: QuizConfig, shuffle: Bool = true) {
         config = c
         items = c.questions
         remaining = c.mode == .blitz ? 60 : c.timeLimit
+        self.shuffle = shuffle
         prepare()
     }
 
     var current: Question? { index < items.count ? items[index] : nil }
     var correctCount: Int { results.filter { $0.correct }.count }
+    var showsFeedback: Bool { config.mode != .exam && config.mode != .blitz }
+    var kind: String {
+        switch config.mode {
+        case .training: return "training"
+        case .flashcards: return "flashcards"
+        case .exam: return "exam"
+        case .blitz: return "blitz"
+        case .daily: return "daily"
+        case .survival: return "survival"
+        case .vocab: return "vocab"
+        case .check: return "check"
+        }
+    }
 
     func prepare() {
-        selection = []; typed = ""; placed = []; hintShown = false; answered = false; revealed = false
+        selection = []; typed = ""; placed = []; hintShown = false; answered = false; revealed = false; lastTypo = false
         questionStart = Date()
         guard let q = current else { return }
-        optionOrder = Array((q.options ?? []).indices).shuffled()
+        let idx = Array((q.options ?? []).indices)
+        // Wahr/Falsch-artige Optionen und "alle"/"keine" nicht mischen
+        let fixed = (q.options ?? []).contains { o in
+            let l = o.lowercased()
+            return l.hasPrefix("alle ") || l.hasPrefix("keine ") || l == "beide" || l.hasPrefix("beides")
+        }
+        optionOrder = shuffle && !fixed ? idx.shuffled() : idx
         var p = Array((q.order ?? []).indices)
         for _ in 0..<6 { p.shuffle(); if p != Array(p.indices) || p.count < 2 { break } }
         pool = p
@@ -86,11 +109,13 @@ final class QuizSession {
         }
     }
 
-    func submit(_ store: Store, knew: Bool? = nil) {
+    /// grade (nur Karteikarten): 0 nochmal, 1 schwer, 2 gut, 3 leicht
+    func submit(_ store: Store, grade: Int? = nil) {
         guard let q = current, !answered else { return }
         var ok: Bool, typo = false, given: String
-        if let k = knew {
-            ok = k; given = k ? "gewusst" : "nicht gewusst"
+        if let g = grade {
+            ok = g > 0
+            given = ["nicht gewusst", "mit Mühe", "gewusst", "sofort gewusst"][max(0, min(3, g))]
         } else {
             (ok, typo, given) = evaluate(store)
         }
@@ -99,11 +124,14 @@ final class QuizSession {
         lastTypo = typo
         if ok { combo += 1; maxCombo = max(maxCombo, combo) } else { combo = 0 }
         let secs = Int(Date().timeIntervalSince(questionStart))
-        lastXP = store.record(q, correct: ok, combo: config.mode == .exam ? 0 : combo, hint: hintShown, seconds: secs)
+        lastXP = store.record(q, correct: ok, combo: config.mode == .exam ? 0 : combo, hint: hintShown, typo: typo, seconds: secs,
+                              grade: grade, rated: config.mode != .flashcards)
         xp += lastXP
         results.append(QuizResult(question: q, correct: ok, given: given))
         store.haptic(ok ? .success : .error)
-        if !ok && (config.mode == .training || config.mode == .flashcards || config.mode == .daily) && !reinserted.contains(q.id) {
+        if !ok && config.mode == .survival { lives -= 1 }
+        let retry: Set<QuizMode> = [.training, .flashcards, .daily, .vocab]
+        if !ok && retry.contains(config.mode) && !reinserted.contains(q.id) {
             reinserted.insert(q.id)
             items.insert(q, at: min(items.count, index + 4))
         }
@@ -112,7 +140,11 @@ final class QuizSession {
 
     func next(_ store: Store) {
         index += 1
-        if index >= items.count || (config.mode == .blitz && remaining <= 0) { finish(store) } else { prepare() }
+        if index >= items.count || (config.mode == .blitz && remaining <= 0) || (config.mode == .survival && lives <= 0) {
+            finish(store)
+        } else {
+            prepare()
+        }
     }
 
     func finish(_ store: Store) {
@@ -121,13 +153,18 @@ final class QuizSession {
         let total = config.mode == .exam ? config.questions.count : results.count
         switch config.mode {
         case .exam:
-            examPassed = store.recordExam(title: config.title, correct: correctCount, total: total)
+            examPassed = store.recordExam(title: config.title, correct: correctCount, total: total, pathId: config.pathId)
             if examPassed == true { extra.append("Prüfungsbonus: +\(200 + total * 6) XP") }
         case .blitz:
             if correctCount > store.progress.blitzBest {
                 store.progress.blitzBest = correctCount
                 extra.append("Neuer Blitz-Rekord: \(correctCount)")
                 store.addXP(50)
+            }
+        case .survival:
+            if correctCount > store.progress.survivalBest {
+                extra.append("Neuer Survival-Rekord: \(correctCount)")
+                store.addXP(30 + correctCount * 2)
             }
         case .daily:
             if store.progress.dailyBoxDay != Store.dayKey() && results.count >= config.questions.count {
@@ -136,10 +173,44 @@ final class QuizSession {
                 store.addXP(100)
                 extra.append("Daily Box geknackt: +100 XP · +20 Credits")
             }
+        case .check:
+            store.checkPassed(correct: correctCount, total: results.count)
+            if correctCount == results.count && !results.isEmpty { extra.append("Wissens-Check fehlerfrei: +10 XP · +3 Credits") }
         default: break
         }
-        store.evaluateAchievements()
-        store.save()
+        if total >= 10 && correctCount == total && config.mode != .exam { extra.append("Perfekte Runde!") }
+        store.sessionFinished(kind: kind, correct: correctCount, total: total)
+    }
+}
+
+/// Fachbegriff-/Modul-Links innerhalb von Vollbild-Ansichten (dort kann die Root-Ansicht keine Sheets zeigen)
+struct LocalLinks: ViewModifier {
+    @Environment(Store.self) private var store
+    @State private var term: Term?
+    @State private var module: Module?
+    func body(content: Content) -> some View {
+        content
+            .environment(\.openURL, OpenURLAction { url in
+                let id = url.pathComponents.filter { $0 != "/" }.first ?? ""
+                if url.host == "term", let t = store.termIndex[id] {
+                    term = t
+                    store.viewedTerm(t)
+                } else if url.host == "module", let m = store.moduleIndex[id] {
+                    module = m
+                }
+                return .handled
+            })
+            .sheet(item: $term) { t in
+                NavigationStack {
+                    TermView(term: t)
+                        .navigationDestination(for: Module.self) { ModuleView(module: $0) }
+                }
+                .presentationDetents([.medium, .large])
+                .presentationBackground(NT.bg2)
+            }
+            .sheet(item: $module) { m in
+                NavigationStack { ModuleView(module: m) }.presentationBackground(NT.bg)
+            }
     }
 }
 
@@ -148,6 +219,7 @@ struct QuizView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var session: QuizSession
     @State private var confirmQuit = false
+    @State private var peek: LessonRef?
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     init(config: QuizConfig) {
@@ -161,34 +233,52 @@ struct QuizView: View {
                 VStack(spacing: 14) {
                     Image(systemName: "tray").font(.largeTitle).foregroundStyle(NT.tx3)
                     Text("Keine Fragen für diese Auswahl.").foregroundStyle(NT.tx2)
+                    Text(emptyHint).font(.footnote).foregroundStyle(NT.tx3).multilineTextAlignment(.center).padding(.horizontal, 30)
                     Button("Schließen") { dismiss() }.buttonStyle(GhostButtonStyle()).frame(width: 200)
                 }
             } else if session.finished {
-                QuizResultView(session: session) { dismiss() }
+                QuizResultView(session: session, peek: { peek = $0 }) { dismiss() }
             } else if let q = session.current {
                 VStack(spacing: 0) {
                     QuizTopBar(session: session) {
                         if session.results.isEmpty { dismiss() } else { confirmQuit = true }
                     }
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 16) {
-                            QuestionCard(session: session, q: q)
-                            AnswerArea(session: session, q: q)
-                            if session.answered && session.config.mode != .exam && session.config.mode != .blitz {
-                                FeedbackPanel(session: session, q: q)
+                    ScrollViewReader { proxy in
+                        ScrollView {
+                            VStack(alignment: .leading, spacing: 16) {
+                                QuestionCard(session: session, q: q)
+                                AnswerArea(session: session, q: q)
+                                if session.answered && session.showsFeedback {
+                                    FeedbackPanel(session: session, q: q, peek: { peek = $0 }).id("feedback")
+                                }
+                            }
+                            .padding(16)
+                            .frame(maxWidth: 760)
+                            .frame(maxWidth: .infinity)
+                        }
+                        .scrollDismissesKeyboard(.interactively)
+                        .onChange(of: session.answered) { _, a in
+                            if a && session.showsFeedback {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { withAnimation { proxy.scrollTo("feedback", anchor: .bottom) } }
                             }
                         }
-                        .padding(16)
-                        .frame(maxWidth: 760)
-                        .frame(maxWidth: .infinity)
                     }
-                    .scrollDismissesKeyboard(.interactively)
                     QuizBottomBar(session: session, q: q)
                 }
             }
         }
+        .modifier(LocalLinks())
+        .sheet(item: $peek) { ref in
+            NavigationStack {
+                LessonPager(module: ref.module, start: ref.index)
+                    .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Zurück zum Quiz") { peek = nil } } }
+            }
+            .modifier(LocalLinks())
+            .presentationBackground(NT.bg)
+        }
+        .onAppear { session.shuffle = store.prefs.shuffleOptions; if session.index == 0 && session.results.isEmpty { session.prepare() } }
         .onReceive(timer) { _ in
-            guard !session.finished, session.remaining > 0, session.config.mode == .blitz || session.config.timeLimit > 0 else { return }
+            guard !session.finished, peek == nil, session.remaining > 0, session.config.mode == .blitz || session.config.timeLimit > 0 else { return }
             session.remaining -= 1
             if session.remaining <= 0 { session.finish(store) }
         }
@@ -200,6 +290,14 @@ struct QuizView: View {
             Button("Weiter lernen", role: .cancel) {}
         } message: {
             Text("Dein Fortschritt und deine XP bleiben erhalten.")
+        }
+    }
+
+    var emptyHint: String {
+        switch session.config.mode {
+        case .check: return "Zu dieser Lektion gibt es noch keine zugeordneten Fragen."
+        case .training where session.config.title.contains("Fehlerbuch"): return "Super – du hast aktuell keine Fehler zu wiederholen."
+        default: return "Wähle einen anderen Bereich oder lies zuerst ein paar Lektionen."
         }
     }
 }
@@ -216,27 +314,44 @@ struct QuizTopBar: View {
                 }
                 VStack(alignment: .leading, spacing: 1) {
                     Text(session.config.title).font(NT.mono(12, .bold)).foregroundStyle(NT.tx2).lineLimit(1)
-                    Text(session.config.mode == .blitz ? "\(session.correctCount) richtig" : "Frage \(min(session.index + 1, session.items.count)) / \(session.items.count)")
-                        .font(NT.mono(11)).foregroundStyle(NT.tx3)
+                    Text(subtitle).font(NT.mono(11)).foregroundStyle(NT.tx3)
                 }
                 Spacer()
+                if session.config.mode == .survival {
+                    HStack(spacing: 2) {
+                        ForEach(0..<3, id: \.self) { i in
+                            Image(systemName: i < session.lives ? "heart.fill" : "heart").foregroundStyle(i < session.lives ? NT.red : NT.tx3)
+                        }
+                    }
+                    .font(.system(size: 14))
+                }
                 if session.config.mode == .blitz || session.config.timeLimit > 0 {
                     Label(String(format: "%d:%02d", session.remaining / 60, session.remaining % 60), systemImage: "clock")
                         .font(NT.mono(14, .heavy))
                         .foregroundStyle(session.remaining <= (session.config.mode == .blitz ? 10 : 60) ? NT.red : NT.tx)
+                        .contentTransition(.numericText())
                 }
                 if session.config.mode != .exam {
                     Label("x\(session.combo)", systemImage: "bolt.fill")
                         .font(NT.mono(14, .heavy))
                         .foregroundStyle(session.combo >= 10 ? NT.red : session.combo >= 3 ? NT.orange : NT.tx3)
-                    Text("+\(session.xp)").font(NT.mono(13, .bold)).foregroundStyle(NT.acc)
+                        .scaleEffect(session.combo >= 3 && session.answered && session.lastCorrect ? 1.15 : 1)
+                        .animation(.spring(response: 0.3, dampingFraction: 0.5), value: session.combo)
+                    Text("+\(session.xp)").font(NT.mono(13, .bold)).foregroundStyle(NT.acc).contentTransition(.numericText())
                 }
             }
-            if session.config.mode != .blitz {
+            if session.config.mode != .blitz && session.config.mode != .survival {
                 BarView(value: Double(session.index) / Double(max(session.items.count, 1)), height: 5)
             }
         }
         .padding(.horizontal, 16).padding(.top, 8).padding(.bottom, 6)
+    }
+    var subtitle: String {
+        switch session.config.mode {
+        case .blitz: return "\(session.correctCount) richtig"
+        case .survival: return "\(session.correctCount) überlebt"
+        default: return "Frage \(min(session.index + 1, session.items.count)) / \(session.items.count)"
+        }
     }
 }
 
@@ -250,10 +365,16 @@ struct QuestionCard: View {
             HStack(spacing: 6) {
                 Pill(text: q.typeLabel)
                 Pill(text: NT.diffLabel(q.difficulty ?? "medium"), color: NT.diff(q.difficulty ?? "medium"))
-                if c == nil || c?.seen == 0 { Pill(text: "Neu", color: NT.blue) } else { Pill(text: "Box \(c?.box ?? 0)", color: NT.tx3) }
+                if c == nil || c?.seen == 0 {
+                    Pill(text: "Neu", color: NT.blue)
+                } else if c?.isLeech == true {
+                    Pill(text: "Problemkarte", color: NT.red)
+                } else {
+                    Pill(text: c!.mastered ? "Gemeistert" : "Stufe \(c?.box ?? 0)", color: c!.mastered ? NT.gold : NT.tx3)
+                }
                 Spacer()
             }
-            if let mid = store.questionModule[q.id], let m = store.moduleIndex[mid] {
+            if let m = store.module(of: q) {
                 Text(m.title).font(NT.mono(10)).foregroundStyle(NT.tx3).lineLimit(1)
             }
             MD(text: q.q, size: 20, weight: .semibold)
@@ -271,6 +392,11 @@ struct QuestionCard: View {
             let a = q.displayAnswer
             let n = max(1, Int(Double(a.count) * 0.35))
             return "Beginnt mit `\(a.prefix(n))…` (\(a.count) Zeichen)"
+        }
+        if q.type == "mc" || q.type == "multi", let opts = q.options, opts.count >= 3 {
+            // 50/50: eine falsche Option nennen
+            let wrong = opts.indices.filter { !(q.correct ?? []).contains($0) }
+            if let w = wrong.first { return "Nicht: „\(Store.plain(opts[w]))“" }
         }
         return nil
     }
@@ -302,6 +428,11 @@ struct AnswerArea: View {
                 Text("ANTWORT").font(NT.mono(10, .bold)).tracking(2).foregroundStyle(NT.acc)
                 MD(text: q.displayAnswer, size: 18, color: NT.acc, weight: .bold)
                 if let e = q.explain, !e.isEmpty { MD(text: e, size: 15, color: NT.tx2) }
+                if store.prefs.showContext, let c = q.ctx, !c.isEmpty {
+                    Divider().overlay(NT.line)
+                    Label { MD(text: c, size: 14, color: NT.tx2) } icon: { Image(systemName: "text.quote").foregroundStyle(NT.blue) }
+                }
+                Text("Wie gut wusstest du es?").font(NT.mono(11)).foregroundStyle(NT.tx3).padding(.top, 4)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .card(padding: 16, glow: NT.acc)
@@ -390,7 +521,7 @@ struct AnswerArea: View {
                     .onSubmit { submitTyped() }
             }
             if session.answered && session.config.mode != .exam {
-                Text(session.lastCorrect ? (session.lastTypo ? "[+] Korrekt (Tippfehler toleriert)" : "[+] Korrekt") : "[-] Falsch. Erwartet: \(q.displayAnswer)")
+                Text(session.lastCorrect ? (session.lastTypo ? "[+] Korrekt (Tippfehler toleriert – richtig: \(q.displayAnswer))" : "[+] Korrekt") : "[-] Falsch. Erwartet: \(q.displayAnswer)")
                     .font(NT.mono(13, .bold))
                     .foregroundStyle(session.lastCorrect ? NT.acc : NT.red)
             }
@@ -451,12 +582,20 @@ struct AnswerArea: View {
     }
 
     func autoAdvance() {
-        if session.config.mode == .exam {
+        switch session.config.mode {
+        case .exam:
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { session.next(store) }
-        } else if session.config.mode == .blitz {
+        case .blitz:
             let ok = session.lastCorrect
             DispatchQueue.main.asyncAfter(deadline: .now() + (ok ? 0.35 : 1.3)) {
                 if session.answered && !session.finished { session.next(store) }
+            }
+        default:
+            if store.prefs.autoNext && session.lastCorrect && !session.lastTypo {
+                let idx = session.index
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
+                    if session.answered && !session.finished && session.index == idx { session.next(store) }
+                }
             }
         }
     }
@@ -496,35 +635,93 @@ struct OptionRow: View {
             .background(RoundedRectangle(cornerRadius: 14).fill(state == .right ? NT.acc.opacity(0.12) : state == .wrong ? NT.red.opacity(0.12) : Color.black.opacity(0.35)))
             .overlay(RoundedRectangle(cornerRadius: 14).stroke(color, lineWidth: state == .normal || state == .dim ? 1 : 1.5))
             .opacity(state == .dim ? 0.45 : 1)
+            .scaleEffect(state == .wrong ? 0.98 : 1)
+            .animation(.spring(response: 0.25, dampingFraction: 0.5), value: state == .wrong)
         }
         .buttonStyle(.plain)
     }
 }
 
+/// Erklär-Panel: Ergebnis → Erklärung → Kontext aus der Lektion → weiterführende Links
 struct FeedbackPanel: View {
+    @Environment(Store.self) private var store
     let session: QuizSession
     let q: Question
+    let peek: (LessonRef) -> Void
     var body: some View {
         let ok = session.lastCorrect
-        VStack(alignment: .leading, spacing: 10) {
+        let m = store.module(of: q)
+        let termId = q.id.hasPrefix("term:") ? String(q.id.dropFirst(5)) : nil
+        VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Image(systemName: ok ? "checkmark.circle.fill" : "xmark.octagon.fill")
-                Text(ok ? ["Pwned!", "Korrekt!", "Sauber!", "Treffer!"][q.id.count % 4] : "Access denied")
+                Text(ok ? (session.lastTypo ? "Fast perfekt!" : ["Pwned!", "Korrekt!", "Sauber!", "Treffer!", "Root!", "Stark!"][q.id.count % 6]) : "Access denied")
                     .font(NT.mono(15, .heavy))
                 Spacer()
                 if ok { Text("+\(session.lastXP) XP").font(NT.mono(13, .bold)) }
             }
             .foregroundStyle(ok ? NT.acc : NT.red)
-            if !ok && session.config.mode != .flashcards {
-                MD(text: "Richtig: **" + q.displayAnswer + "**", size: 15)
+
+            if session.config.mode != .flashcards {
+                if !ok {
+                    MD(text: "Richtig: **" + q.displayAnswer + "**", size: 15)
+                } else if session.lastTypo {
+                    MD(text: "Korrekte Schreibweise: `" + q.displayAnswer + "`", size: 14, color: NT.tx2)
+                }
+                if let e = q.explain, !e.isEmpty {
+                    ExplainSection(icon: "lightbulb.fill", title: "Warum?", color: NT.gold) { MD(text: e, size: 15, color: NT.tx.opacity(0.9)) }
+                }
             }
-            if let e = q.explain, !e.isEmpty, session.config.mode != .flashcards {
-                MD(text: e, size: 15, color: NT.tx2)
+            if store.prefs.showContext, let c = q.ctx, !c.isEmpty, session.config.mode != .flashcards {
+                ExplainSection(icon: "text.quote", title: "Aus der Lektion", color: NT.blue) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        MD(text: "„" + c + "“", size: 14, color: NT.tx2)
+                        if let m, let L = q.lesson, L < m.lessons.count {
+                            Button { peek(LessonRef(module: m, index: L)) } label: {
+                                Label("Lektion „\(Store.plain(m.lessons[L].title))“ öffnen", systemImage: "book.pages")
+                                    .font(NT.mono(11, .bold)).lineLimit(1)
+                            }
+                            .foregroundStyle(NT.blue)
+                        }
+                    }
+                }
+            } else if !ok, let m, (q.explain ?? "").isEmpty {
+                Button { peek(LessonRef(module: m, index: q.lesson ?? 0)) } label: {
+                    Label("Im Modul „\(m.title)“ nachlesen", systemImage: "book.pages").font(NT.mono(11, .bold)).lineLimit(1)
+                }
+                .foregroundStyle(NT.blue)
+            }
+            if let tid = termId, let t = store.termIndex[tid] {
+                Link(destination: URL(string: "nima://term/" + t.id)!) {
+                    Label("„\(t.term)“ im Lexikon öffnen", systemImage: "character.book.closed.fill").font(NT.mono(11, .bold))
+                }
+                .foregroundStyle(NT.blue)
+            }
+            if !ok, let c = store.card(q), c.isLeech {
+                Label("Problemkarte: schon \(c.lapses)× vergessen. Lies die Lektion nochmal in Ruhe – Verstehen schlägt Auswendiglernen.", systemImage: "exclamationmark.triangle.fill")
+                    .font(.system(size: 12)).foregroundStyle(NT.orange)
             }
         }
         .padding(14)
         .background(RoundedRectangle(cornerRadius: 14).fill((ok ? NT.acc : NT.red).opacity(0.08)))
         .overlay(RoundedRectangle(cornerRadius: 14).stroke((ok ? NT.acc : NT.red).opacity(0.4), lineWidth: 1))
+        .transition(.move(edge: .bottom).combined(with: .opacity))
+    }
+}
+
+struct ExplainSection<Content: View>: View {
+    let icon: String
+    let title: String
+    let color: Color
+    @ViewBuilder let content: () -> Content
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Label(title.uppercased(), systemImage: icon).font(NT.mono(10, .bold)).tracking(1.2).foregroundStyle(color)
+            content()
+        }
+        .padding(10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: 10).fill(color.opacity(0.06)))
     }
 }
 
@@ -533,21 +730,24 @@ struct QuizBottomBar: View {
     @Bindable var session: QuizSession
     let q: Question
     var body: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: 8) {
             if session.config.mode == .flashcards {
                 if session.revealed && !session.answered {
-                    Button { session.submit(store, knew: false); session.next(store) } label: { Label("Nicht gewusst", systemImage: "xmark") }
-                        .buttonStyle(GhostButtonStyle(color: NT.red))
-                    Button { session.submit(store, knew: true); session.next(store) } label: { Label("Gewusst", systemImage: "checkmark") }
-                        .buttonStyle(PrimaryButtonStyle())
+                    GradeButton(title: "Nochmal", sub: "10 min", color: NT.red) { grade(0) }
+                    GradeButton(title: "Schwer", sub: "kurz", color: NT.orange) { grade(1) }
+                    GradeButton(title: "Gut", sub: "normal", color: NT.acc) { grade(2) }
+                    GradeButton(title: "Leicht", sub: "länger", color: NT.blue) { grade(3) }
                 }
             } else if session.answered {
-                if session.config.mode != .blitz && session.config.mode != .exam {
-                    Button { session.next(store) } label: { Label(session.index + 1 >= session.items.count ? "Ergebnis" : "Weiter", systemImage: "arrow.right") }
-                        .buttonStyle(PrimaryButtonStyle())
+                if session.showsFeedback {
+                    Button { session.next(store) } label: {
+                        Label(nextLabel, systemImage: "arrow.right")
+                    }
+                    .buttonStyle(PrimaryButtonStyle(color: session.config.mode == .survival && session.lives <= 0 ? NT.red : NT.acc))
                 }
             } else {
-                if (q.hint ?? "").isEmpty == false || q.type == "input", session.config.mode == .training || session.config.mode == .daily {
+                let hintModes: Set<QuizMode> = [.training, .daily, .vocab, .check]
+                if store.prefs.showHints, hintModes.contains(session.config.mode), (q.hint ?? "").isEmpty == false || q.type == "input" || ((q.options?.count ?? 0) >= 3) {
                     Button { withAnimation { session.hintShown = true } } label: { Image(systemName: "lightbulb") }
                         .buttonStyle(GhostButtonStyle(color: NT.gold)).frame(width: 64)
                         .disabled(session.hintShown)
@@ -571,6 +771,14 @@ struct QuizBottomBar: View {
         .padding(.vertical, 10)
         .background(NT.bg2.opacity(0.95))
     }
+    var nextLabel: String {
+        if session.config.mode == .survival && session.lives <= 0 { return "Game Over – Auswertung" }
+        return session.index + 1 >= session.items.count ? "Ergebnis" : "Weiter"
+    }
+    func grade(_ g: Int) {
+        session.submit(store, grade: g)
+        session.next(store)
+    }
     var canSubmit: Bool {
         switch q.type {
         case "multi": return !session.selection.isEmpty
@@ -581,8 +789,31 @@ struct QuizBottomBar: View {
     }
 }
 
+struct GradeButton: View {
+    let title: String
+    let sub: String
+    let color: Color
+    let action: () -> Void
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 2) {
+                Text(title).font(.system(size: 14, weight: .bold))
+                Text(sub).font(NT.mono(9)).opacity(0.7)
+            }
+            .foregroundStyle(color)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .background(RoundedRectangle(cornerRadius: 12).fill(color.opacity(0.12)))
+            .overlay(RoundedRectangle(cornerRadius: 12).stroke(color.opacity(0.5), lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+    }
+}
+
 struct QuizResultView: View {
+    @Environment(Store.self) private var store
     let session: QuizSession
+    let peek: (LessonRef) -> Void
     let done: () -> Void
     var body: some View {
         let total = session.config.mode == .exam ? session.config.questions.count : session.results.count
@@ -590,22 +821,26 @@ struct QuizResultView: View {
         let verdict: String = {
             if let p = session.examPassed { return p ? "BESTANDEN" : "NICHT BESTANDEN" }
             if session.config.mode == .blitz { return "\(session.correctCount) RICHTIG" }
+            if session.config.mode == .survival { return "\(session.correctCount) ÜBERLEBT" }
             return score >= 0.95 ? "PWNED!" : score >= 0.8 ? "SAUBER GEHACKT" : score >= 0.6 ? "SOLIDE" : score >= 0.4 ? "MEHR ENUMERATION NÖTIG" : "TRY HARDER"
         }()
         let col: Color = session.examPassed == false || score < 0.6 ? (session.examPassed == false ? NT.red : NT.orange) : NT.acc
         let wrong = session.results.filter { !$0.correct }
+        let counter = session.config.mode == .blitz || session.config.mode == .survival
         ScrollView {
             VStack(spacing: 18) {
                 Text(session.config.title.uppercased()).font(NT.mono(12, .bold)).tracking(2).foregroundStyle(NT.tx3).multilineTextAlignment(.center)
-                ProgressRing(value: score, color: col, size: 170, line: 13, label: session.config.mode == .blitz ? "\(session.correctCount)" : "\(Int((score * 100).rounded()))%", sub: "\(session.correctCount)/\(total)")
+                ProgressRing(value: counter ? min(1, Double(session.correctCount) / 30) : score, color: col, size: 170, line: 13,
+                             label: counter ? "\(session.correctCount)" : "\(Int((score * 100).rounded()))%", sub: "\(session.correctCount)/\(total)")
                 Text(verdict).font(.system(size: 24, weight: .black, design: .monospaced)).foregroundStyle(col)
-                if session.config.mode == .exam { Text("Bestehensgrenze 80 %").font(NT.mono(12)).foregroundStyle(NT.tx3) }
+                if session.config.mode == .exam { Text("Bestehensgrenze \(Int(store.prefs.examPass * 100)) %").font(NT.mono(12)).foregroundStyle(NT.tx3) }
                 ForEach(session.extra, id: \.self) { e in Label(e, systemImage: "star.fill").font(NT.mono(12, .bold)).foregroundStyle(NT.gold) }
                 HStack(spacing: 10) {
                     MiniResult(v: "+\(session.xp)", l: "XP", c: NT.acc)
                     MiniResult(v: "x\(session.maxCombo)", l: "Max Combo", c: NT.orange)
                     MiniResult(v: "\(session.results.count)", l: "Beantwortet", c: NT.blue)
                 }
+                Text(coachLine(score: score, wrong: wrong.count)).font(.system(size: 13)).foregroundStyle(NT.tx2).multilineTextAlignment(.center)
                 Button("Fertig", action: done).buttonStyle(PrimaryButtonStyle(color: col))
                 if !wrong.isEmpty {
                     SectionHeader(title: "Zum Wiederholen", trailing: "\(wrong.count)")
@@ -615,6 +850,13 @@ struct QuizResultView: View {
                             Text("Deine Antwort: \(r.given)").font(.system(size: 13)).foregroundStyle(NT.red)
                             MD(text: "Richtig: **\(r.question.displayAnswer)**", size: 13, color: NT.acc)
                             if let e = r.question.explain, !e.isEmpty { MD(text: e, size: 13, color: NT.tx2) }
+                            else if let c = r.question.ctx, !c.isEmpty { MD(text: "„" + c + "“", size: 13, color: NT.tx2) }
+                            if let m = store.module(of: r.question) {
+                                Button { peek(LessonRef(module: m, index: r.question.lesson ?? 0)) } label: {
+                                    Label("Nachlesen", systemImage: "book.pages").font(NT.mono(11, .bold))
+                                }
+                                .foregroundStyle(NT.blue)
+                            }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .card(padding: 12)
@@ -626,6 +868,18 @@ struct QuizResultView: View {
             .frame(maxWidth: .infinity)
         }
     }
+
+    func coachLine(score: Double, wrong: Int) -> String {
+        switch session.config.mode {
+        case .exam: return session.examPassed == true ? "Stark! Die Fehler unten sind deine nächsten Lernziele." : "Kein Drama – genau dafür ist die Simulation da. Arbeite die Fehler unten durch und versuch es erneut."
+        case .blitz, .survival: return "Tempo-Modi trainieren das schnelle Abrufen. Für tiefes Verständnis: Training und Lektionen."
+        case .check: return wrong == 0 ? "Lektion sitzt. Weiter so!" : "Lies die markierten Stellen nochmal – direkt nach dem Lesen zu prüfen ist eine der wirksamsten Lernmethoden."
+        default:
+            if score >= 0.9 { return "Hervorragend. Die Karten wandern in längere Wiederholungsintervalle." }
+            if score >= 0.6 { return "Gut! Falsche Karten kommen bald wieder – so festigt sich das Wissen." }
+            return "Schwieriger Stoff? Öffne bei den Fehlern „Nachlesen“ – erst verstehen, dann wiederholen."
+        }
+    }
 }
 
 struct MiniResult: View {
@@ -634,8 +888,8 @@ struct MiniResult: View {
     let c: Color
     var body: some View {
         VStack(spacing: 3) {
-            Text(v).font(NT.mono(20, .heavy)).foregroundStyle(c)
-            Text(l.uppercased()).font(NT.mono(9)).foregroundStyle(NT.tx3)
+            Text(v).font(NT.mono(20, .heavy)).foregroundStyle(c).lineLimit(1).minimumScaleFactor(0.6)
+            Text(l.uppercased()).font(NT.mono(9)).foregroundStyle(NT.tx3).lineLimit(1).minimumScaleFactor(0.7)
         }
         .frame(maxWidth: .infinity)
         .card(padding: 12)
