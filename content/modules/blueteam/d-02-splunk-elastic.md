@@ -54,7 +54,7 @@ Der Elastic Stack (Elasticsearch, Logstash/Beats/Elastic Agent, Kibana) speicher
 | KQL | schnelle Filter in Kibana | `event.code:4625 and user.name:"admin"` |
 | Lucene | ältere Syntax | `event.code:4625 AND NOT user.name:svc*` |
 | EQL | Abfolgen von Ereignissen | Prozess startet, dann Netzwerkverbindung |
-| ES|QL | Pipeline-Abfragen | `FROM logs-* | STATS count() BY host.name` |
+| `ES|QL` | Pipeline-Abfragen | `FROM logs-* | STATS count() BY host.name` |
 
 ```eql
 sequence by host.name with maxspan=1m

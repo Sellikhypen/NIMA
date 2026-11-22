@@ -227,13 +227,26 @@ final class Store {
     func importBackup(_ url: URL) -> Bool {
         let scoped = url.startAccessingSecurityScopedResource()
         defer { if scoped { url.stopAccessingSecurityScopedResource() } }
-        guard let data = try? Data(contentsOf: url), let p = try? JSONDecoder().decode(Progress.self, from: data) else { return false }
+        guard let data = try? Data(contentsOf: url), Store.isBackup(data),
+              let p = try? JSONDecoder().decode(Progress.self, from: data) else { return false }
         progress = p
         progress.onboarded = true
         applyTheme(progress.prefs.accent)
         save()
         showToast(icon: "arrow.down.doc.fill", title: "Backup geladen", detail: "Level \(level) · \(progress.xp) XP", color: "#2EE7B6")
         return true
+    }
+
+    /// Progress dekodiert tolerant (jedes JSON-Objekt ergäbe einen leeren Spielstand), daher vor dem Überschreiben streng prüfen.
+    private struct BackupShape: Decodable {
+        let xp: Int
+        let lessonsDone: [String: Double]
+        let cards: [String: CardState]
+        let daily: [String: DayStat]
+    }
+
+    static func isBackup(_ data: Data) -> Bool {
+        (try? JSONDecoder().decode(BackupShape.self, from: data)) != nil
     }
 
     // MARK: Lookups
@@ -626,7 +639,10 @@ final class Store {
                 iv = max(c.interval + (grade == 1 ? 0.5 : 1), c.interval * mult)
             }
             if grade == 1 { c.ease = max(1.3, c.ease - 0.15) } else if grade == 3 { c.ease = min(3.2, c.ease + 0.15) }
-            iv = min(iv * progress.prefs.srsFactor, 365)
+            iv *= progress.prefs.srsFactor
+            // Eine richtige Antwort darf das Intervall nie verkürzen
+            if c.interval >= 1 { iv = max(iv, c.interval * 1.05) }
+            iv = min(iv, 365)
             c.interval = iv
             c.box = Store.box(for: iv)
             c.due = now + iv * 86400 * Double.random(in: 0.94...1.06)
@@ -991,7 +1007,9 @@ final class Store {
         var gen = SeededGenerator(seed: "quests" + key)
         var tpls = dailyTemplates
         // Reviews nur, wenn es überhaupt Karten gibt
-        if progress.cards.isEmpty { tpls.removeAll { $0.key == "reviews" || $0.key == "combo" } }
+        // Nur von Vortagen abhängig machen, sonst wechseln die Missionen mitten am Tag
+        let practisedBefore = progress.daily.contains { $0.key < key && $0.value.answered > 0 }
+        if !practisedBefore { tpls.removeAll { $0.key == "reviews" || $0.key == "combo" } }
         let picks = Array(tpls.shuffled(using: &gen).prefix(3))
         let d = today
         let claimed = progress.questDay == key ? progress.questClaimed : []

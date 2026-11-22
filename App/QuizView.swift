@@ -77,12 +77,8 @@ final class QuizSession {
         questionStart = Date()
         guard let q = current else { return }
         let idx = Array((q.options ?? []).indices)
-        // Wahr/Falsch-artige Optionen und "alle"/"keine" nicht mischen
-        let fixed = (q.options ?? []).contains { o in
-            let l = o.lowercased()
-            return l.hasPrefix("alle ") || l.hasPrefix("keine ") || l == "beide" || l.hasPrefix("beides")
-        }
-        optionOrder = shuffle && !fixed ? idx.shuffled() : idx
+        // Immer mischen: in den Quelldateien steht die richtige Antwort meist zuerst
+        optionOrder = shuffle ? idx.shuffled() : idx
         var p = Array((q.order ?? []).indices)
         for _ in 0..<6 { p.shuffle(); if p != Array(p.indices) || p.count < 2 { break } }
         pool = p

@@ -300,6 +300,19 @@ class Linker:
         return "".join(p if p.startswith("`") and p.endswith("`") and len(p) > 1 else re.sub(r"\[\[([^\]]+)\]\]", rep, p) for p in parts)
 
 
+def split_cells(row):
+    """Tabellenzeile an '|' trennen, aber nicht innerhalb von `Code` oder [[Ziel|Text]]."""
+    cells, cur = [], ""
+    for tok in re.findall(r"`[^`]*`|\[\[[^\]]*\]\]|\||[^|`\[]+|.", row):
+        if tok == "|":
+            cells.append(cur.strip())
+            cur = ""
+        else:
+            cur += tok
+    cells.append(cur.strip())
+    return cells
+
+
 def md_to_blocks(lines, linker, ctx, origin, seen=None):
     blocks = []
     i = 0
@@ -365,7 +378,7 @@ def md_to_blocks(lines, linker, ctx, origin, seen=None):
             rows = []
             while i < len(lines) and lines[i].strip().startswith("|"):
                 row = lines[i].strip().strip("|")
-                cells = [c.strip() for c in row.split("|")]
+                cells = split_cells(row)
                 if not all(re.match(r"^:?-{2,}:?$", c) for c in cells if c):
                     rows.append([linker.inline(c, ctx) for c in cells])
                 i += 1
